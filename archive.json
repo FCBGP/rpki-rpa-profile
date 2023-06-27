@@ -1,0 +1,304 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2023-06-27T00:58:54.220967+00:00",
+  "repo": "BasilGuo/fc-signed-object",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [
+    {
+      "number": 8,
+      "id": "I_kwDOJl-e985nxaUp",
+      "title": "Format Modification",
+      "url": "https://github.com/BasilGuo/fc-signed-object/issues/8",
+      "state": "CLOSED",
+      "author": "BasilGuo",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "https://github.com/BasilGuo/fc-signed-object/blob/9380fdef20f7f0c0e101769e29c16a1ffaecef69/draft-guo-fc-so.md?plain=1#L138\r\n\r\nThis line is too long.",
+      "createdAt": "2023-06-05T05:41:53Z",
+      "updatedAt": "2023-06-26T01:12:54Z",
+      "closedAt": "2023-06-26T01:12:54Z",
+      "comments": []
+    }
+  ],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOJl-e985Q_CaK",
+      "title": "Update and rename draft-todo-yourname-protocol.md to draft-guo-fc-so.md",
+      "url": "https://github.com/BasilGuo/fc-signed-object/pull/1",
+      "state": "MERGED",
+      "author": "BasilGuo",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "init repo",
+      "createdAt": "2023-05-22T07:29:57Z",
+      "updatedAt": "2023-05-22T07:33:00Z",
+      "baseRepository": "BasilGuo/fc-signed-object",
+      "baseRefName": "main",
+      "baseRefOid": "5bd72e72ef2fc4397f74375ca8d777df1f4c26dd",
+      "headRepository": "BasilGuo/fc-signed-object",
+      "headRefName": "initial",
+      "headRefOid": "bc2e8a02a2c8e9f51592c8360450d79ec70e1f92",
+      "closedAt": "2023-05-22T07:33:00Z",
+      "mergedAt": "2023-05-22T07:33:00Z",
+      "mergedBy": "BasilGuo",
+      "mergeCommit": {
+        "oid": "bde015ad5945d9c6cc1fcad4dcf2f9d36fa95abe"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 2,
+      "id": "PR_kwDOJl-e985Q_xZ5",
+      "title": "update: sketch of FCSO",
+      "url": "https://github.com/BasilGuo/fc-signed-object/pull/2",
+      "state": "MERGED",
+      "author": "BasilGuo",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "The skeleton of FC signed object.",
+      "createdAt": "2023-05-22T09:33:06Z",
+      "updatedAt": "2023-05-23T03:21:33Z",
+      "baseRepository": "BasilGuo/fc-signed-object",
+      "baseRefName": "main",
+      "baseRefOid": "7e2c5bb33eb8f317d6d6116ca6968e6a3e0057b9",
+      "headRepository": "BasilGuo/fc-signed-object",
+      "headRefName": "sketch",
+      "headRefOid": "8c070e4749427b3eb3d6e30a4afff8677bfad236",
+      "closedAt": "2023-05-23T03:21:32Z",
+      "mergedAt": "2023-05-23T03:21:32Z",
+      "mergedBy": "ZJOJZ",
+      "mergeCommit": {
+        "oid": "269db7678a23c18a93254213a14cc7519c7be7c6"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 3,
+      "id": "PR_kwDOJl-e985RHmv4",
+      "title": "Update draft-guo-fc-so.md with Content-Type and eContenttype",
+      "url": "https://github.com/BasilGuo/fc-signed-object/pull/3",
+      "state": "MERGED",
+      "author": "ZJOJZ",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-05-23T08:49:36Z",
+      "updatedAt": "2023-05-24T01:55:42Z",
+      "baseRepository": "BasilGuo/fc-signed-object",
+      "baseRefName": "main",
+      "baseRefOid": "199416db4d3522a3159ac1b6ad8b0cd3b3afc2b7",
+      "headRepository": "BasilGuo/fc-signed-object",
+      "headRefName": "content",
+      "headRefOid": "5eeefb5c48ad4b87d98e05476c64fdbcb6341334",
+      "closedAt": "2023-05-24T01:55:42Z",
+      "mergedAt": "2023-05-24T01:55:42Z",
+      "mergedBy": "BasilGuo",
+      "mergeCommit": {
+        "oid": "f933031e6d0fcb2060a6fe16afe80f21e3bb5600"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 4,
+      "id": "PR_kwDOJl-e985ROZ09",
+      "title": "update abstract and introduction",
+      "url": "https://github.com/BasilGuo/fc-signed-object/pull/4",
+      "state": "MERGED",
+      "author": "BasilGuo",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "update abstract and introduction content",
+      "createdAt": "2023-05-24T09:29:02Z",
+      "updatedAt": "2023-05-25T09:14:36Z",
+      "baseRepository": "BasilGuo/fc-signed-object",
+      "baseRefName": "main",
+      "baseRefOid": "f933031e6d0fcb2060a6fe16afe80f21e3bb5600",
+      "headRepository": "BasilGuo/fc-signed-object",
+      "headRefName": "update-intro",
+      "headRefOid": "7df9f77a24096007a3d0f762c7833096cf327930",
+      "closedAt": "2023-05-25T09:14:35Z",
+      "mergedAt": "2023-05-25T09:14:35Z",
+      "mergedBy": "BasilGuo",
+      "mergeCommit": {
+        "oid": "633a684aa5a48c5cf911dabddca1b18123974a86"
+      },
+      "comments": [
+        {
+          "author": "BasilGuo",
+          "authorAssociation": "OWNER",
+          "body": "Don't merge this PR until all checks passed.",
+          "createdAt": "2023-05-24T10:15:32Z",
+          "updatedAt": "2023-05-24T10:15:32Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 5,
+      "id": "PR_kwDOJl-e985RZUkA",
+      "title": "update: fc-verification",
+      "url": "https://github.com/BasilGuo/fc-signed-object/pull/5",
+      "state": "MERGED",
+      "author": "BasilGuo",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-05-26T02:16:06Z",
+      "updatedAt": "2023-05-26T02:16:55Z",
+      "baseRepository": "BasilGuo/fc-signed-object",
+      "baseRefName": "main",
+      "baseRefOid": "57acbf68b2696b466c6ff28945cce61d82a9031f",
+      "headRepository": "BasilGuo/fc-signed-object",
+      "headRefName": "BasilGuo-update-fc-verification",
+      "headRefOid": "2da21e1a5d6c35b6cf6c35b1781c4b5e033df5ec",
+      "closedAt": "2023-05-26T02:16:55Z",
+      "mergedAt": "2023-05-26T02:16:54Z",
+      "mergedBy": "BasilGuo",
+      "mergeCommit": {
+        "oid": "981fe8b3d7f54d120c48cba25d9490eb9df73e51"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 6,
+      "id": "PR_kwDOJl-e985Rabqh",
+      "title": "update: using reserved ASN and IP prefix for docs.",
+      "url": "https://github.com/BasilGuo/fc-signed-object/pull/6",
+      "state": "MERGED",
+      "author": "BasilGuo",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "For I-D, IETF has reserved some Internet Number Resources for documents. It should use reserved ones instead of the previous ASN and IP prefixes.",
+      "createdAt": "2023-05-26T07:54:35Z",
+      "updatedAt": "2023-05-26T08:16:56Z",
+      "baseRepository": "BasilGuo/fc-signed-object",
+      "baseRefName": "main",
+      "baseRefOid": "c3e4c74f2575c671742172ba5c2241cf026f5ccf",
+      "headRepository": "BasilGuo/fc-signed-object",
+      "headRefName": "BasilGuo-reserved-inr",
+      "headRefOid": "6adef427890399562244c202a4d3ae391914d2ce",
+      "closedAt": "2023-05-26T08:16:56Z",
+      "mergedAt": "2023-05-26T08:16:56Z",
+      "mergedBy": "BasilGuo",
+      "mergeCommit": {
+        "oid": "2f5ab201d6107054590949b8ff9d3b8a27e3e8a9"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 7,
+      "id": "PR_kwDOJl-e985Rv5fU",
+      "title": "update as path in rib",
+      "url": "https://github.com/BasilGuo/fc-signed-object/pull/7",
+      "state": "MERGED",
+      "author": "BasilGuo",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-05-31T06:00:21Z",
+      "updatedAt": "2023-05-31T06:06:49Z",
+      "baseRepository": "BasilGuo/fc-signed-object",
+      "baseRefName": "main",
+      "baseRefOid": "2f5ab201d6107054590949b8ff9d3b8a27e3e8a9",
+      "headRepository": "BasilGuo/fc-signed-object",
+      "headRefName": "BasilGuo-update-as-path",
+      "headRefOid": "9589ab0386636f28b085bc13b90c049c92cc3c22",
+      "closedAt": "2023-05-31T06:06:49Z",
+      "mergedAt": "2023-05-31T06:06:49Z",
+      "mergedBy": "BasilGuo",
+      "mergeCommit": {
+        "oid": "9380fdef20f7f0c0e101769e29c16a1ffaecef69"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 9,
+      "id": "PR_kwDOJl-e985TTxVo",
+      "title": "Check syntax with Grammarly",
+      "url": "https://github.com/BasilGuo/fc-signed-object/pull/9",
+      "state": "MERGED",
+      "author": "BasilGuo",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "fixes #8 ",
+      "createdAt": "2023-06-19T07:33:26Z",
+      "updatedAt": "2023-06-26T01:12:54Z",
+      "baseRepository": "BasilGuo/fc-signed-object",
+      "baseRefName": "main",
+      "baseRefOid": "9380fdef20f7f0c0e101769e29c16a1ffaecef69",
+      "headRepository": "BasilGuo/fc-signed-object",
+      "headRefName": "BasilGuo-syntax-correction",
+      "headRefOid": "0a37258791657497b4a1887c7cd29dc3d5f3f775",
+      "closedAt": "2023-06-26T01:12:53Z",
+      "mergedAt": "2023-06-26T01:12:53Z",
+      "mergedBy": "BasilGuo",
+      "mergeCommit": {
+        "oid": "e878d0aac1e628b6b629940930fe7336298c6c58"
+      },
+      "comments": [],
+      "reviews": []
+    }
+  ]
+}
