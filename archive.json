@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-08-17T00:37:19.154100+00:00",
+  "timestamp": "2023-08-20T00:39:54.054279+00:00",
   "repo": "BasilGuo/fc-signed-object",
   "labels": [
     {
@@ -310,26 +310,49 @@
       "id": "PR_kwDOJl-e985YCk4d",
       "title": "stone",
       "url": "https://github.com/BasilGuo/fc-signed-object/pull/10",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "StoneLing",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2023-08-16T08:40:06Z",
-      "updatedAt": "2023-08-16T08:40:06Z",
+      "updatedAt": "2023-08-17T01:57:10Z",
       "baseRepository": "BasilGuo/fc-signed-object",
       "baseRefName": "main",
       "baseRefOid": "e878d0aac1e628b6b629940930fe7336298c6c58",
       "headRepository": "StoneLing/fc-signed-object",
       "headRefName": "StoneLing-patch-1",
-      "headRefOid": "8b8a12106477aec56ec8fb1fe1ebaf288798f532",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "8c956e6b259e9394d23d607d314c9fbf9217c89f",
+      "closedAt": "2023-08-17T01:57:10Z",
+      "mergedAt": "2023-08-17T01:57:10Z",
+      "mergedBy": "BasilGuo",
+      "mergeCommit": {
+        "oid": "cce102eaff04105cd4432ac6abf1ef3e59916fb2"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJl-e985eRfbJ",
+          "commit": {
+            "abbreviatedOid": "8b8a121"
+          },
+          "author": "BasilGuo",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-08-17T01:46:43Z",
+          "updatedAt": "2023-08-17T01:55:37Z",
+          "comments": [
+            {
+              "originalPosition": 8,
+              "body": "```suggestion\r\nThe FC uses the template for RPKI digitally signed objects {{RFC6488}} for the definition of a Cryptographic Message Syntax (CMS) {{RFC5652}} wrapper for the FC content as well as a generic validation procedure for RPKI signed objects.  As RPKI certificates issued by the current infrastructure are required to validate FC, we assume the mandatory-to-implement algorithms in {{RFC6485}} or its successor.\r\n```",
+              "createdAt": "2023-08-17T01:46:43Z",
+              "updatedAt": "2023-08-17T01:55:37Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
