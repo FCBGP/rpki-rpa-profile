@@ -2,16 +2,16 @@
 
 This is the working area for the individual Internet-Draft, "A Profile for Forwarding Commitments (FCs)".
 
-* [Editor's Copy](https://BasilGuo.github.io/fc-signed-object/#go.draft-guo-fc-so.html)
+* [Editor's Copy](https://FCBGP.github.io/fc-signed-object/#go.draft-guo-fc-so.html)
 * [Datatracker Page](https://datatracker.ietf.org/doc/draft-guo-fc-so)
 * [Individual Draft](https://datatracker.ietf.org/doc/html/draft-guo-fc-so)
-* [Compare Editor's Copy to Individual Draft](https://BasilGuo.github.io/fc-signed-object/#go.draft-guo-fc-so.diff)
+* [Compare Editor's Copy to Individual Draft](https://FCBGP.github.io/fc-signed-object/#go.draft-guo-fc-so.diff)
 
 
 ## Contributing
 
 See the
-[guidelines for contributions](https://github.com/BasilGuo/fc-signed-object/blob/main/CONTRIBUTING.md).
+[guidelines for contributions](https://github.com/FCBGP/fc-signed-object/blob/main/CONTRIBUTING.md).
 
 Contributions can be made by creating pull requests.
 The GitHub interface supports creating pull requests using the Edit (✏) button.
