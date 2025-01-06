@@ -115,9 +115,9 @@ This OID MUST appear both within the eContentType in the encapContentInfo object
 The content of an FC identifies a forwarding commitment and forwarding binding that an AS announces to other nodes upon receiving a BGP-UPDATE message. Other on-path ASes can validate the FC and perform path verification for traffic forwarding based on the AS-path information. Off-path ASes can utilize this FC for collaborative filtering. An FC is an instance of ForwardingCommitmentAttestation, formally defined by the following ASN.1 {{X.680}} module:
 
 ~~~~~~
-RPKI-FC-2023
+RPKI-FC-2025
   { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
-     pkcs-9(9) smime(16) modules(0) id-mod-rpki-FC-2023(TBD) }
+     pkcs-9(9) smime(16) modules(0) id-mod-rpki-FC-2025(TBD) }
 
 DEFINITIONS EXPLICIT TAGS ::=
 BEGIN
@@ -226,34 +226,67 @@ The security considerations of {{RFC6480}}, {{RFC6481}}, {{RFC6485}}, {{RFC6487}
 
 ## SMI Security for S/MIME CMS Content Type (1.2.840.113549.1.9.16.1)
 
- Please add the id-mod-rpki-fc-2023 to the SMI Security for S/MIME Module Identifier (1.2.840.113549.1.9.16.0) registry (https://www.iana.org/assignments/smi-numbers/smi-numbers.xml#security-smime-0) as follows:
+Please add the id-mod-rpki-fc-2025 to the SMI Security for S/MIME Module Identifier (1.2.840.113549.1.9.16.0) registry (https://www.iana.org/assignments/smi-numbers/smi-numbers.xml#security-smime-0) as follows:
 
-~~~~~~
-Decimal    Description                   Specification
----------------------------------------------------------------------
-TBD        id-mod-rpki-fc-2023           [RFC-to-be]
-~~~~~~
+
+    Decimal  |  Description                 | Specification
+    ----------------------------------------------------------------
+    TBD      | id-mod-rpki-fc-2025          | [RFC-to-be]
+
 
 ## SMI Security for S/MIME CMS Content Type registry
 
 Please add the FC to the SMI Security for S/MIME CMS Content Type (1.2.840.113549.1.9.16.1) registry (https://www.iana.org/assignments/smi-numbers/smi-numbers.xml#security-smime-1) as follows:
 
-~~~~~~
-Decimal     Description                  Specification
----------------------------------------------------------------------
-TBD         id-ct-FC                     [RFC-to-be]
-~~~~~~
+    Decimal  |  Description                | Specification
+    ----------------------------------------------------------------
+    TBD      |  id-ct-FC                   | [RFC-to-be]
 
 ## RPKI Signed Object registry
 
 Please add Forwarding Commitment to the RPKI Signed Object registry (https://www.iana.org/assignments/rpki/rpki.xhtml#signed-objects) as follows:
 
-~~~~~~
-Name        OID                          Specification
----------------------------------------------------------------------
-Forwarding
-Commitment  1.2.840.113549.1.9.16.1.TBD  [RFC-to-be]
-~~~~~~
+    Name       | OID                         | Specification
+    ----------------------------------------------------------------
+    Forwarding |                             |
+    Commitment | 1.2.840.113549.1.9.16.1.TBD | [RFC-to-be]
+
+## RPKI Repository Name Scheme registry
+
+Please add an item for the Forwarding Commitment file extension to the "RPKI Repository Name Scheme" registry created by {{RFC6481}} as follows:
+
+    Filename  |
+    Extension | RPKI Object                   | Reference
+    -----------------------------------------------------------------
+         .for | Forwarding Commitment         | [RFC-to-be]
+
+## Media Type registry
+
+The IANA is requested to register the media type application/rpki-fc in the "Media Type" registry as follows:
+
+      Type name: application
+      Subtype name: rpki-fc
+      Required parameters: N/A
+      Optional parameters: N/A
+      Encoding considerations: binary
+      Security considerations: Carries an RPKI FC [RFC-to-be].
+          This media type contains no active content. See
+          Section xxx of [RFC-to-be] for further information.
+      Interoperability considerations: None
+      Published specification: [RFC-to-be]
+      Applications that use this media type: RPKI operators
+      Additional information:
+        Content: This media type is a signed object, as defined
+            in [RFC6488], which contains a payload of a list of
+            AS identifiers (ASIDs) as defined in [RFC-to-be].
+        Magic number(s): None
+        File extension(s): .for
+        Macintosh file type code(s):
+      Person & email address to contact for further information:
+        Yangfei Guo <guoyangfei@zgclab.edu.cn>
+      Intended usage: COMMON
+      Restrictions on usage: None
+      Change controller: IETF
 
 --- back
 
