@@ -224,7 +224,7 @@ The security considerations of {{RFC6480}}, {{RFC6481}}, {{RFC6485}}, {{RFC6487}
 
 # IANA Considerations
 
-## SMI Security for S/MIME CMS Content Type (1.2.840.113549.1.9.16.1)
+## SMI Security for S/MIME Module Identifier registry
 
 Please add the id-mod-rpki-fc-2025 to the SMI Security for S/MIME Module Identifier (1.2.840.113549.1.9.16.0) registry (https://www.iana.org/assignments/smi-numbers/smi-numbers.xml#security-smime-0) as follows:
 
