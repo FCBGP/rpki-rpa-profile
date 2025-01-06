@@ -1220,6 +1220,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.3">
                 <p id="section-toc.1-1.6.2.3.1"><a href="#section-6.3" class="auto internal xref">6.3</a>.  <a href="#name-rpki-signed-object-registry" class="internal xref">RPKI Signed Object registry</a></p>
 </li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.4">
+                <p id="section-toc.1-1.6.2.4.1"><a href="#section-6.4" class="auto internal xref">6.4</a>.  <a href="#name-rpki-repository-name-scheme" class="internal xref">RPKI Repository Name Scheme registry</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.5">
+                <p id="section-toc.1-1.6.2.5.1"><a href="#section-6.5" class="auto internal xref">6.5</a>.  <a href="#name-media-type-registry" class="internal xref">Media Type registry</a></p>
+</li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
@@ -1298,9 +1304,9 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <figure id="figure-1">
         <div class="alignLeft art-text artwork" id="section-3-2.1">
 <pre>
-RPKI-FC-2023
+RPKI-FC-2025
   { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
-     pkcs-9(9) smime(16) modules(0) id-mod-rpki-FC-2023(TBD) }
+     pkcs-9(9) smime(16) modules(0) id-mod-rpki-FC-2025(TBD) }
 
 DEFINITIONS EXPLICIT TAGS ::=
 BEGIN
@@ -1475,12 +1481,12 @@ END
         <h3 id="name-smi-security-for-s-mime-cms">
 <a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-smi-security-for-s-mime-cms" class="section-name selfRef">SMI Security for S/MIME CMS Content Type (1.2.840.113549.1.9.16.1)</a>
         </h3>
-<p id="section-6.1-1">Please add the id-mod-rpki-fc-2023 to the SMI Security for S/MIME Module Identifier (1.2.840.113549.1.9.16.0) registry (https://www.iana.org/assignments/smi-numbers/smi-numbers.xml#security-smime-0) as follows:<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.1-1">Please add the id-mod-rpki-fc-2025 to the SMI Security for S/MIME Module Identifier (1.2.840.113549.1.9.16.0) registry (https://www.iana.org/assignments/smi-numbers/smi-numbers.xml#security-smime-0) as follows:<a href="#section-6.1-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-6.1-2">
 <pre>
-Decimal    Description                   Specification
----------------------------------------------------------------------
-TBD        id-mod-rpki-fc-2023           [RFC-to-be]
+Decimal  |  Description                 | Specification
+----------------------------------------------------------------
+TBD      | id-mod-rpki-fc-2025          | [RFC-to-be]
 </pre><a href="#section-6.1-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -1493,9 +1499,9 @@ TBD        id-mod-rpki-fc-2023           [RFC-to-be]
 <p id="section-6.2-1">Please add the FC to the SMI Security for S/MIME CMS Content Type (1.2.840.113549.1.9.16.1) registry (https://www.iana.org/assignments/smi-numbers/smi-numbers.xml#security-smime-1) as follows:<a href="#section-6.2-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-6.2-2">
 <pre>
-Decimal     Description                  Specification
----------------------------------------------------------------------
-TBD         id-ct-FC                     [RFC-to-be]
+Decimal  |  Description                | Specification
+----------------------------------------------------------------
+TBD      |  id-ct-FC                   | [RFC-to-be]
 </pre><a href="#section-6.2-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -1508,11 +1514,62 @@ TBD         id-ct-FC                     [RFC-to-be]
 <p id="section-6.3-1">Please add Forwarding Commitment to the RPKI Signed Object registry (https://www.iana.org/assignments/rpki/rpki.xhtml#signed-objects) as follows:<a href="#section-6.3-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-6.3-2">
 <pre>
-Name        OID                          Specification
----------------------------------------------------------------------
-Forwarding
-Commitment  1.2.840.113549.1.9.16.1.TBD  [RFC-to-be]
+Name       | OID                         | Specification
+----------------------------------------------------------------
+Forwarding |                             |
+Commitment | 1.2.840.113549.1.9.16.1.TBD | [RFC-to-be]
 </pre><a href="#section-6.3-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="rpki-repository-name-scheme-registry">
+<section id="section-6.4">
+        <h3 id="name-rpki-repository-name-scheme">
+<a href="#section-6.4" class="section-number selfRef">6.4. </a><a href="#name-rpki-repository-name-scheme" class="section-name selfRef">RPKI Repository Name Scheme registry</a>
+        </h3>
+<p id="section-6.4-1">Please add an item for the Forwarding Commitment file extension to the "RPKI Repository Name Scheme" registry created by <span>[<a href="#RFC6481" class="cite xref">RFC6481</a>]</span> as follows:<a href="#section-6.4-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.4-2">
+<pre>
+Filename  |
+Extension | RPKI Object                   | Reference
+-----------------------------------------------------------------
+     .for | Forwarding Commitment         | [RFC-to-be]
+</pre><a href="#section-6.4-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="media-type-registry">
+<section id="section-6.5">
+        <h3 id="name-media-type-registry">
+<a href="#section-6.5" class="section-number selfRef">6.5. </a><a href="#name-media-type-registry" class="section-name selfRef">Media Type registry</a>
+        </h3>
+<p id="section-6.5-1">The IANA is requested to register the media type application/rpki-fc in the "Media Type" registry as follows:<a href="#section-6.5-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.5-2">
+<pre>
+  Type name: application
+  Subtype name: rpki-fc
+  Required parameters: N/A
+  Optional parameters: N/A
+  Encoding considerations: binary
+  Security considerations: Carries an RPKI FC [RFC-to-be].
+      This media type contains no active content. See
+      Section xxx of [RFC-to-be] for further information.
+  Interoperability considerations: None
+  Published specification: [RFC-to-be]
+  Applications that use this media type: RPKI operators
+  Additional information:
+    Content: This media type is a signed object, as defined
+        in [RFC6488], which contains a payload of a list of
+        AS identifiers (ASIDs) as defined in [RFC-to-be].
+    Magic number(s): None
+    File extension(s): .for
+    Macintosh file type code(s):
+  Person &amp; email address to contact for further information:
+    Yangfei Guo &lt;guoyangfei@zgclab.edu.cn&gt;
+  Intended usage: COMMON
+  Restrictions on usage: None
+  Change controller: IETF
+</pre><a href="#section-6.5-2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
