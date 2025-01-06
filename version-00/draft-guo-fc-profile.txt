@@ -88,8 +88,7 @@ Table of Contents
    4.  FC Validation
    5.  Security Considerations
    6.  IANA Considerations
-     6.1.  SMI Security for S/MIME CMS Content Type
-           (1.2.840.113549.1.9.16.1)
+     6.1.  SMI Security for S/MIME Module Identifier registry
      6.2.  SMI Security for S/MIME CMS Content Type registry
      6.3.  RPKI Signed Object registry
      6.4.  RPKI Repository Name Scheme registry
@@ -320,7 +319,7 @@ Table of Contents
 
 6.  IANA Considerations
 
-6.1.  SMI Security for S/MIME CMS Content Type (1.2.840.113549.1.9.16.1)
+6.1.  SMI Security for S/MIME Module Identifier registry
 
    Please add the id-mod-rpki-fc-2025 to the SMI Security for S/MIME
    Module Identifier (1.2.840.113549.1.9.16.0) registry
