@@ -46,14 +46,12 @@ author:
 
 normative:
     RFC3779:
-    RFC4271:
     RFC5652:
-    RFC6480:
+    RFC6268:
+    RFC6481:
     RFC6485:
+    RFC6487:
     RFC6488:
-    RFC7908:
-
-informative:
     X.680:
       title: "Information technology -- Abstract Syntax Notation One (ASN.1): Specification of basic notation"
       target: "https://itu.int/rec/T-REC-X.680-202102-I/en"
@@ -69,6 +67,10 @@ informative:
         - ins: ITU-T
       seriesinfo: "Recommendation ITU-T X.690"
 
+informative:
+    RFC4271:
+    RFC6480:
+    RFC7908:
 
 --- abstract
 
@@ -110,7 +112,7 @@ This OID MUST appear both within the eContentType in the encapContentInfo object
 
 # The FC eContent
 
-The content of an FC identifies a forwarding commitment and forwarding binding that an AS announces to other nodes upon receiving a BGP-UPDATE message. Other on-path ASes can validate the FC and perform path verification for traffic forwarding based on the AS-path information. Off-path ASes can utilize this FC for collaborative filtering. A FC is an instance of ForwardingCommitmentAttestation, formally defined by the following ASN.1 {{X.680}} module:
+The content of an FC identifies a forwarding commitment and forwarding binding that an AS announces to other nodes upon receiving a BGP-UPDATE message. Other on-path ASes can validate the FC and perform path verification for traffic forwarding based on the AS-path information. Off-path ASes can utilize this FC for collaborative filtering. An FC is an instance of ForwardingCommitmentAttestation, formally defined by the following ASN.1 {{X.680}} module:
 
 ~~~~~~
 RPKI-FC-2023
@@ -208,7 +210,7 @@ The signature field is a signature signed by the BGP speaker who issues this FC.
 # FC Validation
 
 
-Only when finished the validation of the FC object will a relying party sign a new FC to announce a trusted and selected routing announcement. To validate a FC, the relying party MUST perform all the validation checks specified in {{RFC6488}} as well as the following additional FC-specific validation step.
+Only when finished the validation of the FC object will a relying party sign a new FC to announce a trusted and selected routing announcement. To validate an FC, the relying party MUST perform all the validation checks specified in {{RFC6488}} as well as the following additional FC-specific validation step.
 
 - The IP Address Delegation extension {{RFC3779}} is present in the end-entity (EE) certificate (contained within the FC), and the IP address prefix in the FC payload is contained within the set of IP addresses specified by the EE certificate's IP Address Delegation extension.
 
@@ -218,7 +220,7 @@ Only when finished the validation of the FC object will a relying party sign a n
 
 # Security Considerations
 
-The security considerations of {{RFC6481}}, {{RFC6485}}, and {{RFC6488}} also apply to FCs.
+The security considerations of {{RFC6480}}, {{RFC6481}}, {{RFC6485}}, {{RFC6487}} and {{RFC6488}} also apply to FCs.
 
 # IANA Considerations
 
