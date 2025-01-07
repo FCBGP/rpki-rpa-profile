@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-01-05T01:00:27.459684+00:00",
+  "timestamp": "2025-01-07T00:56:14.916834+00:00",
   "repo": "FCBGP/fc-signed-object",
   "labels": [
     {
@@ -76,15 +76,15 @@
       "id": "I_kwDOJl-e985xfcmN",
       "title": "problem with generating FCID",
       "url": "https://github.com/FCBGP/fc-signed-object/issues/11",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "BasilGuo",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Now it is generating fcid with `fcid=hash(prefix, current_as_path, next-hop-as)`.\r\nBut it needs to generate a new FC if the as-path is changed.\r\nSo it is better to generate fcid using `fcid=hash(prefix, origin-as, current-as, next-hop-as)`.",
       "createdAt": "2023-09-20T03:59:39Z",
-      "updatedAt": "2023-09-20T03:59:39Z",
-      "closedAt": null,
+      "updatedAt": "2025-01-06T06:50:00Z",
+      "closedAt": "2025-01-06T06:49:52Z",
       "comments": []
     }
   ],
