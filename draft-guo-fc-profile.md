@@ -94,15 +94,15 @@ This document defines a Cryptographic Message Syntax (CMS) protected content typ
 
 # Introduction
 
-The Border Gateway Protocol (BGP) {{RFC4271}} was designed with no mechanisms to validate the security of BGP attributes. There are two types of BGP security issues, BGP Hijacks and BGP Route Leaks {{RFC7908}}, plagues Internet security.
+The Border Gateway Protocol (BGP) {{RFC4271}} was designed with no mechanisms to validate the security of BGP attributes. There are two types of BGP security issues, BGP Hijacks and BGP Route Leaks {{RFC7908}}, plague Internet security.
 
 The primary purpose of the Resource Public Key Infrastructure (RPKI) is to improve routing security.  (See {{RFC6480}} for more information.) As part of this system, a mechanism is needed to allow entities to verify that an IP address holder has permitted an AS to advertise a route along the propagation path. A Forwarding Commitment (FC) provides this function.
 
-A Forwarding Commitment (FC) is a digitally signed object through which the issuer (the holder of an Autonomous System identifier), can authorize one or more other Autonomous Systems (ASes) as its upstream ASes or one or more other ASes as its downstream ASes. The upstream ASes, or previous ASes, means that the issuer AS can receive BGP route updates from these ASes. The downstream ASes, or nexthop ASes, means that the issuer AS would advertise the BGP route to these ASes.
+A Forwarding Commitment (FC) is a digitally signed object through which the issuer (the holder of an Autonomous System identifier), can authorize one or more other Autonomous Systems (ASes) as its upstream ASes or one or more other ASes as its downstream ASes. The upstream ASes, or previous ASes, mean that the issuer AS can receive BGP route updates from these ASes. The downstream ASes, or nexthop ASes, mean that the issuer AS would advertise the BGP route to these ASes.
 
 In this propagation model, it uses a Web of Trust, i.e., the issuer AS trusts its previous ASes and authorizes nexthop ASes to propagate its received routes. Then, all nexthop ASes would also accept the routes and proceed to send them to their next hops. The relationship among them is the signed FC, which attests that a downstream AS has been selected by the directly linked upstream AS to announce the routes.
 
-Initially, all ASes on the propagation path should sign one or more FCs independently if it wants to propagate the route to its downstream ASes, and then be able to detect and filter malicious routes (e.g., route leaks and route hijacks). In addition, the FC can also attest that all ASes on a propagation path have received and selected this AS_PATH, which can be certified as a trusted path.
+Initially, all ASes on the propagation path should sign one or more FCs independently if they want to propagate the route to its downstream ASes, and then be able to detect and filter malicious routes (e.g., route leaks and route hijacks). In addition, the FC can also attest that all ASes on a propagation path have received and selected this AS_PATH, which can be certified as a trusted path.
 
 The FC uses the template for RPKI digitally signed objects {{RFC6488}} for the definition of a Cryptographic Message Syntax (CMS) {{RFC5652}} wrapper for the FC content as well as a generic validation procedure for RPKI signed objects.  As RPKI certificates issued by the current infrastructure are required to validate FC, we assume the mandatory-to-implement algorithms in {{RFC6485}} or its successor.
 
@@ -123,9 +123,9 @@ The content-type for an FC is defined as ForwardingCommitment and has the numeri
 
 This OID MUST appear both within the eContentType in the encapContentInfo object as well as the content-type signed attribute in the signerInfo object (see {{RFC6488}}).
 
-# The FC eContent
+# The FC eContent{#The_FC_eContent}
 
-The content of an FC identifies a forwarding commitment and forwarding binding that an AS announces to other nodes upon receiving a BGP-UPDATE message. Other on-path ASes can validate the FC and perform path verification for traffic forwarding based on the AS-path information. Off-path ASes can utilize this FC for collaborative filtering. An FC is an instance of ForwardingCommitmentAttestation, formally defined by the following ASN.1 {{X.680}} module:
+The content of an FC identifies a forwarding commitment that represents an AS's routing intent. Upon receiving a BGP-UPDATE message, other ASes can perform AS-path verification according to the validated FCs. An FC is an instance of ForwardingCommitmentAttestation, formally defined by the following ASN.1 {{X.680}} module:
 
 ~~~~~~
 RPKI-FC-2025
@@ -149,10 +149,14 @@ ct-FC CONTENT-TYPE ::=
 
 ForwardingCommitmentAttestation ::= SEQUENCE {
     version [0]         INTEGER DEFAULT 0,
-    asid                ASID,
+    asID                ASID,
+    routingIntent       SEQUENCE (SIZE(1..MAX)) OF ROUTING-INTENT }
+
+ROUTING-INTENT ::= SEQUENCE {
     previousASes        SEQUENCE (SIZE(1..MAX)) OF ASID,
     nexthopASes         SEQUENCE (SIZE(1..MAX)) OF ASID,
-    roaASes             SEQUENCE (SIZE(0..MAX)) OF ASID }
+    roaASes             SEQUENCE (SIZE(0..MAX)) OF ASID
+}
 
 ASID ::= INTEGER (0..4294967295)
 
@@ -166,35 +170,42 @@ Note that this content appears as the eContent within the encapContentInfo (see 
 
 The version number of the ForwardingCommitmentAttestation MUST be 0.
 
-## asid
+## asID
 
-The asid field contains the AS number of the issuer AS associated with this FC.
+The asID field contains the AS number of the issuer AS associated with this FC.
 
-## previousASes
+## routingIntent
+
+This routingIntent field contains a routing intent of the issuer AS. A routing intent typically has an upstream AS, a downstream AS, and a route set. But, for saving spaces, it can aggregate routing intents that have the same route set.
+
+### previousASes
 
 The previousASes field contains the upstream ASes' number of the issuer AS that can advertise the prefixes to the issuer AS.
 
-## nexthopASes
+### nexthopASes
 
 The nexthopASes field contains the downstream ASes' number of the issuer AS that can receive advertised routes from the issuer AS.
 
-## roaASes
+### roaASes
 
-The roaASes field contains a set of ASes. It associates with ROAs {{RFC9582}}. 
-
-Within the Prefix structure, the prefixes field encodes the set of IP address prefixes announced by the issuer AS in AS_PATH. The prefixes field can be blank which means that all traffic received from upstream ASes defined in previousASes field could be advertised to downstream ASes defined in nexthopASes field.
+The roaASes field contains a set of ASes. It associates with ROAs {{RFC9582}}. This is an optional field. When it is blank, it means that all traffic received from upstream ASes defined in previousASes field could be advertised to downstream ASes defined in nexthopASes field.
 
 
-# FC Validation
+# Forwarding Commitment Validation
 
+To validate an FC, the relying party MUST perform all the validation checks specified in {{RFC6488}} as well as the following additional FC-specific validation steps.
 
-Only when finished the validation of the FC object will a relying party sign a new FC to announce a trusted and selected routing announcement. To validate an FC, the relying party MUST perform all the validation checks specified in {{RFC6488}} as well as the following additional FC-specific validation step.
+- The contents of the CMS eContent field MUST conform to all the constraints described in {{The_FC_eContent}}.
+- The Autonomous System Identifier Delegation Extension described in {{RFC3779}} is also used in Forwarding Commitment and MUST be present in the EE certificate contained in the CMS certificates field.
+- The AS identifier present in the ForwardingCommitmentAttestation eContent 'asID' field MUST be contained in the AS Identifiers present in the certificate extension.
+- The Autonomous System Identifier Delegation extension MUST NOT contain "inherit" elements.
+- The IP Address Delegation Extension {{RFC3779}} is not used in Forwarding Commitment, and MUST NOT be present in the EE certificate.
 
-- The IP Address Delegation extension {{RFC3779}} is present in the end-entity (EE) certificate (contained within the FC), and the IP address prefix in the FC payload is contained within the set of IP addresses specified by the EE certificate's IP Address Delegation extension.
+# Operational Consideration
 
-- The EE certificate's IP Address Delegation extension MUST NOT contain "inherit" elements described in {{RFC3779}}.
+Multiple valid Forwarding Commitment objects which contain the same asID could exist. In such a case, the union of these objects forms the complete routing intent set of this AS. For a given asID, it is RECOMMENDED that a CA maintains a single Forwarding Commitment. If an AS holder publishes a Forwarding Commitment, then relying parties SHOULD assume that this object is complete for that issuer AS.
 
-- The Autonomous System Identifier Delegation Extension described in {{RFC3779}} is also used in Forwarding Commitment and MUST be present in the EE certificate.
+If one AS receives a BGP UPDATE message with the issuer AS in the AS_PATH attribute which cannot match any routing intents of this issuer AS, it implies that there is an AS-path forgery in this message.
 
 # Security Considerations
 
