@@ -123,7 +123,7 @@ The content-type for an FC is defined as ForwardingCommitment and has the numeri
 
 This OID MUST appear both within the eContentType in the encapContentInfo object as well as the content-type signed attribute in the signerInfo object (see {{RFC6488}}).
 
-# The FC eContent{#The-FC-eContent}
+# The FC eContent {#The-FC-eContent}
 
 The content of an FC identifies a forwarding commitment that represents an AS's routing intent. Upon receiving a BGP-UPDATE message, other ASes can perform AS-path verification according to the validated FCs. An FC is an instance of ForwardingCommitmentAttestation, formally defined by the following ASN.1 {{X.680}} module:
 
