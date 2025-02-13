@@ -123,7 +123,7 @@ The content-type for an FC is defined as ForwardingCommitment and has the numeri
 
 This OID MUST appear both within the eContentType in the encapContentInfo object as well as the content-type signed attribute in the signerInfo object (see {{RFC6488}}).
 
-# The FC eContent{#The_FC_eContent}
+# The FC eContent{#The-FC-eContent}
 
 The content of an FC identifies a forwarding commitment that represents an AS's routing intent. Upon receiving a BGP-UPDATE message, other ASes can perform AS-path verification according to the validated FCs. An FC is an instance of ForwardingCommitmentAttestation, formally defined by the following ASN.1 {{X.680}} module:
 
@@ -195,7 +195,7 @@ The roaASes field contains a set of ASes. It associates with ROAs {{RFC9582}}. T
 
 To validate an FC, the relying party MUST perform all the validation checks specified in {{RFC6488}} as well as the following additional FC-specific validation steps.
 
-- The contents of the CMS eContent field MUST conform to all the constraints described in {{The_FC_eContent}}.
+- The contents of the CMS eContent field MUST conform to all the constraints described in {{The-FC-eContent}}.
 - The Autonomous System Identifier Delegation Extension described in {{RFC3779}} is also used in Forwarding Commitment and MUST be present in the EE certificate contained in the CMS certificates field.
 - The AS identifier present in the ForwardingCommitmentAttestation eContent 'asID' field MUST be contained in the AS Identifiers present in the certificate extension.
 - The Autonomous System Identifier Delegation extension MUST NOT contain "inherit" elements.
