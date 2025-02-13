@@ -4,7 +4,7 @@ title: "A Profile for Forwarding Commitments (FCs)"
 abbrev: "RPKI FC Profile"
 category: std
 
-docname: draft-guo-fc-profile-latest
+docname: draft-guo-sidrops-fc-profile-latest
 submissiontype: IETF  # also: "independent", "IAB", or "IRTF"
 number:
 date:
