@@ -5,16 +5,16 @@
 Network Working Group                                              K. Xu
 Internet-Draft                                       Tsinghua University
 Intended status: Standards Track                                  Y. Guo
-Expires: 10 July 2025                            Zhongguancun Laboratory
+Expires: 17 August 2025                          Zhongguancun Laboratory
                                                                  X. Wang
                                                                   Z. Liu
                                                                    Q. Li
                                                      Tsinghua University
-                                                          6 January 2025
+                                                        13 February 2025
 
 
                A Profile for Forwarding Commitments (FCs)
-                      draft-guo-fc-profile-latest
+                  draft-guo-sidrops-fc-profile-latest
 
 Abstract
 
@@ -34,7 +34,7 @@ About This Document
    The latest revision of this draft can be found at
    https://BasilGuo.github.io/fc-signed-object/draft-guo-fc-so.html.
    Status information for this document may be found at
-   https://datatracker.ietf.org/doc/draft-guo-fc-profile/.
+   https://datatracker.ietf.org/doc/draft-guo-sidrops-fc-profile/.
 
    Source for this draft and an issue tracker can be found at
    https://github.com/BasilGuo/fc-signed-object.
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 July 2025.
+   This Internet-Draft will expire on 17 August 2025.
 
 Copyright Notice
 
@@ -77,27 +77,23 @@ Table of Contents
    2.  The FC Content-Type
    3.  The FC eContent
      3.1.  version
-     3.2.  asid
-     3.3.  previousASes
-     3.4.  nexthopASes
-     3.5.  Type Prefix
-       3.5.1.  Element afi
-       3.5.2.  Element address
-       3.5.3.  Element prefixLength
-     3.6.  Type ForwardingCommitment
-       3.6.1.  Element id
-       3.6.2.  Element signature
-   4.  FC Validation
-   5.  Security Considerations
-   6.  IANA Considerations
-     6.1.  SMI Security for S/MIME Module Identifier registry
-     6.2.  SMI Security for S/MIME CMS Content Type registry
-     6.3.  RPKI Signed Object registry
-     6.4.  RPKI Repository Name Scheme registry
-     6.5.  Media Type registry
-   7.  References
-     7.1.  Normative References
-     7.2.  Informative References
+     3.2.  asID
+     3.3.  routingIntent
+       3.3.1.  previousASes
+       3.3.2.  nexthopASes
+       3.3.3.  roaASes
+   4.  Forwarding Commitment Validation
+   5.  Operational Consideration
+   6.  Security Considerations
+   7.  IANA Considerations
+     7.1.  SMI Security for S/MIME Module Identifier registry
+     7.2.  SMI Security for S/MIME CMS Content Type registry
+     7.3.  RPKI Signed Object registry
+     7.4.  RPKI Repository Name Scheme registry
+     7.5.  Media Type registry
+   8.  References
+     8.1.  Normative References
+     8.2.  Informative References
    Acknowledgments
    Authors' Addresses
 
@@ -106,7 +102,7 @@ Table of Contents
    The Border Gateway Protocol (BGP) [RFC4271] was designed with no
    mechanisms to validate the security of BGP attributes.  There are two
    types of BGP security issues, BGP Hijacks and BGP Route Leaks
-   [RFC7908], plagues Internet security.
+   [RFC7908], plague Internet security.
 
    The primary purpose of the Resource Public Key Infrastructure (RPKI)
    is to improve routing security.  (See [RFC6480] for more
@@ -119,9 +115,9 @@ Table of Contents
    which the issuer (the holder of an Autonomous System identifier), can
    authorize one or more other Autonomous Systems (ASes) as its upstream
    ASes or one or more other ASes as its downstream ASes.  The upstream
-   ASes, or previous ASes, means that the issuer AS can receive BGP
-   route updates from these ASes.  The downstream ASes, or nexthop ASes,
-   means that the issuer AS would advertise the BGP route to these ASes.
+   ASes, or previous ASes, mean that the issuer AS can receive BGP route
+   updates from these ASes.  The downstream ASes, or nexthop ASes, mean
+   that the issuer AS would advertise the BGP route to these ASes.
 
    In this propagation model, it uses a Web of Trust, i.e., the issuer
    AS trusts its previous ASes and authorizes nexthop ASes to propagate
@@ -132,7 +128,7 @@ Table of Contents
    routes.
 
    Initially, all ASes on the propagation path should sign one or more
-   FCs independently if it wants to propagate the route to its
+   FCs independently if they want to propagate the route to its
    downstream ASes, and then be able to detect and filter malicious
    routes (e.g., route leaks and route hijacks).  In addition, the FC
    can also attest that all ASes on a propagation path have received and
@@ -179,13 +175,12 @@ Table of Contents
 
 3.  The FC eContent
 
-   The content of an FC identifies a forwarding commitment and
-   forwarding binding that an AS announces to other nodes upon receiving
-   a BGP-UPDATE message.  Other on-path ASes can validate the FC and
-   perform path verification for traffic forwarding based on the AS-path
-   information.  Off-path ASes can utilize this FC for collaborative
-   filtering.  An FC is an instance of ForwardingCommitmentAttestation,
-   formally defined by the following ASN.1 [X.680] module:
+   The content of an FC identifies a forwarding commitment that
+   represents an AS's routing intent.  Upon receiving a BGP-UPDATE
+   message, other ASes can perform AS-path verification according to the
+   validated FCs.  An FC is an instance of
+   ForwardingCommitmentAttestation, formally defined by the following
+   ASN.1 [X.680] module:
 
    RPKI-FC-2025
      { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
@@ -208,26 +203,16 @@ Table of Contents
 
    ForwardingCommitmentAttestation ::= SEQUENCE {
        version [0]         INTEGER DEFAULT 0,
-       asid                ASID,
-       previousASes        SEQUENCE (SIZE(1..N)) OF ASID,
-       nexthopASes         SEQUENCE (SIZE(1..N)) OF ASID,
-       prefixes            SEQUENCE (SIZE(0..N)) OF Prefix,
-       fc ForwardingCommitment }
+       asID                ASID,
+       routingIntent       SEQUENCE (SIZE(1..MAX)) OF ROUTING-INTENT }
+
+   ROUTING-INTENT ::= SEQUENCE {
+       previousASes        SEQUENCE (SIZE(1..MAX)) OF ASID,
+       nexthopASes         SEQUENCE (SIZE(1..MAX)) OF ASID,
+       roaASes             SEQUENCE (SIZE(0..MAX)) OF ASID
+   }
 
    ASID ::= INTEGER (0..4294967295)
-
-   Prefix ::= SEQUENCE {
-       afi                 AFI,
-       address             IPAddress,
-       prefixLength        INTEGER (SIZE(0..128)}
-
-   AFI ::= OCTET STRING (SIZE(2))
-
-   IPAddress ::= BIT STRING (SIZE(0..128))
-
-   ForwardingCommitment ::= SEQUENCE {
-       id                  BIT STRING
-       signature           BIT STRING }
 
    END
 
@@ -240,88 +225,83 @@ Table of Contents
 
    The version number of the ForwardingCommitmentAttestation MUST be 0.
 
-3.2.  asid
+3.2.  asID
 
-   The asid field contains the AS number of the issuer AS associated
+   The asID field contains the AS number of the issuer AS associated
    with this FC.
 
-3.3.  previousASes
+3.3.  routingIntent
+
+   This routingIntent field contains a routing intent of the issuer AS.
+   A routing intent typically has an upstream AS, a downstream AS, and a
+   route set.  But, for saving spaces, it can aggregate routing intents
+   that have the same route set.
+
+3.3.1.  previousASes
 
    The previousASes field contains the upstream ASes' number of the
    issuer AS that can advertise the prefixes to the issuer AS.
 
-3.4.  nexthopASes
+3.3.2.  nexthopASes
 
    The nexthopASes field contains the downstream ASes' number of the
    issuer AS that can receive advertised routes from the issuer AS.
 
-3.5.  Type Prefix
+3.3.3.  roaASes
 
-   Within the Prefix structure, the prefixes field encodes the set of IP
-   address prefixes announced by the issuer AS in AS_PATH.  The prefixes
-   field can be blank which means that all traffic received from
-   upstream ASes defined in previousASes field could be advertised to
-   downstream ASes defined in nexthopASes field.
+   The roaASes field contains a set of ASes.  It associates with ROAs
+   [RFC9582].  This is an optional field.  When it is blank, it means
+   that all traffic received from upstream ASes defined in previousASes
+   field could be advertised to downstream ASes defined in nexthopASes
+   field.
 
-3.5.1.  Element afi
+4.  Forwarding Commitment Validation
 
-   Within the Prefix structure, afi contains the Address Family
-   Identifier of an IP address family.  This specification only supports
-   IPv4 and IPv6.  Therefore, afi MUST be either 0001 or 0002.
+   To validate an FC, the relying party MUST perform all the validation
+   checks specified in [RFC6488] as well as the following additional FC-
+   specific validation steps.
 
-3.5.2.  Element address
-
-   The address field contains the IP address.
-
-3.5.3.  Element prefixLength
-
-   The prefixLength field contains the length of the IP address prefix.
-
-3.6.  Type ForwardingCommitment
-
-   Within the ForwardingCommitment structure, the fc field encodes the
-   forwarding commitment generated by this AS and will be validated by
-   other AS.
-
-3.6.1.  Element id
-
-   The id field contains the hash of the current AS-path in the
-   associated BGP-UPDATE plus the next hop AS and above prefix filed.
-
-3.6.2.  Element signature
-
-   The signature field is a signature signed by the BGP speaker who
-   issues this FC.
-
-4.  FC Validation
-
-   Only when finished the validation of the FC object will a relying
-   party sign a new FC to announce a trusted and selected routing
-   announcement.  To validate an FC, the relying party MUST perform all
-   the validation checks specified in [RFC6488] as well as the following
-   additional FC-specific validation step.
-
-   *  The IP Address Delegation extension [RFC3779] is present in the
-      end-entity (EE) certificate (contained within the FC), and the IP
-      address prefix in the FC payload is contained within the set of IP
-      addresses specified by the EE certificate's IP Address Delegation
-      extension.
-
-   *  The EE certificate's IP Address Delegation extension MUST NOT
-      contain "inherit" elements described in [RFC3779].
+   *  The contents of the CMS eContent field MUST conform to all the
+      constraints described in Section 3.
 
    *  The Autonomous System Identifier Delegation Extension described in
       [RFC3779] is also used in Forwarding Commitment and MUST be
-      present in the EE certificate.
+      present in the EE certificate contained in the CMS certificates
+      field.
 
-5.  Security Considerations
+   *  The AS identifier present in the ForwardingCommitmentAttestation
+      eContent 'asID' field MUST be contained in the AS Identifiers
+      present in the certificate extension.
+
+   *  The Autonomous System Identifier Delegation extension MUST NOT
+      contain "inherit" elements.
+
+   *  The IP Address Delegation Extension [RFC3779] is not used in
+      Forwarding Commitment, and MUST NOT be present in the EE
+      certificate.
+
+5.  Operational Consideration
+
+   Multiple valid Forwarding Commitment objects which contain the same
+   asID could exist.  In such a case, the union of these objects forms
+   the complete routing intent set of this AS.  For a given asID, it is
+   RECOMMENDED that a CA maintains a single Forwarding Commitment.  If
+   an AS holder publishes a Forwarding Commitment, then relying parties
+   SHOULD assume that this object is complete for that issuer AS.
+
+   If one AS receives a BGP UPDATE message with the issuer AS in the
+   AS_PATH attribute which cannot match any routing intents of this
+   issuer AS, it implies that there is an AS-path forgery in this
+   message.
+
+6.  Security Considerations
 
    The security considerations of [RFC6480], [RFC6481], [RFC6485],
    [RFC6487] and [RFC6488] also apply to FCs.
 
-6.  IANA Considerations
+7.  IANA Considerations
 
-6.1.  SMI Security for S/MIME Module Identifier registry
+7.1.  SMI Security for S/MIME Module Identifier registry
 
    Please add the id-mod-rpki-fc-2025 to the SMI Security for S/MIME
    Module Identifier (1.2.840.113549.1.9.16.0) registry
@@ -332,7 +312,7 @@ Table of Contents
    ----------------------------------------------------------------
    TBD      | id-mod-rpki-fc-2025          | [RFC-to-be]
 
-6.2.  SMI Security for S/MIME CMS Content Type registry
+7.2.  SMI Security for S/MIME CMS Content Type registry
 
    Please add the FC to the SMI Security for S/MIME CMS Content Type
    (1.2.840.113549.1.9.16.1) registry (https://www.iana.org/assignments/
@@ -342,7 +322,7 @@ Table of Contents
    ----------------------------------------------------------------
    TBD      |  id-ct-FC                   | [RFC-to-be]
 
-6.3.  RPKI Signed Object registry
+7.3.  RPKI Signed Object registry
 
    Please add Forwarding Commitment to the RPKI Signed Object registry
    (https://www.iana.org/assignments/rpki/rpki.xhtml#signed-objects) as
@@ -353,7 +333,7 @@ Table of Contents
    Forwarding |                             |
    Commitment | 1.2.840.113549.1.9.16.1.TBD | [RFC-to-be]
 
-6.4.  RPKI Repository Name Scheme registry
+7.4.  RPKI Repository Name Scheme registry
 
    Please add an item for the Forwarding Commitment file extension to
    the "RPKI Repository Name Scheme" registry created by [RFC6481] as
@@ -364,7 +344,7 @@ Table of Contents
    -----------------------------------------------------------------
         .for | Forwarding Commitment         | [RFC-to-be]
 
-6.5.  Media Type registry
+7.5.  Media Type registry
 
    The IANA is requested to register the media type application/rpki-fc
    in the "Media Type" registry as follows:
@@ -393,9 +373,9 @@ Table of Contents
      Restrictions on usage: None
      Change controller: IETF
 
-7.  References
+8.  References
 
-7.1.  Normative References
+8.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -453,7 +433,7 @@ Table of Contents
               <[https://itu.int/rec/T-REC-X.680-202102-
               I/en](https://www.itu.int/rec/T-REC-X.690-202102-I/en)>.
 
-7.2.  Informative References
+8.2.  Informative References
 
    [RFC4271]  Rekhter, Y., Ed., Li, T., Ed., and S. Hares, Ed., "A
               Border Gateway Protocol 4 (BGP-4)", RFC 4271,
@@ -468,6 +448,11 @@ Table of Contents
               and B. Dickson, "Problem Definition and Classification of
               BGP Route Leaks", RFC 7908, DOI 10.17487/RFC7908, June
               2016, <https://www.rfc-editor.org/rfc/rfc7908>.
+
+   [RFC9582]  Snijders, J., Maddison, B., Lepinski, M., Kong, D., and S.
+              Kent, "A Profile for Route Origin Authorizations (ROAs)",
+              RFC 9582, DOI 10.17487/RFC9582, May 2024,
+              <https://www.rfc-editor.org/rfc/rfc9582>.
 
 Acknowledgments
 
