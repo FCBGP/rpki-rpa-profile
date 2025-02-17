@@ -21,16 +21,10 @@ venue:
   #  type: Working Group
   #  mail: WG@example.com
   #  arch: https://example.com/WG
-  github: "BasilGuo/fc-signed-object"
-  latest: "https://BasilGuo.github.io/fc-signed-object/draft-guo-fc-so.html"
+  github: "FCBGP/fc-profile"
+  latest: "https://fcbgp.github.io/fc-profile/draft-guo-sidrops-fc-profile.html"
 
 author:
-  -
-      fullname: Ke Xu
-      org: Tsinghua University
-      city: Beijing
-      country: China
-      email: xuke@tsinghua.edu.cn
   -
       fullname: Yangfei Guo
       org: Zhongguancun Laboratory
@@ -43,6 +37,12 @@ author:
       city: Beijing
       country: China
       email: wangxiaoliang0623@foxmail.com
+  -
+      fullname: Ke Xu
+      org: Tsinghua University
+      city: Beijing
+      country: China
+      email: xuke@tsinghua.edu.cn
   -
       fullname: Zhuotao Liu
       org: Tsinghua University
@@ -150,19 +150,17 @@ ct-FC CONTENT-TYPE ::=
 ForwardingCommitmentAttestation ::= SEQUENCE {
     version [0]         INTEGER DEFAULT 0,
     asID                ASID,
-    routingIntent       SEQUENCE (SIZE(1..MAX)) OF ROUTING-INTENT }
+    routingIntents      SEQUENCE (SIZE(1..MAX)) OF ROUTING-INTENT }
 
 ROUTING-INTENT ::= SEQUENCE {
     previousASes        SEQUENCE (SIZE(1..MAX)) OF ASID,
     nexthopASes         SEQUENCE (SIZE(1..MAX)) OF ASID,
-    roaASes             SEQUENCE (SIZE(0..MAX)) OF ASID
-}
+    originASes          SEQUENCE (SIZE(0..MAX)) OF ASID OPTIONAL }
 
 ASID ::= INTEGER (0..4294967295)
 
 END
 ~~~~~~
-{: #fig-eContentFC title="eContent of FC signed object"}
 
 Note that this content appears as the eContent within the encapContentInfo (see {{RFC6488}}).
 
@@ -174,9 +172,9 @@ The version number of the ForwardingCommitmentAttestation MUST be 0.
 
 The asID field contains the AS number of the issuer AS associated with this FC.
 
-## routingIntent
+## routingIntents
 
-This routingIntent field contains a routing intent of the issuer AS. A routing intent typically has an upstream AS, a downstream AS, and a route set. But, for saving spaces, it can aggregate routing intents that have the same route set.
+The routingIntents field comprises a list of routing intents associated with the issuing asID. Each routing intent generally includes an upstream AS, a downstream AS, and a specified route set. To optimize space, the field may aggregate routing intents that share the same route set. Therefore, the routingIntents field indicates that for a route set represented by originASes, the issuing asID can receive routes from any AS in previousASes and subsequently forward them to any AS in nexthopASes.
 
 ### previousASes
 
@@ -186,9 +184,9 @@ The previousASes field contains the upstream ASes' number of the issuer AS that 
 
 The nexthopASes field contains the downstream ASes' number of the issuer AS that can receive advertised routes from the issuer AS.
 
-### roaASes
+### originASes
 
-The roaASes field contains a set of ASes. It associates with ROAs {{RFC9582}}. This is an optional field. When it is blank, it means that all traffic received from upstream ASes defined in previousASes field could be advertised to downstream ASes defined in nexthopASes field.
+The originASes field contains a set of ASes. It associates with ROAs {{RFC9582}}. This is an optional field. When it is blank, it means that all traffic received from upstream ASes defined in the previousASes field could be advertised to downstream ASes defined in the nexthopASes field.
 
 
 # Forwarding Commitment Validation
