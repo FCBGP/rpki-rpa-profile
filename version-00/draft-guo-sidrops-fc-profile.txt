@@ -2,15 +2,14 @@
 
 
 
-Network Working Group                                              K. Xu
-Internet-Draft                                       Tsinghua University
-Intended status: Standards Track                                  Y. Guo
-Expires: 17 August 2025                          Zhongguancun Laboratory
-                                                                 X. Wang
+Network Working Group                                             Y. Guo
+Internet-Draft                                   Zhongguancun Laboratory
+Intended status: Standards Track                                 X. Wang
+Expires: 21 August 2025                                            K. Xu
                                                                   Z. Liu
                                                                    Q. Li
                                                      Tsinghua University
-                                                        13 February 2025
+                                                        17 February 2025
 
 
                A Profile for Forwarding Commitments (FCs)
@@ -32,12 +31,12 @@ About This Document
    This note is to be removed before publishing as an RFC.
 
    The latest revision of this draft can be found at
-   https://BasilGuo.github.io/fc-signed-object/draft-guo-fc-so.html.
+   https://fcbgp.github.io/fc-profile/draft-guo-sidrops-fc-profile.html.
    Status information for this document may be found at
    https://datatracker.ietf.org/doc/draft-guo-sidrops-fc-profile/.
 
    Source for this draft and an issue tracker can be found at
-   https://github.com/BasilGuo/fc-signed-object.
+   https://github.com/FCBGP/fc-profile.
 
 Status of This Memo
 
@@ -54,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 17 August 2025.
+   This Internet-Draft will expire on 21 August 2025.
 
 Copyright Notice
 
@@ -78,10 +77,10 @@ Table of Contents
    3.  The FC eContent
      3.1.  version
      3.2.  asID
-     3.3.  routingIntent
+     3.3.  routingIntents
        3.3.1.  previousASes
        3.3.2.  nexthopASes
-       3.3.3.  roaASes
+       3.3.3.  originASes
    4.  Forwarding Commitment Validation
    5.  Operational Consideration
    6.  Security Considerations
@@ -204,19 +203,16 @@ Table of Contents
    ForwardingCommitmentAttestation ::= SEQUENCE {
        version [0]         INTEGER DEFAULT 0,
        asID                ASID,
-       routingIntent       SEQUENCE (SIZE(1..MAX)) OF ROUTING-INTENT }
+       routingIntents      SEQUENCE (SIZE(1..MAX)) OF ROUTING-INTENT }
 
    ROUTING-INTENT ::= SEQUENCE {
        previousASes        SEQUENCE (SIZE(1..MAX)) OF ASID,
        nexthopASes         SEQUENCE (SIZE(1..MAX)) OF ASID,
-       roaASes             SEQUENCE (SIZE(0..MAX)) OF ASID
-   }
+       originASes          SEQUENCE (SIZE(0..MAX)) OF ASID OPTIONAL }
 
    ASID ::= INTEGER (0..4294967295)
 
    END
-
-                   Figure 1: eContent of FC signed object
 
    Note that this content appears as the eContent within the
    encapContentInfo (see [RFC6488]).
@@ -230,12 +226,16 @@ Table of Contents
    The asID field contains the AS number of the issuer AS associated
    with this FC.
 
-3.3.  routingIntent
+3.3.  routingIntents
 
-   This routingIntent field contains a routing intent of the issuer AS.
-   A routing intent typically has an upstream AS, a downstream AS, and a
-   route set.  But, for saving spaces, it can aggregate routing intents
-   that have the same route set.
+   The routingIntents field comprises a list of routing intents
+   associated with the issuing asID.  Each routing intent generally
+   includes an upstream AS, a downstream AS, and a specified route set.
+   To optimize space, the field may aggregate routing intents that share
+   the same route set.  Therefore, the routingIntents field indicates
+   that for a route set represented by originASes, the issuing asID can
+   receive routes from any AS in previousASes and subsequently forward
+   them to any AS in nexthopASes.
 
 3.3.1.  previousASes
 
@@ -247,13 +247,13 @@ Table of Contents
    The nexthopASes field contains the downstream ASes' number of the
    issuer AS that can receive advertised routes from the issuer AS.
 
-3.3.3.  roaASes
+3.3.3.  originASes
 
-   The roaASes field contains a set of ASes.  It associates with ROAs
+   The originASes field contains a set of ASes.  It associates with ROAs
    [RFC9582].  This is an optional field.  When it is blank, it means
-   that all traffic received from upstream ASes defined in previousASes
-   field could be advertised to downstream ASes defined in nexthopASes
-   field.
+   that all traffic received from upstream ASes defined in the
+   previousASes field could be advertised to downstream ASes defined in
+   the nexthopASes field.
 
 4.  Forwarding Commitment Validation
 
@@ -460,13 +460,6 @@ Acknowledgments
 
 Authors' Addresses
 
-   Ke Xu
-   Tsinghua University
-   Beijing
-   China
-   Email: xuke@tsinghua.edu.cn
-
-
    Yangfei Guo
    Zhongguancun Laboratory
    Beijing
@@ -479,6 +472,13 @@ Authors' Addresses
    Beijing
    China
    Email: wangxiaoliang0623@foxmail.com
+
+
+   Ke Xu
+   Tsinghua University
+   Beijing
+   China
+   Email: xuke@tsinghua.edu.cn
 
 
    Zhuotao Liu
