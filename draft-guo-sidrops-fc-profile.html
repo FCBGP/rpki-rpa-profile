@@ -5,33 +5,32 @@
 <meta content="Common,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
 <title>A Profile for Forwarding Commitments (FCs)</title>
-<meta content="Ke Xu" name="author">
-<meta content="Xiaoliang Wang" name="author">
 <meta content="Yangfei Guo" name="author">
-<meta content="Jiangou Zhan" name="author">
-<meta content="Jianping Wu" name="author">
+<meta content="Xiaoliang Wang" name="author">
+<meta content="Ke Xu" name="author">
+<meta content="Zhuotao Liu" name="author">
+<meta content="Qi Li" name="author">
 <meta content="
-       This document defines a standard profile for Forwarding Commitment (FC) used in Resource Public Key Infrastructure (RPKI). An FC is a digitally signed object that provides a means of verifying that an IP address prefix is announced from  AS a  to  AS b . When validated, an FC's eContent can be used for the detection and mitigation of route hijacking and provide protection for the AS_PATH attribute in BGP-UPDATE. 
+       This document defines a Cryptographic Message Syntax (CMS) protected content type for Forwarding Commitments (FCs) objects used in Resource Public Key Infrastructure (RPKI). An FC is a digitally signed object that provides a means of verifying whether an IP address block is received from  AS a  to  AS b  and announced from  AS b  to  AS c . When validated, an FC's eContent can be used for the detection and mitigation of route hijacking, especially providing protection for the AS_PATH attribute in BGP-UPDATE. 
     " name="description">
-<meta content="xml2rfc 3.17.5" name="generator">
-<meta content="draft-guo-fc-so-latest" name="ietf.draft">
+<meta content="xml2rfc 3.27.0" name="generator">
+<meta content="draft-guo-sidrops-fc-profile-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.17.5
-    Python 3.11.4
-    ConfigArgParse 1.5.3
-    google-i18n-address 3.1.0
+  xml2rfc 3.27.0
+    Python 3.12.9
+    ConfigArgParse 1.7
+    google-i18n-address 3.1.1
     intervaltree 3.1.0
-    Jinja2 3.1.2
-    lxml 4.9.3
-    platformdirs 3.10.0
-    pycountry 22.3.5
-    PyYAML 6.0
-    requests 2.31.0
-    setuptools 67.7.2
-    six 1.16.0
-    wcwidth 0.2.6
+    Jinja2 3.1.5
+    lxml 5.3.0
+    platformdirs 4.3.6
+    pycountry 24.6.1
+    PyYAML 6.0.2
+    requests 2.32.3
+    setuptools 70.3.0
+    wcwidth 0.2.13
 -->
-<link href="draft-guo-fc-so.xml" rel="alternate" type="application/rfc+xml">
+<link href="draft-guo-sidrops-fc-profile.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
 <style type="text/css">@font-face {
   font-family: 'Lora';
@@ -165,31 +164,6 @@
 }
 
 @font-face {
-  font-family: 'Cabin Condensed';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: local('Cabin Condensed SemiBold'), local('CabinCondensed-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/cabincondensed-semibold-vietnamese.woff2') format('woff2');
-  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
-}
-@font-face {
-  font-family: 'Cabin Condensed';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: local('Cabin Condensed SemiBold'), local('CabinCondensed-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/cabincondensed-semibold-latin-ext.woff2') format('woff2');
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-@font-face {
-  font-family: 'Cabin Condensed';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: local('Cabin Condensed SemiBold'), local('CabinCondensed-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/cabincondensed-semibold-latin.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
   font-family: 'Oxygen Mono';
   font-style: normal;
   font-weight: 400;
@@ -206,6 +180,77 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 :root {
   color-scheme: light dark;
   --background-color: #fff;
@@ -218,6 +263,7 @@
   --pilcrow-strong: #bbb;
   --small-font-size: 14.5px;
   --font-mono: 'Oxygen Mono', monospace;
+  --font-title: "Sofia Sans Semi Condensed", sans-serif;
   scrollbar-color: #bbb #eee;
 }
 body {
@@ -235,9 +281,15 @@ body {
 }
 
 /* headings */
+section {
+  clear: both;
+}
+.section-number {
+  padding-right: 0.5em;
+}
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Cabin Condensed", sans-serif;
-  font-weight: 600;
+  font-family: var(--font-title);
+  font-weight: 680;
   margin: 0.8em 0 0.3em;
   font-size-adjust: 0.5;
   color: var(--title-color);
@@ -266,6 +318,7 @@ h4, h5, h6 {
 /* general structure */
 .author {
   padding-bottom: 0.3em;
+  vertical-align: top;
 }
 #abstract+p {
   font-size: 18px;
@@ -343,25 +396,26 @@ svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
 ol, ul {
   padding: 0;
   margin: 0 0 0.5em 2em;
-}
-:is(ol, ul) :is(ol, ul) {
-  margin-left: 1em;
+  & :is(ol, ul) {
+    margin-left: 1em;
+  }
 }
 li {
   margin: 0 0 0.25em 0;
 }
-.ulCompact li {
-  margin: 0;
-}
 ul.empty, .ulEmpty {
   list-style-type: none;
-}
-ul.empty li, .ulEmpty li {
-  margin-top: 0.5em;
+  & li {
+    margin-top: 0.5em;
+  }
 }
 :is(ul, ol).compact, .ulCompact, .olCompact {
-  line-height: 1;
   margin: 0 0 0 2em;
+  & li {
+    margin: 0;
+    & :first-child { margin-top: 0; }
+    & :last-child { margin-bottom: 0; }
+  }
 }
 
 /* definition lists */
@@ -369,38 +423,39 @@ dl {
   clear: left;
   --indent: 3ch;
   /* --indent: attr(indent ch); not supported in any browser, but we can dream */
+  &.olPercent {
+    --indent: 5ch;
+    & > dt {
+      min-width: calc(var(--indent) - 2ch);
+    }
+  }
+  &.olPercent > dt {
+    float: none;
+  }
+
+  dl > dd > & {
+    margin-top: 0.5em;
+    margin-bottom: 0;
+  }
 }
-dl.olPercent {
-  --indent: 5ch;
-}
-dl > dt {
+dl:not(.dlNewline) > dt {
   float: left;
   margin-right: 2ch;
   min-width: 8ch;
-}
-dl.dlNewline > dt {
-  float: none;
 }
 dl > dd {
   margin-bottom: .8em;
   margin-left: var(--indent) !important; /* stupid element overrides */
   min-height: 2ex;
 }
-dl.olPercent > dt {
-  min-width: calc(var(--indent) - 2ch);
-}
 :is(dl.compact, .dlCompact) > dd {
   margin-bottom: 0;
-}
-:is(dl.compact, .dlCompact) > dd > :is(:first-child, .break:first-child + *) {
-  margin-top: 0;
-}
-:is(dl.compact, .dlCompact) > dd > :is(:last-child) {
-  margin-bottom: 0;
-}
-dl > dd > dl {
-  margin-top: 0.5em;
-  margin-bottom: 0;
+  & > :is(:first-child, .break:first-child + *) {
+    margin-top: 0;
+  }
+  & > :is(:last-child) {
+    margin-bottom: 0;
+  }
 }
 :is(dd, span).break {
   display: none;
@@ -464,6 +519,7 @@ figcaption, caption {
   font-style: italic;
   margin: 0.5em 1.5em;
   text-align: left;
+  caption-side: bottom;
 }
 @media screen {
   /* Auto-collapse boilerplate. */
@@ -481,7 +537,11 @@ figcaption, caption {
   }
   pre, svg {
     display: inline-block;
-    overflow-x: auto;
+    /* In the horizontal direction, sometimes people make over-sized figures.
+       Scrollbars for those is therefore necessary: auto adds them as necessary..
+       In the vertical direction, the line-height can combine with the font
+       asender/descender height to produce scrollbars: hidden avoids that. */
+    overflow: auto hidden;
   }
   pre {
     max-width: 100%;
@@ -518,6 +578,7 @@ cite {
 
 /* tables */
 table {
+  width: auto;
   max-width: 100%;
   margin: 0 0 1em;
   border-collapse: collapse;
@@ -532,6 +593,16 @@ table.center {
 table.left {
   margin-right: auto;
 }
+table .text-left {
+  text-align: left;
+}
+table .text-center {
+  text-align: center;
+}
+table .text-right {
+  text-align: right;
+}
+
 thead, tbody {
   border: 1px solid var(--line-color);
 }
@@ -562,9 +633,11 @@ a.pilcrow {
   margin-left: 3px;
   opacity: 0.2;
   user-select: none;
+  &[href] {
+    color: var(--pilcrow-weak);
+    &:hover { text-decoration: none; }
+  }
 }
-a.pilcrow[href] { color: var(--pilcrow-weak); }
-a.pilcrow[href]:hover { text-decoration: none; }
 @media not print {
   :hover > a.pilcrow {
     opacity: 1;
@@ -604,26 +677,28 @@ sub, sup {
   font-size: var(--small-font-size);
   line-height: 18px;
   --identifier-width: 15ch;
-}
-#identifiers dt {
-  width: var(--identifier-width);
-  min-width: var(--identifier-width);
-  clear: left;
-  float: left;
-  text-align: right;
-  margin-right: 1ch;
-}
-#identifiers dd {
-  margin: 0;
-  margin-left: calc(1em + var(--identifier-width)) !important;
-  min-width: 5em;
-}
-#identifiers .authors .author {
-  display: inline-block;
-  margin-right: 1.5em;
-}
-#identifiers .authors .org {
-  font-style: italic;
+  & dt {
+    width: var(--identifier-width);
+    min-width: var(--identifier-width);
+    clear: left;
+    float: left;
+    text-align: right;
+    margin-right: 1ch;
+  }
+  & dd {
+    margin: 0;
+    margin-left: calc(1em + var(--identifier-width)) !important;
+    min-width: 5em;
+  }
+  & .authors {
+    & .author {
+      display: inline-block;
+      margin-right: 1.5em;
+    }
+    & .org {
+      font-style: italic;
+    }
+  }
 }
 
 /* The prepared/rendered info at the very bottom of the page */
@@ -634,9 +709,6 @@ sub, sup {
   margin-top: 2em;
 }
 .docInfo .prepared {
-  float: left;
-}
-.docInfo .prepared {
   float: right;
 }
 
@@ -644,47 +716,48 @@ sub, sup {
 #toc {
   padding: 0.75em 0 2em 0;
   margin-bottom: 1em;
-}
-#toc nav ul {
-  margin: 0 0.5em 0 0;
-  padding: 0;
-  list-style: none;
-}
-#toc nav li {
-  line-height: 1.3em;
-  margin: 0.75em 0;
-  padding-left: 1.2em;
-  text-indent: -1.2em;
-}
-#toc a.xref {
-  white-space: normal;
-}
-/* references */
-.references dt {
-  text-align: right;
-  font-weight: bold;
-  min-width: 10ch;
-  margin-right: 1.5ch;
-}
-.references dt:target::before {
-  content: "⇒";
-  width: 15px;
-  margin: 0 10px 0 -25px;
-}
-.references dd {
-  margin-left: 12ch !important;
-  overflow: auto;
+
+  & nav {
+    & ul {
+      margin: 0 0.5em 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    & li {
+      line-height: 1.3em;
+      margin: 2px 0;
+      padding-left: 1.2em;
+      text-indent: -1.2em;
+    }
+  }
+  & a.xref {
+    white-space: normal;
+  }
 }
 
-.refInstance {
-  margin-bottom: 1.25em;
+.references {
+  & > dt {
+    text-align: right;
+    font-weight: bold;
+    min-width: 10ch;
+    margin-right: 1.5ch;
+    &:target::before {
+      content: "⇒";
+      margin: 0 10px 0 -25px;
+    }
+  }
+  & > dd {
+    margin-left: 12ch !important;
+    overflow: visible;
+    & .refInstance {
+      margin-bottom: 0.8em;
+    }
+    & .ascii {
+      margin-bottom: 0.25em;
+    }
+  }
 }
 
-.references .ascii {
-  margin-bottom: 0.25em;
-}
-
-/* index */
 #rfc\.index\.index + ul {
   margin-left: 0;
 }
@@ -692,21 +765,33 @@ sub, sup {
 /* authors */
 address.vcard {
   font-style: normal;
-  margin: 1em 0;
+  max-width: 20em;
+  margin: 1em auto 1em 0;
+
+  & .nameRole {
+    font-weight: 700;
+    margin-left: 0;
+  }
+  & .label {
+    margin: 0.5em 0;
+  }
+  & .type {
+    display: none;
+  }
+  & .alternative-contact {
+    margin: 0.5em 0 0.25em 0;
+  }
+  & .non-ascii {
+    margin: 0 0 0 2em;
+  }
+  & div.left {
+    text-align: left;
+  }
+  & div.right {
+    text-align: right;
+  }
 }
-address.vcard .nameRole {
-  font-weight: 700;
-  margin-left: 0;
-}
-address.vcard .label {
-  margin: 0.5em 0;
-}
-address.vcard .type {
-  display: none;
-}
-.alternative-contact {
-  margin: 1.5em 0 1em;
-}
+
 hr.addr {
   border-top: 1px dashed;
   margin: 0;
@@ -728,6 +813,7 @@ hr.addr {
   }
 }
 
+/* Comments */
 .rfcEditorRemove p:first-of-type {
   font-style: italic;
 }
@@ -738,20 +824,41 @@ hr.addr {
 .crefSource {
   font-style: italic;
 }
-/* alternative layout for smaller screens */
+
+@media screen {
+  #toc nav {
+    font-family: var(--font-title);
+    font-weight: 360;
+    & > ul { margin-bottom: 2em; }
+    & ul {
+      margin: 0 0 0 4px;
+      & :is(p, li) {
+        margin: 2px 0;
+      }
+    }
+  }
+  #toc a.toplink {
+    float: right;
+  }
+}
+@media not screen {
+  #toc a.toplink {
+    display: none;
+  }
+}
+
+
+/* TOC layout for smaller screens */
 @media screen and (max-width: 929px) {
   #toc {
     position: fixed;
     z-index: 2;
     top: 0;
     right: 0;
-    padding: 0;
+    padding: 1px 0 0 0;
     margin: 0;
     border-bottom: 1px solid #ccc;
     opacity: 0.6;
-  }
-  #toc.active {
-      opacity: 1;
   }
   #toc h2 {
     margin: 0;
@@ -764,17 +871,17 @@ hr.addr {
     background-color: #444;
     color: white;
     cursor: pointer;
-  }
-  #toc h2::before { /* css hamburger */
-    float: right;
-    position: relative;
-    width: 1em;
-    height: 1px;
-    left: -164px;
-    margin: 8px 0 0 0;
-    background: white none repeat scroll 0 0;
-    box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
-    content: "";
+    &::before { /* css hamburger */
+      float: right;
+      position: relative;
+      width: 1em;
+      height: 1px;
+      left: -164px;
+      margin: 8px 0 0 0;
+      background: white none repeat scroll 0 0;
+      box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+      content: "";
+    }
   }
   #toc nav {
     display: none;
@@ -785,14 +892,13 @@ hr.addr {
     height: calc(100vh - 48px);
     border-left: 1px solid #ddd;
   }
-  #toc.active nav {
-    display: block;
+  #toc.active {
+    opacity: 1;
+    & nav { display: block; }
   }
   /* Make the collapsed ToC header render white on gray also when it's a link */
   #toc h2 a,
-  #toc h2 a:link,
-  #toc h2 a:focus,
-  #toc h2 a:hover,
+  #toc h2 a:is(:link, :focus, :hover),
   #toc a.toplink,
   #toc a.toplink:hover {
     color: white;
@@ -800,11 +906,11 @@ hr.addr {
     text-decoration: none;
   }
   #toc a.toplink {
-    margin-top: 2px;
+    margin: 2px 0.5em 0;
   }
 }
 
-/* alternative layout for wide screens */
+/* TOC layout for wide screens */
 @media screen and (min-width: 930px) {
   body {
     padding-right: 360px;
@@ -833,20 +939,12 @@ hr.addr {
     overscroll-behavior: contain;
     scrollbar-width: thin;
   }
-  #toc nav > ul  {
-    margin-bottom: 2em;
-  }
-  #toc ul {
-    margin: 0 0 0 4px;
-    font-size: var(--small-font-size);
-  }
-  #toc ul :is(p, li) {
-    margin: 2px 0;
-    line-height: 22px;
-  }
   img { /* future proofing */
     max-width: 100%;
     height: auto;
+  }
+  #toc a.toplink {
+    margin: 8px 0.5em 0;
   }
 }
 
@@ -869,16 +967,13 @@ hr.addr {
     border-top: none;
     padding-top: 0;
   }
-  figure, pre {
+  figure, pre, .vcard {
     page-break-inside: avoid;
-  }
-  figure {
-    overflow: scroll;
   }
   h1, h2, h3, h4, h5, h6 {
     page-break-after: avoid;
   }
-  h2+*, h3+*, h4+*, h5+*, h6+* {
+  :is(h2, h3, h4, h5, h6)+*, dd {
     page-break-before: avoid;
   }
   pre {
@@ -916,104 +1011,6 @@ hr.addr {
   padding-top: 20px;
 }
 
-/* Changes introduced to fix issues found during implementation */
-
-/* Separate body from document info even without intervening H1 */
-section {
-  clear: both;
-}
-
-/* Top align author divs, to avoid names without organization dropping level with org names */
-.author {
-  vertical-align: top;
-}
-
-/* Style section numbers with more space between number and title */
-.section-number {
-  padding-right: 0.5em;
-}
-
-/* Add styling for a link in the ToC that points to the top of the document */
-a.toplink {
-  float: right;
-  margin: 8px 0.5em 0;
-}
-
-/* Provide styling for table cell text alignment */
-table .text-left {
-  text-align: left;
-}
-table .text-center {
-  text-align: center;
-}
-table .text-right {
-  text-align: right;
-}
-
-/* Make the alternative author contact information look less like just another
-   author, and group it closer with the primary author contact information */
-.alternative-contact {
-  margin: 0.5em 0 0.25em 0;
-}
-address .non-ascii {
-  margin: 0 0 0 2em;
-}
-
-/* With it being possible to set tables with alignment
-  left, center, and right, { width: 100%; } does not make sense */
-table {
-  width: auto;
-}
-
-/* Avoid reference text that sits in a block with very wide left margin,
-   because of a long floating dt label.*/
-.references dd {
-  overflow: visible;
-}
-
-/* Control caption placement */
-caption {
-  caption-side: bottom;
-}
-
-/* Limit the width of the author address vcard, so names in right-to-left
-   script don't end up on the other side of the page. */
-
-address.vcard {
-  max-width: 20em;
-  margin-right: auto;
-}
-
-/* For address alignment dependent on LTR or RTL scripts */
-address div.left {
-  text-align: left;
-}
-address div.right {
-  text-align: right;
-}
-
-/* Give the table caption label the same styling as the figcaption */
-
-@media print {
-  .toplink {
-    display: none;
-  }
-
-  /* avoid overwriting the top border line with the ToC header */
-  #toc {
-    padding-top: 1px;
-  }
-
-  /* Avoid page breaks inside dl and author address entries */
-  dd {
-    page-break-before: avoid;
-  }
-  .vcard {
-    page-break-inside: avoid;
-  }
-
-}
-
 /* Dark mode. */
 @media (prefers-color-scheme: dark) {
 :root {
@@ -1049,12 +1046,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <table class="ears">
 <thead><tr>
 <td class="left">Internet-Draft</td>
-<td class="center">Forwarding Commitments</td>
-<td class="right">August 2023</td>
+<td class="center">RPKI FC Profile</td>
+<td class="right">February 2025</td>
 </tr></thead>
 <tfoot><tr>
-<td class="left">Xu, et al.</td>
-<td class="center">Expires 18 February 2024</td>
+<td class="left">Guo, et al.</td>
+<td class="center">Expires 23 August 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,35 +1061,35 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">Network Working Group</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-guo-fc-so-latest</dd>
+<dd class="internet-draft">draft-guo-sidrops-fc-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-08-17" class="published">17 August 2023</time>
+<time datetime="2025-02-19" class="published">19 February 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-02-18">18 February 2024</time></dd>
+<dd class="expires"><time datetime="2025-08-23">23 August 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
-      <div class="author-name">K. Xu</div>
-<div class="org">Tsinghua University</div>
+      <div class="author-name">Y. Guo</div>
+<div class="org">Zhongguancun Laboratory</div>
 </div>
 <div class="author">
       <div class="author-name">X. Wang</div>
 <div class="org">Tsinghua University</div>
 </div>
 <div class="author">
-      <div class="author-name">Y. Guo</div>
-<div class="org">Zhongguancun Labratory</div>
-</div>
-<div class="author">
-      <div class="author-name">J. Zhan</div>
+      <div class="author-name">K. Xu</div>
 <div class="org">Tsinghua University</div>
 </div>
 <div class="author">
-      <div class="author-name">J. Wu</div>
+      <div class="author-name">Z. Liu</div>
+<div class="org">Tsinghua University</div>
+</div>
+<div class="author">
+      <div class="author-name">Q. Li</div>
 <div class="org">Tsinghua University</div>
 </div>
 </dd>
@@ -1101,7 +1098,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <h1 id="title">A Profile for Forwarding Commitments (FCs)</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document defines a standard profile for Forwarding Commitment (FC) used in Resource Public Key Infrastructure (RPKI). An FC is a digitally signed object that provides a means of verifying that an IP address prefix is announced from <code>AS a</code> to <code>AS b</code>. When validated, an FC's eContent can be used for the detection and mitigation of route hijacking and provide protection for the AS_PATH attribute in BGP-UPDATE.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document defines a Cryptographic Message Syntax (CMS) protected content type for Forwarding Commitments (FCs) objects used in Resource Public Key Infrastructure (RPKI). An FC is a digitally signed object that provides a means of verifying whether an IP address block is received from <code>AS a</code> to <code>AS b</code> and announced from <code>AS b</code> to <code>AS c</code>. When validated, an FC's eContent can be used for the detection and mitigation of route hijacking, especially providing protection for the AS_PATH attribute in BGP-UPDATE.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1109,10 +1106,10 @@ svg :is([fill="white"], [fill^="#fff"]) {
       </h2>
 <p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
 <p id="section-note.1-2">
-        The latest revision of this draft can be found at <span><a href="https://BasilGuo.github.io/fc-signed-object/draft-guo-fc-so.html">https://BasilGuo.github.io/fc-signed-object/draft-guo-fc-so.html</a></span>.
-        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-guo-fc-so/">https://datatracker.ietf.org/doc/draft-guo-fc-so/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+        The latest revision of this draft can be found at <span><a href="https://fcbgp.github.io/fc-profile/draft-guo-sidrops-fc-profile.html">https://fcbgp.github.io/fc-profile/draft-guo-sidrops-fc-profile.html</a></span>.
+        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-guo-sidrops-fc-profile/">https://datatracker.ietf.org/doc/draft-guo-sidrops-fc-profile/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
 <p id="section-note.1-3">Source for this draft and an issue tracker can be found at
-        <span><a href="https://github.com/BasilGuo/fc-signed-object">https://github.com/BasilGuo/fc-signed-object</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
+        <span><a href="https://github.com/FCBGP/fc-profile">https://github.com/FCBGP/fc-profile</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1133,7 +1130,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 18 February 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 23 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1142,7 +1139,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
         </h2>
 <p id="section-boilerplate.2-1">
-            Copyright (c) 2023 IETF Trust and the persons identified as the
+            Copyright (c) 2025 IETF Trust and the persons identified as the
             document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.2-2">
             This document is subject to BCP 78 and the IETF Trust's Legal
@@ -1180,68 +1177,50 @@ svg :is([fill="white"], [fill^="#fff"]) {
                 <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-version" class="internal xref">version</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
-                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-originatorasid" class="internal xref">originatorASID</a></p>
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-asid" class="internal xref">asID</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
-                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-type-prefix" class="internal xref">Type Prefix</a></p>
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-routingintents" class="internal xref">routingIntents</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.1">
-                    <p id="section-toc.1-1.3.2.3.2.1.1"><a href="#section-3.3.1" class="auto internal xref">3.3.1</a>.  <a href="#name-element-afi" class="internal xref">Element afi</a></p>
+                    <p id="section-toc.1-1.3.2.3.2.1.1"><a href="#section-3.3.1" class="auto internal xref">3.3.1</a>.  <a href="#name-previousases" class="internal xref">previousASes</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.2">
-                    <p id="section-toc.1-1.3.2.3.2.2.1"><a href="#section-3.3.2" class="auto internal xref">3.3.2</a>.  <a href="#name-element-address" class="internal xref">Element address</a></p>
+                    <p id="section-toc.1-1.3.2.3.2.2.1"><a href="#section-3.3.2" class="auto internal xref">3.3.2</a>.  <a href="#name-nexthopases" class="internal xref">nexthopASes</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.3">
-                    <p id="section-toc.1-1.3.2.3.2.3.1"><a href="#section-3.3.3" class="auto internal xref">3.3.3</a>.  <a href="#name-element-prefixlength" class="internal xref">Element prefixLength</a></p>
-</li>
-                </ul>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
-                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-type-forwardingcommitment" class="internal xref">Type ForwardingCommitment</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4.2.1">
-                    <p id="section-toc.1-1.3.2.4.2.1.1"><a href="#section-3.4.1" class="auto internal xref">3.4.1</a>.  <a href="#name-element-id" class="internal xref">Element id</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4.2.2">
-                    <p id="section-toc.1-1.3.2.4.2.2.1"><a href="#section-3.4.2" class="auto internal xref">3.4.2</a>.  <a href="#name-element-signature" class="internal xref">Element signature</a></p>
+                    <p id="section-toc.1-1.3.2.3.2.3.1"><a href="#section-3.3.3" class="auto internal xref">3.3.3</a>.  <a href="#name-originases" class="internal xref">originASes</a></p>
 </li>
                 </ul>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-fc-validation" class="internal xref">FC Validation</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-forwarding-commitment-valid" class="internal xref">Forwarding Commitment Validation</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-fc-based-bgp-as_path-verifi" class="internal xref">FC based BGP AS_PATH Verification</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
-                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-fc-generation" class="internal xref">FC Generation</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
-                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-fc-verification-and-as_path" class="internal xref">FC Verification and AS_PATH Verification</a></p>
-</li>
-            </ul>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-operational-consideration" class="internal xref">Operational Consideration</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
-                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-route-aggregation" class="internal xref">Route Aggregation</a></p>
-</li>
-            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
             <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
-                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-smi-security-for-s-mime-cms" class="internal xref">SMI Security for S/MIME CMS Content Type (1.2.840.113549.1.9.16.1)</a></p>
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-smi-security-for-s-mime-mod" class="internal xref">SMI Security for S/MIME Module Identifier registry</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
-                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-smi-security-for-s-mime-cms-" class="internal xref">SMI Security for S/MIME CMS Content Type registry</a></p>
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-smi-security-for-s-mime-cms" class="internal xref">SMI Security for S/MIME CMS Content Type registry</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3">
                 <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-rpki-signed-object-registry" class="internal xref">RPKI Signed Object registry</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.4">
+                <p id="section-toc.1-1.7.2.4.1"><a href="#section-7.4" class="auto internal xref">7.4</a>.  <a href="#name-rpki-repository-name-scheme" class="internal xref">RPKI Repository Name Scheme registry</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.5">
+                <p id="section-toc.1-1.7.2.5.1"><a href="#section-7.5" class="auto internal xref">7.5</a>.  <a href="#name-media-type-registry" class="internal xref">Media Type registry</a></p>
 </li>
             </ul>
 </li>
@@ -1271,17 +1250,22 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">The Border Gateway Protocol (BGP) <span>[<a href="#RFC4271" class="cite xref">RFC4271</a>]</span> was designed with no mechanisms to validate the security of BGP attributes. There are two types of BGP security issues, BGP Hijacks and BGP Route Leaks <span>[<a href="#RFC7908" class="cite xref">RFC7908</a>]</span>, plagues Internet security.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">The primary purpose of the Resource Public Key Infrastructure (RPKI) is to improve routing security.  (See <span>[<a href="#RFC6480" class="cite xref">RFC6480</a>]</span> for more information.) As part of this system, a mechanism is needed to allow entities to verify that an AS has been given permission by an IP address holder to advertise a route along the propagation path. An FC provides this function.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">Forwarding Commitment (FC) is a signed object that binds the IP prefix with AS and its next hops, eventually, it could compose and protect the path of BGP-UPDATE propagation. It uses a Web of Trust in this propagation model, i.e., the originator AS trusts its next hop ASes and authorizes them to propagate its own prefix. Then, all next-hop ASes would also accept the prefix and proceed to send it to their next hops. The relationship among them is the signed FC, which attests that a downstream AS has been selected by the directly linked upstream AS to announce the IP prefix. For an IP prefix, all ASes on the propagation path should sign such an FC independently, and then be able to detect and filter malicious routes (e.g., route leaks and route hijacks). In addition, the FC can also attest that all ASes on a propagation path have received and selected this AS_PATH, which can be certified as a trusted path.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">The FC uses the template for RPKI digitally signed objects <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span> for the definition of a Cryptographic Message Syntax (CMS) <span>[<a href="#RFC5652" class="cite xref">RFC5652</a>]</span> wrapper for the FC content as well as a generic validation procedure for RPKI signed objects.  As RPKI certificates issued by the current infrastructure are required to validate FC, we assume the mandatory-to-implement algorithms in <span>[<a href="#RFC6485" class="cite xref">RFC6485</a>]</span> or its successor.<a href="#section-1-4" class="pilcrow">¶</a></p>
-<p id="section-1-5">To complete the specification of the FC (see <span><a href="https://rfc-editor.org/rfc/rfc6488#section-4" class="relref">Section 4</a> of [<a href="#RFC6488" class="cite xref">RFC6488</a>]</span>), this document defines:<a href="#section-1-5" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-1-6">
-<li id="section-1-6.1">The object identifier (OID) that identifies the FC signed object. This OID appears in the eContentType field of the encapContentInfo object as well as the content-type signed attribute within the signerInfo structure.<a href="#section-1-6.1" class="pilcrow">¶</a>
+<p id="section-1-1">The Border Gateway Protocol (BGP) <span>[<a href="#RFC4271" class="cite xref">RFC4271</a>]</span> was designed with no mechanisms to validate the security of BGP attributes. There are two types of BGP security issues, BGP Hijacks and BGP Route Leaks <span>[<a href="#RFC7908" class="cite xref">RFC7908</a>]</span>, plague Internet security.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">The primary purpose of the Resource Public Key Infrastructure (RPKI) is to improve routing security.  (See <span>[<a href="#RFC6480" class="cite xref">RFC6480</a>]</span> for more information.) As part of this system, a mechanism is needed to allow entities to verify that an IP address holder has permitted an AS to advertise a route along the propagation path. A Forwarding Commitment (FC) provides this function.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">A Forwarding Commitment (FC) is a digitally signed object through which the issuer (the holder of an Autonomous System identifier), can authorize one or more other Autonomous Systems (ASes) as its upstream ASes or one or more other ASes as its downstream ASes. The upstream ASes, or previous ASes, mean that the issuer AS can receive BGP route updates from these ASes. The downstream ASes, or nexthop ASes, mean that the issuer AS would advertise the BGP route to these ASes.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-4">In this propagation model, it uses a Web of Trust, i.e., the issuer AS trusts its previous ASes and authorizes nexthop ASes to propagate its received routes. Then, all nexthop ASes would also accept the routes and proceed to send them to their next hops. The relationship among them is the signed FC, which attests that a downstream AS has been selected by the directly linked upstream AS to announce the routes.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-5">Initially, all ASes on the propagation path should sign one or more FCs independently if they want to propagate the route to its downstream ASes, and then be able to detect and filter malicious routes (e.g., route leaks and route hijacks). In addition, the FC can also attest that all ASes on a propagation path have received and selected this AS_PATH, which can be certified as a trusted path.<a href="#section-1-5" class="pilcrow">¶</a></p>
+<p id="section-1-6">The FC uses the template for RPKI digitally signed objects <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span> for the definition of a Cryptographic Message Syntax (CMS) <span>[<a href="#RFC5652" class="cite xref">RFC5652</a>]</span> wrapper for the FC content as well as a generic validation procedure for RPKI signed objects.  As RPKI certificates issued by the current infrastructure are required to validate FC, we assume the mandatory-to-implement algorithms in <span>[<a href="#RFC6485" class="cite xref">RFC6485</a>]</span> or its successor.<a href="#section-1-6" class="pilcrow">¶</a></p>
+<p id="section-1-7">To complete the specification of the FC (see <span><a href="https://rfc-editor.org/rfc/rfc6488#section-4" class="relref">Section 4</a> of [<a href="#RFC6488" class="cite xref">RFC6488</a>]</span>), this document defines:<a href="#section-1-7" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-1-8">
+<li id="section-1-8.1">
+          <p id="section-1-8.1.1">The object identifier (OID) that identifies the FC-signed object. This OID appears in the eContentType field of the encapContentInfo object as well as the content-type signed attribute within the signerInfo structure.<a href="#section-1-8.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li id="section-1-6.2">The ASN.1 syntax for the FC content, which is the payload signed by the BGP speaker. The FC content is encoded using the ASN.1 <span>[<a href="#X.680" class="cite xref">X.680</a>]</span> Distinguished Encoding Rules (DER) <span>[<a href="#X.690" class="cite xref">X.690</a>]</span>.<a href="#section-1-6.2" class="pilcrow">¶</a>
+        <li id="section-1-8.2">
+          <p id="section-1-8.2.1">The ASN.1 syntax for the FC content, which is the payload signed by the BGP speaker. The FC content is encoded using the ASN.1 <span>[<a href="#X.680" class="cite xref">X.680</a>]</span> Distinguished Encoding Rules (DER) <span>[<a href="#X.690" class="cite xref">X.690</a>]</span>.<a href="#section-1-8.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li id="section-1-6.3">The steps required to validate an FC beyond the validation steps specified in <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span>.<a href="#section-1-6.3" class="pilcrow">¶</a>
+        <li id="section-1-8.3">
+          <p id="section-1-8.3.1">The steps required to validate an FC beyond the validation steps specified in <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span>.<a href="#section-1-8.3.1" class="pilcrow">¶</a></p>
 </li>
       </ol>
 <div id="requirements-language">
@@ -1306,19 +1290,17 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <p id="section-2-2">This OID <span class="bcp14">MUST</span> appear both within the eContentType in the encapContentInfo object as well as the content-type signed attribute in the signerInfo object (see <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span>).<a href="#section-2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="the-fc-econtent">
+<div id="The-FC-eContent">
 <section id="section-3">
       <h2 id="name-the-fc-econtent">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-the-fc-econtent" class="section-name selfRef">The FC eContent</a>
       </h2>
-<p id="section-3-1">The content of an FC identifies a forwarding commitment and forwarding binding that an AS announces to other nodes upon receiving a BGP-UPDATE message. Other on-path ASes can validate the FC and perform path verification for traffic forwarding based on the AS-path information. Off-path ASes can utilize this FC for collaborative filtering. An FC is an instance of ForwardingCommitmentAttestation, formally defined by the following ASN.1 <span>[<a href="#X.680" class="cite xref">X.680</a>]</span> module:<a href="#section-3-1" class="pilcrow">¶</a></p>
-<span id="name-econtent-of-fc-signed-objec"></span><div id="fig-eContentFC">
-<figure id="figure-1">
-        <div class="alignLeft art-text artwork" id="section-3-2.1">
+<p id="section-3-1">The content of an FC identifies a forwarding commitment that represents an AS's routing intent. Upon receiving a BGP-UPDATE message, other ASes can perform AS-path verification according to the validated FCs. An FC is an instance of ForwardingCommitmentAttestation, formally defined by the following ASN.1 <span>[<a href="#X.680" class="cite xref">X.680</a>]</span> module:<a href="#section-3-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3-2">
 <pre>
-RPKI-FC-2023
+RPKI-FC-2025
   { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
-     pkcs-9(9) smime(16) modules(0) id-mod-rpki-FC-2023(TBD) }
+     pkcs-9(9) smime(16) modules(0) id-mod-rpki-FC-2025(TBD) }
 
 DEFINITIONS EXPLICIT TAGS ::=
 BEGIN
@@ -1337,31 +1319,18 @@ ct-FC CONTENT-TYPE ::=
 
 ForwardingCommitmentAttestation ::= SEQUENCE {
     version [0]         INTEGER DEFAULT 0,
-    originatorASID      ASID,
-    prefix              SEQUENCE (SIZE(1)) OF Prefix,
-    fc ForwardingCommitment }
+    asID                ASID,
+    routingIntents      SEQUENCE (SIZE(1..MAX)) OF ROUTING-INTENT }
+
+ROUTING-INTENT ::= SEQUENCE {
+    previousASes        SEQUENCE (SIZE(1..MAX)) OF ASID,
+    nexthopASes         SEQUENCE (SIZE(1..MAX)) OF ASID,
+    originASes          SEQUENCE (SIZE(0..MAX)) OF ASID OPTIONAL }
 
 ASID ::= INTEGER (0..4294967295)
 
-Prefix ::= SEQUENCE {
-    afi                 AFI,
-    address             IPAddress,
-    prefixLength        INTEGER (SIZE(0..128)}
-
-AFI ::= OCTET STRING (SIZE(2))
-
-IPAddress ::= BIT STRING (SIZE(0..128))
-
-ForwardingCommitment ::= SEQUENCE {
-    id                  BIT STRING
-    signature           BIT STRING }
-
 END
-</pre>
-</div>
-<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
-<a href="#name-econtent-of-fc-signed-objec" class="selfRef">eContent of FC signed object</a>
-        </figcaption></figure>
+</pre><a href="#section-3-2" class="pilcrow">¶</a>
 </div>
 <p id="section-3-3">Note that this content appears as the eContent within the encapContentInfo (see <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span>).<a href="#section-3-3" class="pilcrow">¶</a></p>
 <div id="version">
@@ -1372,181 +1341,80 @@ END
 <p id="section-3.1-1">The version number of the ForwardingCommitmentAttestation <span class="bcp14">MUST</span> be 0.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="originatorasid">
+<div id="asid">
 <section id="section-3.2">
-        <h3 id="name-originatorasid">
-<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-originatorasid" class="section-name selfRef">originatorASID</a>
+        <h3 id="name-asid">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-asid" class="section-name selfRef">asID</a>
         </h3>
-<p id="section-3.2-1">The originatorASID field contains the AS number of the originator AS associated with this FC in the BGP-UPDATE message.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-1">The asID field contains the AS number of the issuer AS associated with this FC.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="type-prefix">
+<div id="routingintents">
 <section id="section-3.3">
-        <h3 id="name-type-prefix">
-<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-type-prefix" class="section-name selfRef">Type Prefix</a>
+        <h3 id="name-routingintents">
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-routingintents" class="section-name selfRef">routingIntents</a>
         </h3>
-<p id="section-3.3-1">Within the Prefix structure, the prefix field encodes the set of IP address prefixes announced by the originator AS in AS_PATH.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
-<div id="element-afi">
+<p id="section-3.3-1">The routingIntents field comprises a list of routing intents associated with the issuing asID. Each routing intent generally includes an upstream AS, a downstream AS, and a specified route set. To optimize space, the field may aggregate routing intents that share the same route set. Therefore, the routingIntents field indicates that for a route set represented by originASes, the issuing asID can receive routes from any AS in previousASes and subsequently forward them to any AS in nexthopASes.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<div id="previousases">
 <section id="section-3.3.1">
-          <h4 id="name-element-afi">
-<a href="#section-3.3.1" class="section-number selfRef">3.3.1. </a><a href="#name-element-afi" class="section-name selfRef">Element afi</a>
+          <h4 id="name-previousases">
+<a href="#section-3.3.1" class="section-number selfRef">3.3.1. </a><a href="#name-previousases" class="section-name selfRef">previousASes</a>
           </h4>
-<p id="section-3.3.1-1">Within the Prefix structure, afi contains the Address Family Identifier of an IP address family. This specification only supports IPv4 and IPv6. Therefore, afi <span class="bcp14">MUST</span> be either 0001 or 0002.<a href="#section-3.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.1-1">The previousASes field contains the upstream ASes' number of the issuer AS that can advertise the prefixes to the issuer AS.<a href="#section-3.3.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="element-address">
+<div id="nexthopases">
 <section id="section-3.3.2">
-          <h4 id="name-element-address">
-<a href="#section-3.3.2" class="section-number selfRef">3.3.2. </a><a href="#name-element-address" class="section-name selfRef">Element address</a>
+          <h4 id="name-nexthopases">
+<a href="#section-3.3.2" class="section-number selfRef">3.3.2. </a><a href="#name-nexthopases" class="section-name selfRef">nexthopASes</a>
           </h4>
-<p id="section-3.3.2-1">The address field contains the IP address.<a href="#section-3.3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-1">The nexthopASes field contains the downstream ASes' number of the issuer AS that can receive advertised routes from the issuer AS.<a href="#section-3.3.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="element-prefixlength">
+<div id="originases">
 <section id="section-3.3.3">
-          <h4 id="name-element-prefixlength">
-<a href="#section-3.3.3" class="section-number selfRef">3.3.3. </a><a href="#name-element-prefixlength" class="section-name selfRef">Element prefixLength</a>
+          <h4 id="name-originases">
+<a href="#section-3.3.3" class="section-number selfRef">3.3.3. </a><a href="#name-originases" class="section-name selfRef">originASes</a>
           </h4>
-<p id="section-3.3.3-1">The prefixLength field contains the length of the IP address prefix.<a href="#section-3.3.3-1" class="pilcrow">¶</a></p>
-</section>
-</div>
-</section>
-</div>
-<div id="type-forwardingcommitment">
-<section id="section-3.4">
-        <h3 id="name-type-forwardingcommitment">
-<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-type-forwardingcommitment" class="section-name selfRef">Type ForwardingCommitment</a>
-        </h3>
-<p id="section-3.4-1">Within the ForwardingCommitment structure, the fc field encodes the forwarding commitment generated by this AS and will be validated by other AS.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
-<div id="element-id">
-<section id="section-3.4.1">
-          <h4 id="name-element-id">
-<a href="#section-3.4.1" class="section-number selfRef">3.4.1. </a><a href="#name-element-id" class="section-name selfRef">Element id</a>
-          </h4>
-<p id="section-3.4.1-1">The id field contains the hash of the current AS-path in the associated BGP-UPDATE plus the next hop AS and above prefix filed.<a href="#section-3.4.1-1" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="element-signature">
-<section id="section-3.4.2">
-          <h4 id="name-element-signature">
-<a href="#section-3.4.2" class="section-number selfRef">3.4.2. </a><a href="#name-element-signature" class="section-name selfRef">Element signature</a>
-          </h4>
-<p id="section-3.4.2-1">The signature field is a signature signed by the BGP speaker who issues this FC.<a href="#section-3.4.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.3-1">The originASes field contains a set of ASes. It associates with ROAs <span>[<a href="#RFC9582" class="cite xref">RFC9582</a>]</span>. This is an optional field. When it is blank, it means that all traffic received from upstream ASes defined in the previousASes field could be advertised to downstream ASes defined in the nexthopASes field.<a href="#section-3.3.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 </section>
 </div>
-<div id="fc-validation">
+<div id="forwarding-commitment-validation">
 <section id="section-4">
-      <h2 id="name-fc-validation">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-fc-validation" class="section-name selfRef">FC Validation</a>
+      <h2 id="name-forwarding-commitment-valid">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-forwarding-commitment-valid" class="section-name selfRef">Forwarding Commitment Validation</a>
       </h2>
-<p id="section-4-1">Only when finished the validation of the FC object will a relying party sign a new FC to announce a trusted and selected routing announcement. To validate an FC, the relying party <span class="bcp14">MUST</span> perform all the validation checks specified in <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span> as well as the following additional FC-specific validation step.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-1">To validate an FC, the relying party <span class="bcp14">MUST</span> perform all the validation checks specified in <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span> as well as the following additional FC-specific validation steps.<a href="#section-4-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4-2.1">The IP Address Delegation extension <span>[<a href="#RFC3779" class="cite xref">RFC3779</a>]</span> is present in the end-entity (EE) certificate (contained within the FC), and the IP address prefix in the FC payload is contained within the set of IP addresses specified by the EE certificate's IP Address Delegation extension.<a href="#section-4-2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-4-2.1">
+          <p id="section-4-2.1.1">The contents of the CMS eContent field <span class="bcp14">MUST</span> conform to all the constraints described in <a href="#The-FC-eContent" class="auto internal xref">Section 3</a>.<a href="#section-4-2.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-4-2.2">The EE certificate's IP Address Delegation extension <span class="bcp14">MUST NOT</span> contain "inherit" elements described in <span>[<a href="#RFC3779" class="cite xref">RFC3779</a>]</span>.<a href="#section-4-2.2" class="pilcrow">¶</a>
+        <li class="normal" id="section-4-2.2">
+          <p id="section-4-2.2.1">The Autonomous System Identifier Delegation Extension described in <span>[<a href="#RFC3779" class="cite xref">RFC3779</a>]</span> is also used in Forwarding Commitment and <span class="bcp14">MUST</span> be present in the EE certificate contained in the CMS certificates field.<a href="#section-4-2.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-4-2.3">The Autonomous System Identifier Delegation Extension described in <span>[<a href="#RFC3779" class="cite xref">RFC3779</a>]</span> is also used in Forwarding Commitment and <span class="bcp14">MUST</span> be present in the EE certificate.<a href="#section-4-2.3" class="pilcrow">¶</a>
+        <li class="normal" id="section-4-2.3">
+          <p id="section-4-2.3.1">The AS identifier present in the ForwardingCommitmentAttestation eContent 'asID' field <span class="bcp14">MUST</span> be contained in the AS Identifiers present in the certificate extension.<a href="#section-4-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-2.4">
+          <p id="section-4-2.4.1">The Autonomous System Identifier Delegation extension <span class="bcp14">MUST NOT</span> contain "inherit" elements.<a href="#section-4-2.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-2.5">
+          <p id="section-4-2.5.1">The IP Address Delegation Extension <span>[<a href="#RFC3779" class="cite xref">RFC3779</a>]</span> is not used in Forwarding Commitment, and <span class="bcp14">MUST NOT</span> be present in the EE certificate.<a href="#section-4-2.5.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
 </div>
-<div id="fc-verification">
+<div id="operational-consideration">
 <section id="section-5">
-      <h2 id="name-fc-based-bgp-as_path-verifi">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-fc-based-bgp-as_path-verifi" class="section-name selfRef">FC based BGP AS_PATH Verification</a>
+      <h2 id="name-operational-consideration">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-operational-consideration" class="section-name selfRef">Operational Consideration</a>
       </h2>
-<div id="fc-generation">
-<section id="section-5.1">
-        <h3 id="name-fc-generation">
-<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-fc-generation" class="section-name selfRef">FC Generation</a>
-        </h3>
-<p id="section-5.1-1">The FC generation procedure follows the BGP-UPDATE. When one AS establishes a connection with its peer, it announces its route to peers. It <span class="bcp14">SHOULD</span> generate FC for each IP prefix in the BGP-UPDATE. For example, there are 3 ASes and the topology of them is in a line as <a href="#fig-example" class="auto internal xref">Figure 2</a> shows.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
-<span id="name-a-topology-example-of-3-as"></span><div id="fig-example">
-<figure id="figure-2">
-          <div class="alignLeft art-text artwork" id="section-5.1-2.1">
-<pre>
-+----------+     +----------+     +----------+
-| AS 65536 | --- | AS 65537 | --- | AS 65538 |
-+----------+     +----------+     +----------+
-</pre>
-</div>
-<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
-<a href="#name-a-topology-example-of-3-as" class="selfRef">A topology example of 3 AS</a>
-          </figcaption></figure>
-</div>
-<p id="section-5.1-3">Suppose that the simplified RIB table of AS 65536 is as follows, which means 1 BGP-UPDATE is announced from AS 65538 to AS 65537 and 1 BGP-UPDATE is announced from AS 65537 to AS 65536. One FC will be generated for prefix 2001:db8:c::/48 when BGP-UPDATE is announced from AS 65538 to AS 65537. But two FCs will be generated when BGP-UPDATE is announced from AS 65537 to AS 65536, one is for the prefix 2001:db8:c::/48 and the other is for the prefix 2001:db8:b::/48.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
-<span id="name-simplified-rib-table-of-as-"></span><div id="fig-rib-of-AS65536">
-<figure id="figure-3">
-          <div class="alignLeft art-text artwork" id="section-5.1-4.1">
-<pre>
-Network           Next Hop        Path
-2001:db8:a::/48   ::              i
-2001:db8:b::/48   2001:db8:a::1   65537 i
-2001:db8:c::/48   2001:db8:a::1   65537 65538 i
-</pre>
-</div>
-<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
-<a href="#name-simplified-rib-table-of-as-" class="selfRef">Simplified RIB table of AS 65536</a>
-          </figcaption></figure>
-</div>
-<p id="section-5.1-5">For BGP-UPDATE announced from AS 65538 to AS 65537, it fills the eContent of FC signed object as follows:<a href="#section-5.1-5" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.1-6">
-<pre>
-FC_{65538, 65537}:
-  version: 0
-  orginatorASID: 65538
-  prefix:
-    afi: 2
-    address: 2001:db8:c::
-    prefixLength: 48
-  ForwardingCommitment:
-    id: HASH({65538}, 65537, 2001:db8:c::/48)
-    signature: SIGNATURE1
-</pre><a href="#section-5.1-6" class="pilcrow">¶</a>
-</div>
-<p id="section-5.1-7">For BGP-UPDATE announced from AS 65538 to AS 65537, it fills the eContent of FC signed objects as follows:<a href="#section-5.1-7" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.1-8">
-<pre>
-FC_{65538, 65537, 65536}:
-  version: 0
-  orginatorASID: 65538
-  prefix:
-    afi: 2
-    address: 2001:db8:c::
-    prefixLength: 48
-  ForwardingCommitment:
-    id: HASH({65538, 65537}, 65536, 2001:db8:c::/48)
-    signature: SIGNATURE2
-
-FC_{65537, 65536}:
-  version: 0
-  orginatorASID: 65537
-  prefix:
-    afi: 2
-    address: 2001:db8:b::
-    prefixLength: 48
-  ForwardingCommitment:
-    id: HASH({65537}, 65536, 2001:db8:b::/48)
-    signature: SIGNATURE3
-</pre><a href="#section-5.1-8" class="pilcrow">¶</a>
-</div>
-<p id="section-5.1-9">These FC signed objects <span class="bcp14">MUST</span> store in the RPKI repository as soon as possible after the BGP announcement.<a href="#section-5.1-9" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="fc-verification-and-aspath-verification">
-<section id="section-5.2">
-        <h3 id="name-fc-verification-and-as_path">
-<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-fc-verification-and-as_path" class="section-name selfRef">FC Verification and AS_PATH Verification</a>
-        </h3>
-<p id="section-5.2-1">When one AS receives one BGP-UPDATE, it <span class="bcp14">MUST</span> do as usual: filter the BGP route using its local policy, scratch the BGP route to its Route Information Base (RIB) table, generate Forwarding Information Base (FIB) table, and send it out as per the routing policy.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
-<p id="section-5.2-2">When synchronizing the FC signed objects from the RPKI repository, the BGP speaker <span class="bcp14">MUST</span> find FCs according to the ForwardingCommitment-id: HASH(current_AS_PATH, nextHopAS, prefix) in its RIB. If it finds one matched, the BGP speaker verifies the ForwardingCommitment-signature in the RPKI repository.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
-<p id="section-5.2-3">It <span class="bcp14">SHOULD</span> verify all FCs along the AS_PATH for AS_PATH verification. For example, AS 65536 should verify FC_{65538, 65537} and FC_{65538, 65537, 65536} for prefix 2001:db8:c::/48 in <a href="#fig-example" class="auto internal xref">Figure 2</a>. If all FCs checks passed, the AS_PATH would be a valid one.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
-</section>
-</div>
+<p id="section-5-1">Multiple valid Forwarding Commitment objects which contain the same asID could exist. In such a case, the union of these objects forms the complete routing intent set of this AS. For a given asID, it is <span class="bcp14">RECOMMENDED</span> that a CA maintains a single Forwarding Commitment. If an AS holder publishes a Forwarding Commitment, then relying parties <span class="bcp14">SHOULD</span> assume that this object is complete for that issuer AS.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">If one AS receives a BGP UPDATE message with the issuer AS in the AS_PATH attribute which cannot match any routing intents of this issuer AS, it implies that there is an AS-path forgery in this message.<a href="#section-5-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-considerations">
@@ -1554,15 +1422,7 @@ FC_{65537, 65536}:
       <h2 id="name-security-considerations">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<div id="route-aggregation">
-<section id="section-6.1">
-        <h3 id="name-route-aggregation">
-<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-route-aggregation" class="section-name selfRef">Route Aggregation</a>
-        </h3>
-<p id="section-6.1-1">There is no mechanism in FC that could protect one prefix that has been aggregated along the route propagation.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
-<p id="section-6.1-2">Maybe a MinLength like MaxLength in ROA could help to mitigate the effects of route aggregation. This field means it permits who to aggregate and aggregate to which degree.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
-</section>
-</div>
+<p id="section-6-1">The security considerations of <span>[<a href="#RFC6480" class="cite xref">RFC6480</a>]</span>, <span>[<a href="#RFC6481" class="cite xref">RFC6481</a>]</span>, <span>[<a href="#RFC6485" class="cite xref">RFC6485</a>]</span>, <span>[<a href="#RFC6487" class="cite xref">RFC6487</a>]</span> and <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span> also apply to FCs.<a href="#section-6-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
@@ -1570,32 +1430,32 @@ FC_{65537, 65536}:
       <h2 id="name-iana-considerations">
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<div id="smi-security-for-smime-cms-content-type-1284011354919161">
+<div id="smi-security-for-smime-module-identifier-registry">
 <section id="section-7.1">
-        <h3 id="name-smi-security-for-s-mime-cms">
-<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-smi-security-for-s-mime-cms" class="section-name selfRef">SMI Security for S/MIME CMS Content Type (1.2.840.113549.1.9.16.1)</a>
+        <h3 id="name-smi-security-for-s-mime-mod">
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-smi-security-for-s-mime-mod" class="section-name selfRef">SMI Security for S/MIME Module Identifier registry</a>
         </h3>
-<p id="section-7.1-1">Please add the id-mod-rpki-fc-2023 to the SMI Security for S/MIME Module Identifier (1.2.840.113549.1.9.16.0) registry (https://www.iana.org/assignments/smi-numbers/smi-numbers.xml#security-smime-0) as follows:<a href="#section-7.1-1" class="pilcrow">¶</a></p>
+<p id="section-7.1-1">Please add the id-mod-rpki-fc-2025 to the SMI Security for S/MIME Module Identifier (1.2.840.113549.1.9.16.0) registry (https://www.iana.org/assignments/smi-numbers/smi-numbers.xml#security-smime-0) as follows:<a href="#section-7.1-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-7.1-2">
 <pre>
-Decimal    Description                   Specification
----------------------------------------------------------------------
-TBD        id-mod-rpki-fc-2023           [RFC-to-be]
+Decimal  |  Description                 | Specification
+----------------------------------------------------------------
+TBD      | id-mod-rpki-fc-2025          | [RFC-to-be]
 </pre><a href="#section-7.1-2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="smi-security-for-smime-cms-content-type-registry">
 <section id="section-7.2">
-        <h3 id="name-smi-security-for-s-mime-cms-">
-<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-smi-security-for-s-mime-cms-" class="section-name selfRef">SMI Security for S/MIME CMS Content Type registry</a>
+        <h3 id="name-smi-security-for-s-mime-cms">
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-smi-security-for-s-mime-cms" class="section-name selfRef">SMI Security for S/MIME CMS Content Type registry</a>
         </h3>
 <p id="section-7.2-1">Please add the FC to the SMI Security for S/MIME CMS Content Type (1.2.840.113549.1.9.16.1) registry (https://www.iana.org/assignments/smi-numbers/smi-numbers.xml#security-smime-1) as follows:<a href="#section-7.2-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-7.2-2">
 <pre>
-Decimal     Description                  Specification
----------------------------------------------------------------------
-TBD         id-ct-FC                     [RFC-to-be]
+Decimal  |  Description                | Specification
+----------------------------------------------------------------
+TBD      |  id-ct-FC                   | [RFC-to-be]
 </pre><a href="#section-7.2-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -1608,20 +1468,73 @@ TBD         id-ct-FC                     [RFC-to-be]
 <p id="section-7.3-1">Please add Forwarding Commitment to the RPKI Signed Object registry (https://www.iana.org/assignments/rpki/rpki.xhtml#signed-objects) as follows:<a href="#section-7.3-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-7.3-2">
 <pre>
-Name        OID                          Specification
----------------------------------------------------------------------
-Forwarding
-Commitment  1.2.840.113549.1.9.16.1.TBD  [RFC-to-be]
+Name       | OID                         | Specification
+----------------------------------------------------------------
+Forwarding |                             |
+Commitment | 1.2.840.113549.1.9.16.1.TBD | [RFC-to-be]
 </pre><a href="#section-7.3-2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
+<div id="rpki-repository-name-scheme-registry">
+<section id="section-7.4">
+        <h3 id="name-rpki-repository-name-scheme">
+<a href="#section-7.4" class="section-number selfRef">7.4. </a><a href="#name-rpki-repository-name-scheme" class="section-name selfRef">RPKI Repository Name Scheme registry</a>
+        </h3>
+<p id="section-7.4-1">Please add an item for the Forwarding Commitment file extension to the "RPKI Repository Name Scheme" registry created by <span>[<a href="#RFC6481" class="cite xref">RFC6481</a>]</span> as follows:<a href="#section-7.4-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-7.4-2">
+<pre>
+Filename  |
+Extension | RPKI Object                   | Reference
+-----------------------------------------------------------------
+     .for | Forwarding Commitment         | [RFC-to-be]
+</pre><a href="#section-7.4-2" class="pilcrow">¶</a>
+</div>
 </section>
 </div>
+<div id="media-type-registry">
+<section id="section-7.5">
+        <h3 id="name-media-type-registry">
+<a href="#section-7.5" class="section-number selfRef">7.5. </a><a href="#name-media-type-registry" class="section-name selfRef">Media Type registry</a>
+        </h3>
+<p id="section-7.5-1">The IANA is requested to register the media type application/rpki-fc in the "Media Type" registry as follows:<a href="#section-7.5-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-7.5-2">
+<pre>
+  Type name: application
+  Subtype name: rpki-fc
+  Required parameters: N/A
+  Optional parameters: N/A
+  Encoding considerations: binary
+  Security considerations: Carries an RPKI FC [RFC-to-be].
+      This media type contains no active content. See
+      Section xxx of [RFC-to-be] for further information.
+  Interoperability considerations: None
+  Published specification: [RFC-to-be]
+  Applications that use this media type: RPKI operators
+  Additional information:
+    Content: This media type is a signed object, as defined
+        in [RFC6488], which contains a payload of a list of
+        AS identifiers (ASIDs) as defined in [RFC-to-be].
+    Magic number(s): None
+    File extension(s): .for
+    Macintosh file type code(s):
+  Person &amp; email address to contact for further information:
+    Yangfei Guo &lt;guoyangfei@zgclab.edu.cn&gt;
+  Intended usage: COMMON
+  Restrictions on usage: None
+  Change controller: IETF
+</pre><a href="#section-7.5-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="sec-combined-references">
 <section id="section-8">
       <h2 id="name-references">
 <a href="#section-8" class="section-number selfRef">8. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
+<div id="sec-normative-references">
 <section id="section-8.1">
         <h3 id="name-normative-references">
 <a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
@@ -1635,41 +1548,34 @@ Commitment  1.2.840.113549.1.9.16.1.TBD  [RFC-to-be]
         <dd>
 <span class="refAuthor">Lynn, C.</span>, <span class="refAuthor">Kent, S.</span>, and <span class="refAuthor">K. Seo</span>, <span class="refTitle">"X.509 Extensions for IP Addresses and AS Identifiers"</span>, <span class="seriesInfo">RFC 3779</span>, <span class="seriesInfo">DOI 10.17487/RFC3779</span>, <time datetime="2004-06" class="refDate">June 2004</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc3779">https://www.rfc-editor.org/rfc/rfc3779</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="RFC4271">[RFC4271]</dt>
-        <dd>
-<span class="refAuthor">Rekhter, Y., Ed.</span>, <span class="refAuthor">Li, T., Ed.</span>, and <span class="refAuthor">S. Hares, Ed.</span>, <span class="refTitle">"A Border Gateway Protocol 4 (BGP-4)"</span>, <span class="seriesInfo">RFC 4271</span>, <span class="seriesInfo">DOI 10.17487/RFC4271</span>, <time datetime="2006-01" class="refDate">January 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4271">https://www.rfc-editor.org/rfc/rfc4271</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC5652">[RFC5652]</dt>
         <dd>
 <span class="refAuthor">Housley, R.</span>, <span class="refTitle">"Cryptographic Message Syntax (CMS)"</span>, <span class="seriesInfo">STD 70</span>, <span class="seriesInfo">RFC 5652</span>, <span class="seriesInfo">DOI 10.17487/RFC5652</span>, <time datetime="2009-09" class="refDate">September 2009</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5652">https://www.rfc-editor.org/rfc/rfc5652</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="RFC6480">[RFC6480]</dt>
+<dt id="RFC6268">[RFC6268]</dt>
         <dd>
-<span class="refAuthor">Lepinski, M.</span> and <span class="refAuthor">S. Kent</span>, <span class="refTitle">"An Infrastructure to Support Secure Internet Routing"</span>, <span class="seriesInfo">RFC 6480</span>, <span class="seriesInfo">DOI 10.17487/RFC6480</span>, <time datetime="2012-02" class="refDate">February 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6480">https://www.rfc-editor.org/rfc/rfc6480</a>&gt;</span>. </dd>
+<span class="refAuthor">Schaad, J.</span> and <span class="refAuthor">S. Turner</span>, <span class="refTitle">"Additional New ASN.1 Modules for the Cryptographic Message Syntax (CMS) and the Public Key Infrastructure Using X.509 (PKIX)"</span>, <span class="seriesInfo">RFC 6268</span>, <span class="seriesInfo">DOI 10.17487/RFC6268</span>, <time datetime="2011-07" class="refDate">July 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6268">https://www.rfc-editor.org/rfc/rfc6268</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6481">[RFC6481]</dt>
+        <dd>
+<span class="refAuthor">Huston, G.</span>, <span class="refAuthor">Loomans, R.</span>, and <span class="refAuthor">G. Michaelson</span>, <span class="refTitle">"A Profile for Resource Certificate Repository Structure"</span>, <span class="seriesInfo">RFC 6481</span>, <span class="seriesInfo">DOI 10.17487/RFC6481</span>, <time datetime="2012-02" class="refDate">February 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6481">https://www.rfc-editor.org/rfc/rfc6481</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC6485">[RFC6485]</dt>
         <dd>
 <span class="refAuthor">Huston, G.</span>, <span class="refTitle">"The Profile for Algorithms and Key Sizes for Use in the Resource Public Key Infrastructure (RPKI)"</span>, <span class="seriesInfo">RFC 6485</span>, <span class="seriesInfo">DOI 10.17487/RFC6485</span>, <time datetime="2012-02" class="refDate">February 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6485">https://www.rfc-editor.org/rfc/rfc6485</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC6487">[RFC6487]</dt>
+        <dd>
+<span class="refAuthor">Huston, G.</span>, <span class="refAuthor">Michaelson, G.</span>, and <span class="refAuthor">R. Loomans</span>, <span class="refTitle">"A Profile for X.509 PKIX Resource Certificates"</span>, <span class="seriesInfo">RFC 6487</span>, <span class="seriesInfo">DOI 10.17487/RFC6487</span>, <time datetime="2012-02" class="refDate">February 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6487">https://www.rfc-editor.org/rfc/rfc6487</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC6488">[RFC6488]</dt>
         <dd>
 <span class="refAuthor">Lepinski, M.</span>, <span class="refAuthor">Chi, A.</span>, and <span class="refAuthor">S. Kent</span>, <span class="refTitle">"Signed Object Template for the Resource Public Key Infrastructure (RPKI)"</span>, <span class="seriesInfo">RFC 6488</span>, <span class="seriesInfo">DOI 10.17487/RFC6488</span>, <time datetime="2012-02" class="refDate">February 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6488">https://www.rfc-editor.org/rfc/rfc6488</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="RFC7908">[RFC7908]</dt>
-        <dd>
-<span class="refAuthor">Sriram, K.</span>, <span class="refAuthor">Montgomery, D.</span>, <span class="refAuthor">McPherson, D.</span>, <span class="refAuthor">Osterweil, E.</span>, and <span class="refAuthor">B. Dickson</span>, <span class="refTitle">"Problem Definition and Classification of BGP Route Leaks"</span>, <span class="seriesInfo">RFC 7908</span>, <span class="seriesInfo">DOI 10.17487/RFC7908</span>, <time datetime="2016-06" class="refDate">June 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7908">https://www.rfc-editor.org/rfc/rfc7908</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-</dl>
-</section>
-<section id="section-8.2">
-        <h3 id="name-informative-references">
-<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
-        </h3>
-<dl class="references">
 <dt id="X.680">[X.680]</dt>
         <dd>
 <span class="refAuthor">ITU-T</span>, <span class="refTitle">"Information technology -- Abstract Syntax Notation One (ASN.1): Specification of basic notation"</span>, <span class="seriesInfo">Recommendation ITU-T X.680 </span>, <time datetime="2021-02" class="refDate">February 2021</time>, <span>&lt;<a href="https://itu.int/rec/T-REC-X.680-202102-I/en">https://itu.int/rec/T-REC-X.680-202102-I/en</a>&gt;</span>. </dd>
@@ -1680,7 +1586,34 @@ Commitment  1.2.840.113549.1.9.16.1.TBD  [RFC-to-be]
 <dd class="break"></dd>
 </dl>
 </section>
+</div>
+<div id="sec-informative-references">
+<section id="section-8.2">
+        <h3 id="name-informative-references">
+<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="RFC4271">[RFC4271]</dt>
+        <dd>
+<span class="refAuthor">Rekhter, Y., Ed.</span>, <span class="refAuthor">Li, T., Ed.</span>, and <span class="refAuthor">S. Hares, Ed.</span>, <span class="refTitle">"A Border Gateway Protocol 4 (BGP-4)"</span>, <span class="seriesInfo">RFC 4271</span>, <span class="seriesInfo">DOI 10.17487/RFC4271</span>, <time datetime="2006-01" class="refDate">January 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4271">https://www.rfc-editor.org/rfc/rfc4271</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6480">[RFC6480]</dt>
+        <dd>
+<span class="refAuthor">Lepinski, M.</span> and <span class="refAuthor">S. Kent</span>, <span class="refTitle">"An Infrastructure to Support Secure Internet Routing"</span>, <span class="seriesInfo">RFC 6480</span>, <span class="seriesInfo">DOI 10.17487/RFC6480</span>, <time datetime="2012-02" class="refDate">February 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6480">https://www.rfc-editor.org/rfc/rfc6480</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7908">[RFC7908]</dt>
+        <dd>
+<span class="refAuthor">Sriram, K.</span>, <span class="refAuthor">Montgomery, D.</span>, <span class="refAuthor">McPherson, D.</span>, <span class="refAuthor">Osterweil, E.</span>, and <span class="refAuthor">B. Dickson</span>, <span class="refTitle">"Problem Definition and Classification of BGP Route Leaks"</span>, <span class="seriesInfo">RFC 7908</span>, <span class="seriesInfo">DOI 10.17487/RFC7908</span>, <time datetime="2016-06" class="refDate">June 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7908">https://www.rfc-editor.org/rfc/rfc7908</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9582">[RFC9582]</dt>
+      <dd>
+<span class="refAuthor">Snijders, J.</span>, <span class="refAuthor">Maddison, B.</span>, <span class="refAuthor">Lepinski, M.</span>, <span class="refAuthor">Kong, D.</span>, and <span class="refAuthor">S. Kent</span>, <span class="refTitle">"A Profile for Route Origin Authorizations (ROAs)"</span>, <span class="seriesInfo">RFC 9582</span>, <span class="seriesInfo">DOI 10.17487/RFC9582</span>, <time datetime="2024-05" class="refDate">May 2024</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9582">https://www.rfc-editor.org/rfc/rfc9582</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
 </section>
+</div>
+</section>
+</div>
 <div id="acknowledgments">
 <section id="appendix-A">
       <h2 id="name-acknowledgments">
@@ -1695,13 +1628,13 @@ Commitment  1.2.840.113549.1.9.16.1.TBD  [RFC-to-be]
 <a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
 <address class="vcard">
-        <div dir="auto" class="left"><span class="fn nameRole">Ke Xu</span></div>
-<div dir="auto" class="left"><span class="org">Tsinghua University</span></div>
+        <div dir="auto" class="left"><span class="fn nameRole">Yangfei Guo</span></div>
+<div dir="auto" class="left"><span class="org">Zhongguancun Laboratory</span></div>
 <div dir="auto" class="left"><span class="locality">Beijing</span></div>
 <div dir="auto" class="left"><span class="country-name">China</span></div>
 <div class="email">
 <span>Email:</span>
-<a href="mailto:xuke@tsinghua.edu.cn" class="email">xuke@tsinghua.edu.cn</a>
+<a href="mailto:guoyangfei@zgclab.edu.cn" class="email">guoyangfei@zgclab.edu.cn</a>
 </div>
 </address>
 <address class="vcard">
@@ -1715,33 +1648,33 @@ Commitment  1.2.840.113549.1.9.16.1.TBD  [RFC-to-be]
 </div>
 </address>
 <address class="vcard">
-        <div dir="auto" class="left"><span class="fn nameRole">Yangfei Guo</span></div>
-<div dir="auto" class="left"><span class="org">Zhongguancun Labratory</span></div>
-<div dir="auto" class="left"><span class="locality">Beijing</span></div>
-<div dir="auto" class="left"><span class="country-name">China</span></div>
-<div class="email">
-<span>Email:</span>
-<a href="mailto:guoyangfei@zgclab.edu.cn" class="email">guoyangfei@zgclab.edu.cn</a>
-</div>
-</address>
-<address class="vcard">
-        <div dir="auto" class="left"><span class="fn nameRole">Jiangou Zhan</span></div>
+        <div dir="auto" class="left"><span class="fn nameRole">Ke Xu</span></div>
 <div dir="auto" class="left"><span class="org">Tsinghua University</span></div>
 <div dir="auto" class="left"><span class="locality">Beijing</span></div>
 <div dir="auto" class="left"><span class="country-name">China</span></div>
 <div class="email">
 <span>Email:</span>
-<a href="mailto:904542587@qq.com" class="email">904542587@qq.com</a>
+<a href="mailto:xuke@tsinghua.edu.cn" class="email">xuke@tsinghua.edu.cn</a>
 </div>
 </address>
 <address class="vcard">
-        <div dir="auto" class="left"><span class="fn nameRole">Jianping Wu</span></div>
+        <div dir="auto" class="left"><span class="fn nameRole">Zhuotao Liu</span></div>
 <div dir="auto" class="left"><span class="org">Tsinghua University</span></div>
 <div dir="auto" class="left"><span class="locality">Beijing</span></div>
 <div dir="auto" class="left"><span class="country-name">China</span></div>
 <div class="email">
 <span>Email:</span>
-<a href="mailto:jianping@cernet.edu.cn" class="email">jianping@cernet.edu.cn</a>
+<a href="mailto:zhuotaoliu@tsinghua.edu.cn" class="email">zhuotaoliu@tsinghua.edu.cn</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Qi Li</span></div>
+<div dir="auto" class="left"><span class="org">Tsinghua University</span></div>
+<div dir="auto" class="left"><span class="locality">Beijing</span></div>
+<div dir="auto" class="left"><span class="country-name">China</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:qli01@tsinghua.edu.cn" class="email">qli01@tsinghua.edu.cn</a>
 </div>
 </address>
 </section>
