@@ -240,7 +240,7 @@ Table of Contents
 3.3.1.  previousASes
 
    The previousASes field contains the upstream ASes' number of the
-   issuer AS that can advertise the prefixes to the issuer AS.
+   issuer AS that can advertise the routes to the issuer AS.
 
 3.3.2.  nexthopASes
 
@@ -251,7 +251,7 @@ Table of Contents
 
    The originASes field contains a set of ASes.  It associates with ROAs
    [RFC9582].  This is an optional field.  When it is blank, it means
-   that all traffic received from upstream ASes defined in the
+   that all routes received from upstream ASes defined in the
    previousASes field could be advertised to downstream ASes defined in
    the nexthopASes field.
 
