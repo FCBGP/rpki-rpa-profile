@@ -178,7 +178,7 @@ The routingIntents field comprises a list of routing intents associated with the
 
 ### previousASes
 
-The previousASes field contains the upstream ASes' number of the issuer AS that can advertise the prefixes to the issuer AS.
+The previousASes field contains the upstream ASes' number of the issuer AS that can advertise the routes to the issuer AS.
 
 ### nexthopASes
 
@@ -186,7 +186,7 @@ The nexthopASes field contains the downstream ASes' number of the issuer AS that
 
 ### originASes
 
-The originASes field contains a set of ASes. It associates with ROAs {{RFC9582}}. This is an optional field. When it is blank, it means that all traffic received from upstream ASes defined in the previousASes field could be advertised to downstream ASes defined in the nexthopASes field.
+The originASes field contains a set of ASes. It associates with ROAs {{RFC9582}}. This is an optional field. When it is blank, it means that all routes received from upstream ASes defined in the previousASes field could be advertised to downstream ASes defined in the nexthopASes field.
 
 
 # Forwarding Commitment Validation
