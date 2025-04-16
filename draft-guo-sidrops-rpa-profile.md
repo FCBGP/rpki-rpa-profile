@@ -124,7 +124,7 @@ The content-type for an RPA is defined as ForwardingCommitment and has the numer
 
 This OID MUST appear both within the eContentType in the encapContentInfo object as well as the content-type signed attribute in the signerInfo object (see {{RFC6488}}).
 
-# The RPA eContent {#The-FC-eContent}
+# The RPA eContent {#The-RPA-eContent}
 
 The content of an RPA identifies feasible AS's route paths. Upon receiving a BGP-UPDATE message, other ASes can perform AS-path verification according to the validated RPAs. An RPA is an instance of RoutePathAuthorization, formally defined by the following ASN.1 {{X.680}} module:
 
