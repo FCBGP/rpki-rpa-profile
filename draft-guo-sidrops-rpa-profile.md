@@ -1,3 +1,6 @@
+---
+ 
+title: "A Profile for Route Path Authorizations (RPAs)"
 abbrev: "RPKI RPA Profile"
 category: std
 
