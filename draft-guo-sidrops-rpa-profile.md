@@ -109,7 +109,7 @@ The RPA uses the template for RPKI digitally signed objects {{RFC6488}} for the 
 
 To complete the specification of the RPA (see {{Section 4 of RFC6488}}), this document defines:
 
-1.  The object identifier (OID) that identifies the FC-signed object. This OID appears in the eContentType field of the encapContentInfo object as well as the content-type signed attribute within the signerInfo structure.
+1.  The object identifier (OID) that identifies the RPA-signed object. This OID appears in the eContentType field of the encapContentInfo object as well as the content-type signed attribute within the signerInfo structure.
 2.  The ASN.1 syntax for the RPA content, which is the payload signed by the BGP speaker. The RPA content is encoded using the ASN.1 {{X.680}} Distinguished Encoding Rules (DER) {{X.690}}.
 3.  The steps required to validate an RPA beyond the validation steps specified in {{RFC6488}}.
 
@@ -120,7 +120,7 @@ To complete the specification of the RPA (see {{Section 4 of RFC6488}}), this do
 
 # The RPA Content-Type
 
-The content-type for an RPA is defined as ForwardingCommitment and has the numerical value of 1.2.840.113549.1.9.16.1.(TBD).
+The content-type for an RPA is defined as RoutePathAuthorization and has the numerical value of 1.2.840.113549.1.9.16.1.(TBD).
 
 This OID MUST appear both within the eContentType in the encapContentInfo object as well as the content-type signed attribute in the signerInfo object (see {{RFC6488}}).
 
