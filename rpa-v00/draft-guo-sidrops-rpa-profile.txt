@@ -5,11 +5,11 @@
 Network Working Group                                             Y. Guo
 Internet-Draft                                   Zhongguancun Laboratory
 Intended status: Standards Track                                 X. Wang
-Expires: 18 October 2025                                           K. Xu
+Expires: 19 October 2025                                           K. Xu
                                                                   Z. Liu
                                                                    Q. Li
                                                      Tsinghua University
-                                                           16 April 2025
+                                                           17 April 2025
 
 
              A Profile for Route Path Authorizations (RPAs)
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 October 2025.
+   This Internet-Draft will expire on 19 October 2025.
 
 Copyright Notice
 
@@ -144,8 +144,8 @@ Table of Contents
    To complete the specification of the RPA (see Section 4 of
    [RFC6488]), this document defines:
 
-   1.  The object identifier (OID) that identifies the FC-signed object.
-       This OID appears in the eContentType field of the
+   1.  The object identifier (OID) that identifies the RPA-signed
+       object.  This OID appears in the eContentType field of the
        encapContentInfo object as well as the content-type signed
        attribute within the signerInfo structure.
 
@@ -166,7 +166,7 @@ Table of Contents
 
 2.  The RPA Content-Type
 
-   The content-type for an RPA is defined as ForwardingCommitment and
+   The content-type for an RPA is defined as RoutePathAuthorization and
    has the numerical value of 1.2.840.113549.1.9.16.1.(TBD).
 
    This OID MUST appear both within the eContentType in the
