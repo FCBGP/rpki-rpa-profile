@@ -1,7 +1,7 @@
 ---
 
 title: "A Profile for Route Path Authorizations (RPAs)"
-abbrev: "RPKI RPA Profile"
+abbrev: "Route Path Authorizations"
 category: std
 
 docname: draft-guo-sidrops-rpa-profile-latest
@@ -22,7 +22,7 @@ venue:
   #  mail: WG@example.com
   #  arch: https://example.com/WG
   github: "FCBGP/rpa-profile"
-  latest: "https://fcbgp.github.io/rpa-profile/draft-guo-sidrops-rpa-profile.html"
+  latest: "https://fcbgp.github.io/rpki-rpa-profile/draft-guo-sidrops-rpa-profile.html"
 
 author:
   -
@@ -88,22 +88,21 @@ informative:
 
 --- abstract
 
-This document defines a Cryptographic Message Syntax (CMS) protected content type for Route Path Authorizations (RPA) objects used in Resource Public Key Infrastructure (RPKI). An RPA is a digitally signed object that provides a means of verifying whether an IP address block is received from `AS a` to `AS b` and announced from `AS b` to `AS c`. When validated, an RPA's eContent can be used for the detection and mitigation of route hijacking, especially providing protection for the AS_PATH attribute in BGP-UPDATE.
-
+This document defines a Cryptographic Message Syntax (CMS) protected content type for Route Path Authorizations (RPA) objects used in Resource Public Key Infrastructure (RPKI). An RPA is a digitally signed object that provides a means of verifying whether an IP address block is received from `AS a` to `AS b` and announced from `AS b` to `AS c`. When validated, an RPA's eContent can be used for the detection and mitigation of route hijacking, especially providing protection for the AS_PATH attribute in BGP-UPDATE. This object is a variant of the aut-num object in the Internet Routing Registry (IRR).
 
 --- middle
 
 # Introduction
 
-The Border Gateway Protocol (BGP) {{RFC4271}} was designed with no mechanisms to validate the security of BGP attributes. There are two types of BGP security issues, BGP Hijacks and BGP Route Leaks {{RFC7908}}, plague Internet security.
+The Border Gateway Protocol (BGP) {{RFC4271}} was designed with no mechanisms to validate the security of BGP attributes. There are two types of BGP security issues, BGP Hijacks and BGP Route Leaks {{RFC7908}}, that plague Internet security.
 
 The primary purpose of the Resource Public Key Infrastructure (RPKI) is to improve route security.  (See {{RFC6480}} for more information.) As part of this system, a mechanism is needed to allow entities to verify that an IP address holder has permitted an AS to advertise a route along the propagation path. A Route Path Authorization (RPA) provides this function.
 
-A RPA is a digitally signed object through which the issuer (the holder of an Autonomous System identifier), can authorize one or more other Autonomous Systems (ASes) as its upstream ASes or one or more other ASes as its downstream ASes. The upstream ASes, or previous ASes, mean that the issuer AS can receive BGP route updates from these ASes. The downstream ASes, or next ASes, mean that the issuer AS would advertise the BGP route to these ASes.
+An RPA is a digitally signed object through which the issuer (the holder of an Autonomous System identifier) can authorize one or more other Autonomous Systems (ASes) as its upstream ASes or one or more other ASes as its downstream ASes. The upstream ASes, or previous ASes, mean that the issuer AS can receive BGP route updates from these ASes. The downstream ASes, or next ASes, mean that the issuer AS would advertise the BGP route to these ASes.
 
 This propagation model uses a Web of Trust, i.e., the issuer AS trusts its upstream ASes and authorizes its downstream ASes to propagate its received routes. Then, all downstream ASes would also accept the routes and proceed to send them to their next hops. The relationship among them is the signed RPA, which attests that a downstream AS has been selected by the directly linked upstream AS to announce the routes. This introduces an ingress policy.
 
-Initially, all ASes on the propagation path should sign one or more RPAs independently if they want to propagate the route to its downstream ASes, and then be able to detect and filter malicious routes (e.g., route leaks and route hijacks). In addition, the RPA can also attest that all ASes on a propagation path have received and selected this AS_PATH, which can be certified as a trusted path.
+Initially, all ASes on the propagation path should sign one or more RPAs independently if they want to propagate the route to their downstream ASes, and then be able to detect and filter malicious routes (e.g., route leaks and route hijacks). In addition, the RPA can also attest that all ASes on a propagation path have received and selected this AS_PATH, which can be certified as a trusted path.
 
 The RPA uses the template for RPKI digitally signed objects {{RFC6488}} for the definition of a Cryptographic Message Syntax (CMS) {{RFC5652}} wrapper for the RPA content as well as a generic validation procedure for RPKI signed objects.  As RPKI certificates issued by the current infrastructure are required to validate RPA, we assume the mandatory-to-implement algorithms in {{RFC6485}} or its successor.
 
@@ -212,7 +211,7 @@ To validate an RPA, the relying party MUST perform all the validation checks spe
 
 # Operational Consideration
 
-Multiple valid RPA objects which contain the same asID could exist. In such a case, the union of these objects forms the complete route path set of this AS. For a given asID, it is RECOMMENDED that a CA maintains a single RPA object. If an AS holder publishes an RPA object, then relying parties SHOULD assume that this object is complete for that issuer AS.
+Multiple valid RPA objects that contain the same asID could exist. In such a case, the union of these objects forms the complete route path set of this AS. For a given asID, it is RECOMMENDED that a CA maintains a single RPA object. If an AS holder publishes an RPA object, then relying parties SHOULD assume that this object is complete for that issuer AS.
 
 If one AS receives a BGP UPDATE message with the issuer AS in the AS_PATH attribute which cannot match any routing paths of this issuer AS, it implies that there is an AS-path forgery in this message.
 
