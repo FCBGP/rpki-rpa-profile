@@ -5,11 +5,11 @@
 Network Working Group                                             Y. Guo
 Internet-Draft                                   Zhongguancun Laboratory
 Intended status: Standards Track                                 X. Wang
-Expires: 19 October 2025                                           K. Xu
+Expires: 21 October 2025                                           K. Xu
                                                                   Z. Liu
                                                                    Q. Li
                                                      Tsinghua University
-                                                           17 April 2025
+                                                           19 April 2025
 
 
              A Profile for Route Path Authorizations (RPAs)
@@ -24,14 +24,15 @@ Abstract
    address block is received from AS a to AS b and announced from AS b
    to AS c.  When validated, an RPA's eContent can be used for the
    detection and mitigation of route hijacking, especially providing
-   protection for the AS_PATH attribute in BGP-UPDATE.
+   protection for the AS_PATH attribute in BGP-UPDATE.  This object is a
+   variant of the aut-num object in the Internet Routing Registry (IRR).
 
 About This Document
 
    This note is to be removed before publishing as an RFC.
 
    The latest revision of this draft can be found at
-   https://fcbgp.github.io/rpa-profile/draft-guo-sidrops-rpa-
+   https://fcbgp.github.io/rpki-rpa-profile/draft-guo-sidrops-rpa-
    profile.html.  Status information for this document may be found at
    https://datatracker.ietf.org/doc/draft-guo-sidrops-rpa-profile/.
 
@@ -53,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 19 October 2025.
+   This Internet-Draft will expire on 21 October 2025.
 
 Copyright Notice
 
@@ -102,7 +103,7 @@ Table of Contents
    The Border Gateway Protocol (BGP) [RFC4271] was designed with no
    mechanisms to validate the security of BGP attributes.  There are two
    types of BGP security issues, BGP Hijacks and BGP Route Leaks
-   [RFC7908], plague Internet security.
+   [RFC7908], that plague Internet security.
 
    The primary purpose of the Resource Public Key Infrastructure (RPKI)
    is to improve route security.  (See [RFC6480] for more information.)
@@ -111,8 +112,8 @@ Table of Contents
    route along the propagation path.  A Route Path Authorization (RPA)
    provides this function.
 
-   A RPA is a digitally signed object through which the issuer (the
-   holder of an Autonomous System identifier), can authorize one or more
+   An RPA is a digitally signed object through which the issuer (the
+   holder of an Autonomous System identifier) can authorize one or more
    other Autonomous Systems (ASes) as its upstream ASes or one or more
    other ASes as its downstream ASes.  The upstream ASes, or previous
    ASes, mean that the issuer AS can receive BGP route updates from
@@ -128,7 +129,7 @@ Table of Contents
    announce the routes.  This introduces an ingress policy.
 
    Initially, all ASes on the propagation path should sign one or more
-   RPAs independently if they want to propagate the route to its
+   RPAs independently if they want to propagate the route to their
    downstream ASes, and then be able to detect and filter malicious
    routes (e.g., route leaks and route hijacks).  In addition, the RPA
    can also attest that all ASes on a propagation path have received and
@@ -303,7 +304,7 @@ END
 
 5.  Operational Consideration
 
-   Multiple valid RPA objects which contain the same asID could exist.
+   Multiple valid RPA objects that contain the same asID could exist.
    In such a case, the union of these objects forms the complete route
    path set of this AS.  For a given asID, it is RECOMMENDED that a CA
    maintains a single RPA object.  If an AS holder publishes an RPA
