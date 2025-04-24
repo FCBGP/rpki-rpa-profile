@@ -180,23 +180,23 @@ The asID field contains the AS number of the issuer AS associated with this RPA.
 
 ## routePaths
 
-The routePaths field comprises a list of routing intents associated with the issuing asID. Each routing intent generally includes an upstream AS, a downstream AS, and a specified route set. To optimize space, the field may aggregate routing paths that share the same route set. Therefore, the routePaths field indicates that for a route set represented by origins or prefixes, the issuing asID can receive routes from any AS in previousASes and subsequently forward them to any AS in nexthopASes.
+The routePaths field comprises a list of feasible route paths associated with the issuing asID. Each feasible route path generally includes an upstream AS, a downstream AS, and a set of IP prefix blocks. This field may aggregate route paths that share the same IP prefix blocks to optimize space. Therefore, the routePaths field indicates that for an IP prefix blocks represented by origins or prefixes, the issuing asID can receive routes from any AS in previousASes and subsequently forward them to any AS in nexthopASes. The origins and prefixes fields both indicate a set of IP prefix blocks. Both of them can be None; in that case, it means all IP prefix blocks can be forwarded according to the feasible route paths.
 
 ### previousASes
 
-The previousASes field contains the upstream ASes' number of the issuer AS that can advertise the routes to the issuer AS.
+The previousASes field contains the upstream AS Number (ASN) of the issuer AS that can advertise the routes to the issuer AS.
 
 ### nexthopASes
 
-The nexthopASes field contains the downstream ASes' number of the issuer AS that can receive advertised routes from the issuer AS.
+The nexthopASes field contains the downstream AS Number (ASN) of the issuer AS that can receive advertised routes from the issuer AS.
 
 ### origins
 
-The origins field contains a set of ASes and is associated with Route Origin Authorization (ROA) {{RFC9582}} or Signed Prefix List (SPL) {{SignedPrefixList}}. This is an optional field. If populated, it indicates that all routes belonging to the specified ASes can be received from the upstream ASes in the previousASes field and advertised to the downstream ASes in the nexthopASes field. If this field is blank, the prefixes field must be checked. If the prefixes field is not empty, it has the meanings defined there. Otherwise, it means that all routes received from the upstream ASes in the previousASes field may be advertised to the downstream ASes in the nexthopASes field.
+The origins field contains a set of ASes and is associated with Route Origin Authorization (ROA) {{RFC9582}} or Signed Prefix List (SPL) {{SignedPrefixList}}. This is an optional field. If populated, it indicates that all routes belonging to the specified origin ASes can be received from the upstream ASes in the previousASes field and advertised to the downstream ASes in the nexthopASes field.
 
 ### prefixes
 
-The prefixes field contains optional prefixes. If populated, it indicates that all routes specified can be received from the upstream ASes listed in the previousASes field and advertised to the downstream ASes in the nexthopASes field. If this field is blank, the origins field MUST be checked. If the origins field is not empty, it has the meanings specified there. Otherwise, it means that all routes received from the upstream ASes in the previousASes field may be advertised to the downstream ASes in the nexthopASes field.
+The prefixes field contains IP prefix blocks. It is an optional field. If populated, it indicates that all routes specified can be received from the upstream ASes listed in the previousASes field and advertised to the downstream ASes in the nexthopASes field.
 
 
 # RPA Validation
@@ -213,7 +213,7 @@ To validate an RPA, the relying party MUST perform all the validation checks spe
 
 Multiple valid RPA objects that contain the same asID could exist. In such a case, the union of these objects forms the complete route path set of this AS. For a given asID, it is RECOMMENDED that a CA maintains a single RPA object. If an AS holder publishes an RPA object, then relying parties SHOULD assume that this object is complete for that issuer AS.
 
-If one AS receives a BGP UPDATE message with the issuer AS in the AS_PATH attribute which cannot match any routing paths of this issuer AS, it implies that there is an AS-path forgery in this message.
+If one AS receives a BGP UPDATE message with the issuer AS in the AS_PATH attribute which cannot match any route paths of this issuer AS, it implies that there is an AS-path forgery in this message.
 
 # Security Considerations
 
