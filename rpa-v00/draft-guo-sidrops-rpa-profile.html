@@ -1051,7 +1051,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Guo, et al.</td>
-<td class="center">Expires 21 October 2025</td>
+<td class="center">Expires 26 October 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,12 +1064,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-guo-sidrops-rpa-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-04-19" class="published">19 April 2025</time>
+<time datetime="2025-04-24" class="published">24 April 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-10-21">21 October 2025</time></dd>
+<dd class="expires"><time datetime="2025-10-26">26 October 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1130,7 +1130,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 21 October 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 26 October 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1363,13 +1363,13 @@ END
         <h3 id="name-routepaths">
 <a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-routepaths" class="section-name selfRef">routePaths</a>
         </h3>
-<p id="section-3.3-1">The routePaths field comprises a list of routing intents associated with the issuing asID. Each routing intent generally includes an upstream AS, a downstream AS, and a specified route set. To optimize space, the field may aggregate routing paths that share the same route set. Therefore, the routePaths field indicates that for a route set represented by origins or prefixes, the issuing asID can receive routes from any AS in previousASes and subsequently forward them to any AS in nexthopASes.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3-1">The routePaths field comprises a list of feasible route paths associated with the issuing asID. Each feasible route path generally includes an upstream AS, a downstream AS, and a set of IP prefix blocks. This field may aggregate route paths that share the same IP prefix blocks to optimize space. Therefore, the routePaths field indicates that for an IP prefix blocks represented by origins or prefixes, the issuing asID can receive routes from any AS in previousASes and subsequently forward them to any AS in nexthopASes. The origins and prefixes fields both indicate a set of IP prefix blocks. Both of them can be None; in that case, it means all IP prefix blocks can be forwarded according to the feasible route paths.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
 <div id="previousases">
 <section id="section-3.3.1">
           <h4 id="name-previousases">
 <a href="#section-3.3.1" class="section-number selfRef">3.3.1. </a><a href="#name-previousases" class="section-name selfRef">previousASes</a>
           </h4>
-<p id="section-3.3.1-1">The previousASes field contains the upstream ASes' number of the issuer AS that can advertise the routes to the issuer AS.<a href="#section-3.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.1-1">The previousASes field contains the upstream AS Number (ASN) of the issuer AS that can advertise the routes to the issuer AS.<a href="#section-3.3.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="nexthopases">
@@ -1377,7 +1377,7 @@ END
           <h4 id="name-nexthopases">
 <a href="#section-3.3.2" class="section-number selfRef">3.3.2. </a><a href="#name-nexthopases" class="section-name selfRef">nexthopASes</a>
           </h4>
-<p id="section-3.3.2-1">The nexthopASes field contains the downstream ASes' number of the issuer AS that can receive advertised routes from the issuer AS.<a href="#section-3.3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-1">The nexthopASes field contains the downstream AS Number (ASN) of the issuer AS that can receive advertised routes from the issuer AS.<a href="#section-3.3.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="origins">
@@ -1385,7 +1385,7 @@ END
           <h4 id="name-origins">
 <a href="#section-3.3.3" class="section-number selfRef">3.3.3. </a><a href="#name-origins" class="section-name selfRef">origins</a>
           </h4>
-<p id="section-3.3.3-1">The origins field contains a set of ASes and is associated with Route Origin Authorization (ROA) <span>[<a href="#RFC9582" class="cite xref">RFC9582</a>]</span> or Signed Prefix List (SPL) <span>[<a href="#SignedPrefixList" class="cite xref">SignedPrefixList</a>]</span>. This is an optional field. If populated, it indicates that all routes belonging to the specified ASes can be received from the upstream ASes in the previousASes field and advertised to the downstream ASes in the nexthopASes field. If this field is blank, the prefixes field must be checked. If the prefixes field is not empty, it has the meanings defined there. Otherwise, it means that all routes received from the upstream ASes in the previousASes field may be advertised to the downstream ASes in the nexthopASes field.<a href="#section-3.3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.3-1">The origins field contains a set of ASes and is associated with Route Origin Authorization (ROA) <span>[<a href="#RFC9582" class="cite xref">RFC9582</a>]</span> or Signed Prefix List (SPL) <span>[<a href="#SignedPrefixList" class="cite xref">SignedPrefixList</a>]</span>. This is an optional field. If populated, it indicates that all routes belonging to the specified origin ASes can be received from the upstream ASes in the previousASes field and advertised to the downstream ASes in the nexthopASes field.<a href="#section-3.3.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="prefixes">
@@ -1393,7 +1393,7 @@ END
           <h4 id="name-prefixes">
 <a href="#section-3.3.4" class="section-number selfRef">3.3.4. </a><a href="#name-prefixes" class="section-name selfRef">prefixes</a>
           </h4>
-<p id="section-3.3.4-1">The prefixes field contains optional prefixes. If populated, it indicates that all routes specified can be received from the upstream ASes listed in the previousASes field and advertised to the downstream ASes in the nexthopASes field. If this field is blank, the origins field <span class="bcp14">MUST</span> be checked. If the origins field is not empty, it has the meanings specified there. Otherwise, it means that all routes received from the upstream ASes in the previousASes field may be advertised to the downstream ASes in the nexthopASes field.<a href="#section-3.3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.4-1">The prefixes field contains IP prefix blocks. It is an optional field. If populated, it indicates that all routes specified can be received from the upstream ASes listed in the previousASes field and advertised to the downstream ASes in the nexthopASes field.<a href="#section-3.3.4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1431,7 +1431,7 @@ END
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-operational-consideration" class="section-name selfRef">Operational Consideration</a>
       </h2>
 <p id="section-5-1">Multiple valid RPA objects that contain the same asID could exist. In such a case, the union of these objects forms the complete route path set of this AS. For a given asID, it is <span class="bcp14">RECOMMENDED</span> that a CA maintains a single RPA object. If an AS holder publishes an RPA object, then relying parties <span class="bcp14">SHOULD</span> assume that this object is complete for that issuer AS.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">If one AS receives a BGP UPDATE message with the issuer AS in the AS_PATH attribute which cannot match any routing paths of this issuer AS, it implies that there is an AS-path forgery in this message.<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-2">If one AS receives a BGP UPDATE message with the issuer AS in the AS_PATH attribute which cannot match any route paths of this issuer AS, it implies that there is an AS-path forgery in this message.<a href="#section-5-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-considerations">
