@@ -155,11 +155,11 @@ ct-RPA CONTENT-TYPE ::=
 RoutePathAuthorization ::= SEQUENCE {
     version [0]         INTEGER DEFAULT 0,
     asID                ASID,
-    routePaths        SEQUENCE (SIZE(1..MAX)) OF RoutePathDescription }
+    routePathBlocks     SEQUENCE (SIZE(1..MAX)) OF RoutePathDescription }
 
 RoutePathDescription ::= SEQUENCE {
-    previousASes        SEQUENCE (SIZE(0..MAX)) OF ASID,
-    nexthopASes         SEQUENCE (SIZE(0..MAX)) OF ASID,
+    previousHops        SEQUENCE (SIZE(0..MAX)) OF ASID,
+    nextHops            SEQUENCE (SIZE(0..MAX)) OF ASID,
     origins             SEQUENCE (SIZE(0..MAX)) OF ASID OPTIONAL,
     prefixes            SEQUENCE (SIZE(0..MAX)) OF IPAddressFamily OPTIONAL }
 
@@ -170,33 +170,33 @@ END
 
 Note that this content appears as the eContent within the encapContentInfo (see {{RFC6488}}).
 
-## version
+## The version Element
 
-The version number of the RoutePathAuthorization MUST be 0.
+The version number of the RoutePathAuthorization entry MUST be 0.
 
-## asID
+## The asID Element
 
 The asID field contains the AS number of the issuer AS associated with this RPA.
 
-## routePaths
+## The routePathBlocks Element
 
-The routePaths field comprises a list of feasible route paths associated with the issuing asID. Each feasible route path generally includes an upstream AS, a downstream AS, and a set of IP prefix blocks. This field may aggregate route paths that share the same IP prefix blocks to optimize space. Therefore, the routePaths field indicates that for an IP prefix blocks represented by origins or prefixes, the issuing asID can receive routes from any AS in previousASes and subsequently forward them to any AS in nexthopASes. The origins and prefixes fields both indicate a set of IP prefix blocks. Both of them can be None; in that case, it means all IP prefix blocks can be forwarded according to the feasible route paths.
+The routePathBlocks field comprises a list of feasible route paths associated with the issuing asID. Each feasible route path generally includes an upstream AS, a downstream AS, and a set of IP prefix blocks. This field may aggregate route paths that share the same IP prefix blocks to optimize space. Therefore, the routePathBlocks field indicates that for an IP prefix blocks represented by origins or prefixes, the issuing asID can receive routes from any AS in previousHops and subsequently forward them to any AS in nextHops. The origins and prefixes fields both indicate a set of IP prefix blocks. Both of them can be None; in that case, it means all IP prefix blocks can be forwarded according to the feasible route paths.
 
-### previousASes
+### The previousHops Element
 
-The previousASes field contains the upstream AS Number (ASN) of the issuer AS that can advertise the routes to the issuer AS.
+The previousHops field contains the upstream AS Number (ASN) of the issuer AS that can advertise the routes to the issuer AS.
 
-### nexthopASes
+### The nextHops Element
 
-The nexthopASes field contains the downstream AS Number (ASN) of the issuer AS that can receive advertised routes from the issuer AS.
+The nextHops field contains the downstream AS Number (ASN) of the issuer AS that can receive advertised routes from the issuer AS.
 
-### origins
+### The origins Element
 
-The origins field contains a set of ASes and is associated with Route Origin Authorization (ROA) {{RFC9582}} or Signed Prefix List (SPL) {{SignedPrefixList}}. This is an optional field. If populated, it indicates that all routes belonging to the specified origin ASes can be received from the upstream ASes in the previousASes field and advertised to the downstream ASes in the nexthopASes field.
+The origins field contains a set of ASes and is associated with Route Origin Authorization (ROA) {{RFC9582}} or Signed Prefix List (SPL) {{SignedPrefixList}}. This is an optional field. If populated, it indicates that all routes belonging to the specified origin ASes can be received from the upstream ASes in the previousHops field and advertised to the downstream ASes in the nextHops field.
 
-### prefixes
+### The prefixes Element
 
-The prefixes field contains IP prefix blocks. It is an optional field. If populated, it indicates that all routes specified can be received from the upstream ASes listed in the previousASes field and advertised to the downstream ASes in the nexthopASes field.
+The prefixes field contains IP prefix blocks. It is an optional field. If populated, it indicates that all routes specified can be received from the upstream ASes listed in the previousHops field and advertised to the downstream ASes in the nextHops field.
 
 
 # RPA Validation
@@ -205,7 +205,7 @@ To validate an RPA, the relying party MUST perform all the validation checks spe
 
 - The contents of the CMS eContent field MUST conform to all the constraints described in {{The-RPA-eContent}}.
 - The Autonomous System Identifier Delegation Extension described in {{RFC3779}} is also used in RPA and MUST be present in the EE certificate contained in the CMS certificates field.
-- The AS identifier present in the RoutePathAuthorization eContent 'asID' field MUST be contained in the AS Identifiers present in the certificate extension.
+- The AS identifier in the RoutePathAuthorization eContent 'asID' field MUST be contained in the AS Identifiers in the certificate extension.
 - The Autonomous System Identifier Delegation extension MUST NOT contain "inherit" elements.
 - The IP Address Delegation Extension {{RFC3779}} is not used in RPA, and MUST NOT be present in the EE certificate.
 
@@ -213,7 +213,7 @@ To validate an RPA, the relying party MUST perform all the validation checks spe
 
 Multiple valid RPA objects that contain the same asID could exist. In such a case, the union of these objects forms the complete route path set of this AS. For a given asID, it is RECOMMENDED that a CA maintains a single RPA object. If an AS holder publishes an RPA object, then relying parties SHOULD assume that this object is complete for that issuer AS.
 
-If one AS receives a BGP UPDATE message with the issuer AS in the AS_PATH attribute which cannot match any route paths of this issuer AS, it implies that there is an AS-path forgery in this message.
+If one AS receives a BGP UPDATE message with the issuer AS in the AS_PATH attribute that cannot match any route paths of this issuer AS, it implies that there is an AS-path forgery in this message.
 
 # Security Considerations
 
