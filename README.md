@@ -1,17 +1,19 @@
-# A Profile for Forwarding Commitments (FCs)
+<!-- regenerate: on (set to off if you edit this file) -->
 
-This is the working area for the individual Internet-Draft, "A Profile for Forwarding Commitments (FCs)".
+# A Profile for Route Path Authorizations (RPAs)
 
-* [Editor's Copy](https://FCBGP.github.io/fc-profile/#go.draft-guo-sidrops-fc-profile.html)
-* [Datatracker Page](https://datatracker.ietf.org/doc/draft-guo-sidrops-fc-profile)
-* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-guo-sidrops-fc-profile)
-* [Compare Editor's Copy to Individual Draft](https://FCBGP.github.io/fc-profile/#go.draft-guo-sidrops-fc-profile.diff)
+This is the working area for the individual Internet-Draft, "A Profile for Route Path Authorizations (RPAs)".
+
+* [Editor's Copy](https://FCBGP.github.io/rpki-rpa-profile/#go.draft-guo-sidrops-rpa-profile.html)
+* [Datatracker Page](https://datatracker.ietf.org/doc/draft-guo-sidrops-rpa-profile)
+* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-guo-sidrops-rpa-profile)
+* [Compare Editor's Copy to Individual Draft](https://FCBGP.github.io/rpki-rpa-profile/#go.draft-guo-sidrops-rpa-profile.diff)
 
 
 ## Contributing
 
 See the
-[guidelines for contributions](https://github.com/FCBGP/fc-profile/blob/main/CONTRIBUTING.md).
+[guidelines for contributions](https://github.com/FCBGP/rpki-rpa-profile/blob/main/CONTRIBUTING.md).
 
 Contributions can be made by creating pull requests.
 The GitHub interface supports creating pull requests using the Edit (✏) button.

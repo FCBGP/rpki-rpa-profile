@@ -17,7 +17,7 @@
 /versioned/
 Gemfile.lock
 archive.json
-draft-guo-sidrops-fc-profile.xml
+draft-guo-sidrops-rpa-profile.xml
 package-lock.json
 report.xml
 !requirements.txt
