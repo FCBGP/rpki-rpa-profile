@@ -4,33 +4,33 @@
 <meta charset="utf-8">
 <meta content="Common,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
-<title>A Profile for Forwarding Commitments (FCs)</title>
+<title>A Profile for Route Path Authorizations (RPAs)</title>
 <meta content="Yangfei Guo" name="author">
 <meta content="Xiaoliang Wang" name="author">
 <meta content="Ke Xu" name="author">
 <meta content="Zhuotao Liu" name="author">
 <meta content="Qi Li" name="author">
 <meta content="
-       This document defines a Cryptographic Message Syntax (CMS) protected content type for Forwarding Commitments (FCs) objects used in Resource Public Key Infrastructure (RPKI). An FC is a digitally signed object that provides a means of verifying whether an IP address block is received from  AS a  to  AS b  and announced from  AS b  to  AS c . When validated, an FC's eContent can be used for the detection and mitigation of route hijacking, especially providing protection for the AS_PATH attribute in BGP-UPDATE. 
+       This document defines a Cryptographic Message Syntax (CMS) protected content type for Route Path Authorizations (RPA) objects used in Resource Public Key Infrastructure (RPKI). An RPA is a digitally signed object that provides a means of verifying whether an IP address block is received from  AS a  to  AS b  and announced from  AS b  to  AS c . When validated, an RPA's eContent can be used for the detection and mitigation of route hijacking, especially providing protection for the AS_PATH attribute in BGP-UPDATE. This object is a variant of the aut-num object in the Internet Routing Registry (IRR). 
     " name="description">
-<meta content="xml2rfc 3.27.0" name="generator">
-<meta content="draft-guo-sidrops-fc-profile-latest" name="ietf.draft">
+<meta content="xml2rfc 3.28.1" name="generator">
+<meta content="draft-guo-sidrops-rpa-profile-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.27.0
-    Python 3.12.9
+  xml2rfc 3.28.1
+    Python 3.12.10
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
-    Jinja2 3.1.5
-    lxml 5.3.0
-    platformdirs 4.3.6
+    Jinja2 3.1.6
+    lxml 5.3.1
+    platformdirs 4.3.8
     pycountry 24.6.1
     PyYAML 6.0.2
     requests 2.32.3
-    setuptools 70.3.0
+    setuptools 80.9.0
     wcwidth 0.2.13
 -->
-<link href="draft-guo-sidrops-fc-profile.xml" rel="alternate" type="application/rfc+xml">
+<link href="draft-guo-sidrops-rpa-profile.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
 <style type="text/css">@font-face {
   font-family: 'Lora';
@@ -1046,12 +1046,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <table class="ears">
 <thead><tr>
 <td class="left">Internet-Draft</td>
-<td class="center">RPKI FC Profile</td>
-<td class="right">February 2025</td>
+<td class="center">Route Path Authorizations</td>
+<td class="right">June 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Guo, et al.</td>
-<td class="center">Expires 23 August 2025</td>
+<td class="center">Expires 10 December 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1061,15 +1061,15 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">Network Working Group</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-guo-sidrops-fc-profile-latest</dd>
+<dd class="internet-draft">draft-guo-sidrops-rpa-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-02-19" class="published">19 February 2025</time>
+<time datetime="2025-06-08" class="published">8 June 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-08-23">23 August 2025</time></dd>
+<dd class="expires"><time datetime="2025-12-10">10 December 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1095,10 +1095,10 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </dd>
 </dl>
 </div>
-<h1 id="title">A Profile for Forwarding Commitments (FCs)</h1>
+<h1 id="title">A Profile for Route Path Authorizations (RPAs)</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document defines a Cryptographic Message Syntax (CMS) protected content type for Forwarding Commitments (FCs) objects used in Resource Public Key Infrastructure (RPKI). An FC is a digitally signed object that provides a means of verifying whether an IP address block is received from <code>AS a</code> to <code>AS b</code> and announced from <code>AS b</code> to <code>AS c</code>. When validated, an FC's eContent can be used for the detection and mitigation of route hijacking, especially providing protection for the AS_PATH attribute in BGP-UPDATE.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document defines a Cryptographic Message Syntax (CMS) protected content type for Route Path Authorizations (RPA) objects used in Resource Public Key Infrastructure (RPKI). An RPA is a digitally signed object that provides a means of verifying whether an IP address block is received from <code>AS a</code> to <code>AS b</code> and announced from <code>AS b</code> to <code>AS c</code>. When validated, an RPA's eContent can be used for the detection and mitigation of route hijacking, especially providing protection for the AS_PATH attribute in BGP-UPDATE. This object is a variant of the aut-num object in the Internet Routing Registry (IRR).<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1106,10 +1106,10 @@ svg :is([fill="white"], [fill^="#fff"]) {
       </h2>
 <p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
 <p id="section-note.1-2">
-        The latest revision of this draft can be found at <span><a href="https://fcbgp.github.io/fc-profile/draft-guo-sidrops-fc-profile.html">https://fcbgp.github.io/fc-profile/draft-guo-sidrops-fc-profile.html</a></span>.
-        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-guo-sidrops-fc-profile/">https://datatracker.ietf.org/doc/draft-guo-sidrops-fc-profile/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+        The latest revision of this draft can be found at <span><a href="https://fcbgp.github.io/rpki-rpa-profile/draft-guo-sidrops-rpa-profile.html">https://fcbgp.github.io/rpki-rpa-profile/draft-guo-sidrops-rpa-profile.html</a></span>.
+        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-guo-sidrops-rpa-profile/">https://datatracker.ietf.org/doc/draft-guo-sidrops-rpa-profile/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
 <p id="section-note.1-3">Source for this draft and an issue tracker can be found at
-        <span><a href="https://github.com/FCBGP/fc-profile">https://github.com/FCBGP/fc-profile</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
+        <span><a href="https://github.com/FCBGP/rpa-profile">https://github.com/FCBGP/rpa-profile</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1130,7 +1130,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 23 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 10 December 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1168,35 +1168,38 @@ svg :is([fill="white"], [fill^="#fff"]) {
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-the-fc-content-type" class="internal xref">The FC Content-Type</a></p>
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-the-rpa-content-type" class="internal xref">The RPA Content-Type</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-the-fc-econtent" class="internal xref">The FC eContent</a></p>
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-the-rpa-econtent" class="internal xref">The RPA eContent</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
-                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-version" class="internal xref">version</a></p>
+                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-the-version-element" class="internal xref">The version Element</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
-                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-asid" class="internal xref">asID</a></p>
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-the-asid-element" class="internal xref">The asID Element</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
-                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-routingintents" class="internal xref">routingIntents</a></p>
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-the-routepathblocks-element" class="internal xref">The routePathBlocks Element</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.1">
-                    <p id="section-toc.1-1.3.2.3.2.1.1"><a href="#section-3.3.1" class="auto internal xref">3.3.1</a>.  <a href="#name-previousases" class="internal xref">previousASes</a></p>
+                    <p id="section-toc.1-1.3.2.3.2.1.1"><a href="#section-3.3.1" class="auto internal xref">3.3.1</a>.  <a href="#name-the-previoushops-element" class="internal xref">The previousHops Element</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.2">
-                    <p id="section-toc.1-1.3.2.3.2.2.1"><a href="#section-3.3.2" class="auto internal xref">3.3.2</a>.  <a href="#name-nexthopases" class="internal xref">nexthopASes</a></p>
+                    <p id="section-toc.1-1.3.2.3.2.2.1"><a href="#section-3.3.2" class="auto internal xref">3.3.2</a>.  <a href="#name-the-nexthops-element" class="internal xref">The nextHops Element</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.3">
-                    <p id="section-toc.1-1.3.2.3.2.3.1"><a href="#section-3.3.3" class="auto internal xref">3.3.3</a>.  <a href="#name-originases" class="internal xref">originASes</a></p>
+                    <p id="section-toc.1-1.3.2.3.2.3.1"><a href="#section-3.3.3" class="auto internal xref">3.3.3</a>.  <a href="#name-the-origins-element" class="internal xref">The origins Element</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.4">
+                    <p id="section-toc.1-1.3.2.3.2.4.1"><a href="#section-3.3.4" class="auto internal xref">3.3.4</a>.  <a href="#name-the-prefixes-element" class="internal xref">The prefixes Element</a></p>
 </li>
                 </ul>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-forwarding-commitment-valid" class="internal xref">Forwarding Commitment Validation</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-rpa-validation" class="internal xref">RPA Validation</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-operational-consideration" class="internal xref">Operational Consideration</a></p>
@@ -1250,22 +1253,22 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">The Border Gateway Protocol (BGP) <span>[<a href="#RFC4271" class="cite xref">RFC4271</a>]</span> was designed with no mechanisms to validate the security of BGP attributes. There are two types of BGP security issues, BGP Hijacks and BGP Route Leaks <span>[<a href="#RFC7908" class="cite xref">RFC7908</a>]</span>, plague Internet security.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">The primary purpose of the Resource Public Key Infrastructure (RPKI) is to improve routing security.  (See <span>[<a href="#RFC6480" class="cite xref">RFC6480</a>]</span> for more information.) As part of this system, a mechanism is needed to allow entities to verify that an IP address holder has permitted an AS to advertise a route along the propagation path. A Forwarding Commitment (FC) provides this function.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">A Forwarding Commitment (FC) is a digitally signed object through which the issuer (the holder of an Autonomous System identifier), can authorize one or more other Autonomous Systems (ASes) as its upstream ASes or one or more other ASes as its downstream ASes. The upstream ASes, or previous ASes, mean that the issuer AS can receive BGP route updates from these ASes. The downstream ASes, or nexthop ASes, mean that the issuer AS would advertise the BGP route to these ASes.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">In this propagation model, it uses a Web of Trust, i.e., the issuer AS trusts its previous ASes and authorizes nexthop ASes to propagate its received routes. Then, all nexthop ASes would also accept the routes and proceed to send them to their next hops. The relationship among them is the signed FC, which attests that a downstream AS has been selected by the directly linked upstream AS to announce the routes.<a href="#section-1-4" class="pilcrow">¶</a></p>
-<p id="section-1-5">Initially, all ASes on the propagation path should sign one or more FCs independently if they want to propagate the route to its downstream ASes, and then be able to detect and filter malicious routes (e.g., route leaks and route hijacks). In addition, the FC can also attest that all ASes on a propagation path have received and selected this AS_PATH, which can be certified as a trusted path.<a href="#section-1-5" class="pilcrow">¶</a></p>
-<p id="section-1-6">The FC uses the template for RPKI digitally signed objects <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span> for the definition of a Cryptographic Message Syntax (CMS) <span>[<a href="#RFC5652" class="cite xref">RFC5652</a>]</span> wrapper for the FC content as well as a generic validation procedure for RPKI signed objects.  As RPKI certificates issued by the current infrastructure are required to validate FC, we assume the mandatory-to-implement algorithms in <span>[<a href="#RFC6485" class="cite xref">RFC6485</a>]</span> or its successor.<a href="#section-1-6" class="pilcrow">¶</a></p>
-<p id="section-1-7">To complete the specification of the FC (see <span><a href="https://rfc-editor.org/rfc/rfc6488#section-4" class="relref">Section 4</a> of [<a href="#RFC6488" class="cite xref">RFC6488</a>]</span>), this document defines:<a href="#section-1-7" class="pilcrow">¶</a></p>
+<p id="section-1-1">The Border Gateway Protocol (BGP) <span>[<a href="#RFC4271" class="cite xref">RFC4271</a>]</span> was designed with no mechanisms to validate the security of BGP attributes. There are two types of BGP security issues, BGP Hijacks and BGP Route Leaks <span>[<a href="#RFC7908" class="cite xref">RFC7908</a>]</span>, that plague Internet security.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">The primary purpose of the Resource Public Key Infrastructure (RPKI) is to improve route security.  (See <span>[<a href="#RFC6480" class="cite xref">RFC6480</a>]</span> for more information.) As part of this system, a mechanism is needed to allow entities to verify that an IP address holder has permitted an AS to advertise a route along the propagation path. A Route Path Authorization (RPA) provides this function.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">An RPA is a digitally signed object through which the issuer (the holder of an Autonomous System identifier) can authorize one or more other Autonomous Systems (ASes) as its upstream ASes or one or more other ASes as its downstream ASes. The upstream ASes, or previous ASes, mean that the issuer AS can receive BGP route updates from these ASes. The downstream ASes, or next ASes, mean that the issuer AS would advertise the BGP route to these ASes.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-4">This propagation model uses a Web of Trust, i.e., the issuer AS trusts its upstream ASes and authorizes its downstream ASes to propagate its received routes. Then, all downstream ASes would also accept the routes and proceed to send them to their next hops. The relationship among them is the signed RPA, which attests that a downstream AS has been selected by the directly linked upstream AS to announce the routes. This introduces an ingress policy.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-5">Initially, all ASes on the propagation path should sign one or more RPAs independently if they want to propagate the route to their downstream ASes, and then be able to detect and filter malicious routes (e.g., route leaks and route hijacks). In addition, the RPA can also attest that all ASes on a propagation path have received and selected this AS_PATH, which can be certified as a trusted path.<a href="#section-1-5" class="pilcrow">¶</a></p>
+<p id="section-1-6">The RPA uses the template for RPKI digitally signed objects <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span> for the definition of a Cryptographic Message Syntax (CMS) <span>[<a href="#RFC5652" class="cite xref">RFC5652</a>]</span> wrapper for the RPA content as well as a generic validation procedure for RPKI signed objects.  As RPKI certificates issued by the current infrastructure are required to validate RPA, we assume the mandatory-to-implement algorithms in <span>[<a href="#RFC6485" class="cite xref">RFC6485</a>]</span> or its successor.<a href="#section-1-6" class="pilcrow">¶</a></p>
+<p id="section-1-7">To complete the specification of the RPA (see <span><a href="https://rfc-editor.org/rfc/rfc6488#section-4" class="relref">Section 4</a> of [<a href="#RFC6488" class="cite xref">RFC6488</a>]</span>), this document defines:<a href="#section-1-7" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-1-8">
 <li id="section-1-8.1">
-          <p id="section-1-8.1.1">The object identifier (OID) that identifies the FC-signed object. This OID appears in the eContentType field of the encapContentInfo object as well as the content-type signed attribute within the signerInfo structure.<a href="#section-1-8.1.1" class="pilcrow">¶</a></p>
+          <p id="section-1-8.1.1">The object identifier (OID) that identifies the RPA-signed object. This OID appears in the eContentType field of the encapContentInfo object as well as the content-type signed attribute within the signerInfo structure.<a href="#section-1-8.1.1" class="pilcrow">¶</a></p>
 </li>
         <li id="section-1-8.2">
-          <p id="section-1-8.2.1">The ASN.1 syntax for the FC content, which is the payload signed by the BGP speaker. The FC content is encoded using the ASN.1 <span>[<a href="#X.680" class="cite xref">X.680</a>]</span> Distinguished Encoding Rules (DER) <span>[<a href="#X.690" class="cite xref">X.690</a>]</span>.<a href="#section-1-8.2.1" class="pilcrow">¶</a></p>
+          <p id="section-1-8.2.1">The ASN.1 syntax for the RPA content, which is the payload signed by the BGP speaker. The RPA content is encoded using the ASN.1 <span>[<a href="#X.680" class="cite xref">X.680</a>]</span> Distinguished Encoding Rules (DER) <span>[<a href="#X.690" class="cite xref">X.690</a>]</span>.<a href="#section-1-8.2.1" class="pilcrow">¶</a></p>
 </li>
         <li id="section-1-8.3">
-          <p id="section-1-8.3.1">The steps required to validate an FC beyond the validation steps specified in <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span>.<a href="#section-1-8.3.1" class="pilcrow">¶</a></p>
+          <p id="section-1-8.3.1">The steps required to validate an RPA beyond the validation steps specified in <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span>.<a href="#section-1-8.3.1" class="pilcrow">¶</a></p>
 </li>
       </ol>
 <div id="requirements-language">
@@ -1281,26 +1284,26 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 </div>
 </section>
 </div>
-<div id="the-fc-content-type">
+<div id="the-rpa-content-type">
 <section id="section-2">
-      <h2 id="name-the-fc-content-type">
-<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-the-fc-content-type" class="section-name selfRef">The FC Content-Type</a>
+      <h2 id="name-the-rpa-content-type">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-the-rpa-content-type" class="section-name selfRef">The RPA Content-Type</a>
       </h2>
-<p id="section-2-1">The content-type for an FC is defined as ForwardingCommitment and has the numerical value of 1.2.840.113549.1.9.16.1.(TBD).<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-1">The content-type for an RPA is defined as RoutePathAuthorization and has the numerical value of 1.2.840.113549.1.9.16.1.(TBD).<a href="#section-2-1" class="pilcrow">¶</a></p>
 <p id="section-2-2">This OID <span class="bcp14">MUST</span> appear both within the eContentType in the encapContentInfo object as well as the content-type signed attribute in the signerInfo object (see <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span>).<a href="#section-2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="The-FC-eContent">
+<div id="The-RPA-eContent">
 <section id="section-3">
-      <h2 id="name-the-fc-econtent">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-the-fc-econtent" class="section-name selfRef">The FC eContent</a>
+      <h2 id="name-the-rpa-econtent">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-the-rpa-econtent" class="section-name selfRef">The RPA eContent</a>
       </h2>
-<p id="section-3-1">The content of an FC identifies a forwarding commitment that represents an AS's routing intent. Upon receiving a BGP-UPDATE message, other ASes can perform AS-path verification according to the validated FCs. An FC is an instance of ForwardingCommitmentAttestation, formally defined by the following ASN.1 <span>[<a href="#X.680" class="cite xref">X.680</a>]</span> module:<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-1">The content of an RPA identifies feasible AS's route paths. Upon receiving a BGP-UPDATE message, other ASes can perform AS-path verification according to the validated RPAs. An RPA is an instance of RoutePathAuthorization, formally defined by the following ASN.1 <span>[<a href="#X.680" class="cite xref">X.680</a>]</span> module:<a href="#section-3-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3-2">
 <pre>
-RPKI-FC-2025
+RPKI-RPA-2025
   { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
-     pkcs-9(9) smime(16) modules(0) id-mod-rpki-FC-2025(TBD) }
+     pkcs-9(9) smime(16) modules(0) id-mod-rpki-RPA-2025(TBD) }
 
 DEFINITIONS EXPLICIT TAGS ::=
 BEGIN
@@ -1311,21 +1314,27 @@ IMPORTS
     { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
       pkcs-9(9) smime(16) modules(0) id-mod-cms-2009(58) } ;
 
-id-ct-FC OBJECT IDENTIFIER ::= { iso(1) member-body(2) us(840)
-    rsadsi(113549) pkcs(1) pkcs-9(9) id-smime(16) id-ct(1) fc(TDB) }
+  IPAddressFamily
+  FROM IPAddrAndASCertExtn -- In [RFC3779]
+    { iso(1) identified-organization(3) dod(6) internet(1) security(5)
+      mechanisms(5) pkix(7) mod(0) id-mod-ip-addr-and-as-ident(30) } ;
 
-ct-FC CONTENT-TYPE ::=
-    { TYPE ForwardingCommitmentAttestation IDENTIFIED BY id-ct-FC }
+id-ct-RPA OBJECT IDENTIFIER ::= { iso(1) member-body(2) us(840)
+    rsadsi(113549) pkcs(1) pkcs-9(9) id-smime(16) id-ct(1) rpa(TDB) }
 
-ForwardingCommitmentAttestation ::= SEQUENCE {
+ct-RPA CONTENT-TYPE ::=
+    { TYPE RoutePathAuthorization IDENTIFIED BY id-ct-RPA }
+
+RoutePathAuthorization ::= SEQUENCE {
     version [0]         INTEGER DEFAULT 0,
     asID                ASID,
-    routingIntents      SEQUENCE (SIZE(1..MAX)) OF ROUTING-INTENT }
+    routePathBlocks     SEQUENCE (SIZE(1..MAX)) OF RoutePathDescription }
 
-ROUTING-INTENT ::= SEQUENCE {
-    previousASes        SEQUENCE (SIZE(1..MAX)) OF ASID,
-    nexthopASes         SEQUENCE (SIZE(1..MAX)) OF ASID,
-    originASes          SEQUENCE (SIZE(0..MAX)) OF ASID OPTIONAL }
+RoutePathDescription ::= SEQUENCE {
+    previousHops        SEQUENCE (SIZE(0..MAX)) OF ASID,
+    nextHops            SEQUENCE (SIZE(0..MAX)) OF ASID,
+    origins             SEQUENCE (SIZE(0..MAX)) OF ASID OPTIONAL,
+    prefixes            SEQUENCE (SIZE(0..MAX)) OF IPAddressFamily OPTIONAL }
 
 ASID ::= INTEGER (0..4294967295)
 
@@ -1333,77 +1342,85 @@ END
 </pre><a href="#section-3-2" class="pilcrow">¶</a>
 </div>
 <p id="section-3-3">Note that this content appears as the eContent within the encapContentInfo (see <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span>).<a href="#section-3-3" class="pilcrow">¶</a></p>
-<div id="version">
+<div id="the-version-element">
 <section id="section-3.1">
-        <h3 id="name-version">
-<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-version" class="section-name selfRef">version</a>
+        <h3 id="name-the-version-element">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-the-version-element" class="section-name selfRef">The version Element</a>
         </h3>
-<p id="section-3.1-1">The version number of the ForwardingCommitmentAttestation <span class="bcp14">MUST</span> be 0.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-1">The version number of the RoutePathAuthorization entry <span class="bcp14">MUST</span> be 0.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="asid">
+<div id="the-asid-element">
 <section id="section-3.2">
-        <h3 id="name-asid">
-<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-asid" class="section-name selfRef">asID</a>
+        <h3 id="name-the-asid-element">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-the-asid-element" class="section-name selfRef">The asID Element</a>
         </h3>
-<p id="section-3.2-1">The asID field contains the AS number of the issuer AS associated with this FC.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-1">The asID field contains the AS number of the issuer AS associated with this RPA.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="routingintents">
+<div id="the-routepathblocks-element">
 <section id="section-3.3">
-        <h3 id="name-routingintents">
-<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-routingintents" class="section-name selfRef">routingIntents</a>
+        <h3 id="name-the-routepathblocks-element">
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-the-routepathblocks-element" class="section-name selfRef">The routePathBlocks Element</a>
         </h3>
-<p id="section-3.3-1">The routingIntents field comprises a list of routing intents associated with the issuing asID. Each routing intent generally includes an upstream AS, a downstream AS, and a specified route set. To optimize space, the field may aggregate routing intents that share the same route set. Therefore, the routingIntents field indicates that for a route set represented by originASes, the issuing asID can receive routes from any AS in previousASes and subsequently forward them to any AS in nexthopASes.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
-<div id="previousases">
+<p id="section-3.3-1">The routePathBlocks field comprises a list of feasible route paths associated with the issuing asID. Each feasible route path generally includes an upstream AS, a downstream AS, and a set of IP prefix blocks. This field may aggregate route paths that share the same IP prefix blocks to optimize space. Therefore, the routePathBlocks field indicates that for an IP prefix blocks represented by origins or prefixes, the issuing asID can receive routes from any AS in previousHops and subsequently forward them to any AS in nextHops. The origins and prefixes fields both indicate a set of IP prefix blocks. Both of them can be None; in that case, it means all IP prefix blocks can be forwarded according to the feasible route paths.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<div id="the-previoushops-element">
 <section id="section-3.3.1">
-          <h4 id="name-previousases">
-<a href="#section-3.3.1" class="section-number selfRef">3.3.1. </a><a href="#name-previousases" class="section-name selfRef">previousASes</a>
+          <h4 id="name-the-previoushops-element">
+<a href="#section-3.3.1" class="section-number selfRef">3.3.1. </a><a href="#name-the-previoushops-element" class="section-name selfRef">The previousHops Element</a>
           </h4>
-<p id="section-3.3.1-1">The previousASes field contains the upstream ASes' number of the issuer AS that can advertise the routes to the issuer AS.<a href="#section-3.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.1-1">The previousHops field contains the upstream AS Number (ASN) of the issuer AS that can advertise the routes to the issuer AS.<a href="#section-3.3.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="nexthopases">
+<div id="the-nexthops-element">
 <section id="section-3.3.2">
-          <h4 id="name-nexthopases">
-<a href="#section-3.3.2" class="section-number selfRef">3.3.2. </a><a href="#name-nexthopases" class="section-name selfRef">nexthopASes</a>
+          <h4 id="name-the-nexthops-element">
+<a href="#section-3.3.2" class="section-number selfRef">3.3.2. </a><a href="#name-the-nexthops-element" class="section-name selfRef">The nextHops Element</a>
           </h4>
-<p id="section-3.3.2-1">The nexthopASes field contains the downstream ASes' number of the issuer AS that can receive advertised routes from the issuer AS.<a href="#section-3.3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-1">The nextHops field contains the downstream AS Number (ASN) of the issuer AS that can receive advertised routes from the issuer AS.<a href="#section-3.3.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="originases">
+<div id="the-origins-element">
 <section id="section-3.3.3">
-          <h4 id="name-originases">
-<a href="#section-3.3.3" class="section-number selfRef">3.3.3. </a><a href="#name-originases" class="section-name selfRef">originASes</a>
+          <h4 id="name-the-origins-element">
+<a href="#section-3.3.3" class="section-number selfRef">3.3.3. </a><a href="#name-the-origins-element" class="section-name selfRef">The origins Element</a>
           </h4>
-<p id="section-3.3.3-1">The originASes field contains a set of ASes. It associates with ROAs <span>[<a href="#RFC9582" class="cite xref">RFC9582</a>]</span>. This is an optional field. When it is blank, it means that all routes received from upstream ASes defined in the previousASes field could be advertised to downstream ASes defined in the nexthopASes field.<a href="#section-3.3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.3-1">The origins field contains a set of ASes and is associated with Route Origin Authorization (ROA) <span>[<a href="#RFC9582" class="cite xref">RFC9582</a>]</span> or Signed Prefix List (SPL) <span>[<a href="#SignedPrefixList" class="cite xref">SignedPrefixList</a>]</span>. This is an optional field. If populated, it indicates that all routes belonging to the specified origin ASes can be received from the upstream ASes in the previousHops field and advertised to the downstream ASes in the nextHops field.<a href="#section-3.3.3-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="the-prefixes-element">
+<section id="section-3.3.4">
+          <h4 id="name-the-prefixes-element">
+<a href="#section-3.3.4" class="section-number selfRef">3.3.4. </a><a href="#name-the-prefixes-element" class="section-name selfRef">The prefixes Element</a>
+          </h4>
+<p id="section-3.3.4-1">The prefixes field contains IP prefix blocks. It is an optional field. If populated, it indicates that all routes specified can be received from the upstream ASes listed in the previousHops field and advertised to the downstream ASes in the nextHops field.<a href="#section-3.3.4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 </section>
 </div>
-<div id="forwarding-commitment-validation">
+<div id="rpa-validation">
 <section id="section-4">
-      <h2 id="name-forwarding-commitment-valid">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-forwarding-commitment-valid" class="section-name selfRef">Forwarding Commitment Validation</a>
+      <h2 id="name-rpa-validation">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-rpa-validation" class="section-name selfRef">RPA Validation</a>
       </h2>
-<p id="section-4-1">To validate an FC, the relying party <span class="bcp14">MUST</span> perform all the validation checks specified in <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span> as well as the following additional FC-specific validation steps.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-1">To validate an RPA, the relying party <span class="bcp14">MUST</span> perform all the validation checks specified in <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span> as well as the following additional RPA-specific validation steps.<a href="#section-4-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4-2.1">
-          <p id="section-4-2.1.1">The contents of the CMS eContent field <span class="bcp14">MUST</span> conform to all the constraints described in <a href="#The-FC-eContent" class="auto internal xref">Section 3</a>.<a href="#section-4-2.1.1" class="pilcrow">¶</a></p>
+          <p id="section-4-2.1.1">The contents of the CMS eContent field <span class="bcp14">MUST</span> conform to all the constraints described in <a href="#The-RPA-eContent" class="auto internal xref">Section 3</a>.<a href="#section-4-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-4-2.2">
-          <p id="section-4-2.2.1">The Autonomous System Identifier Delegation Extension described in <span>[<a href="#RFC3779" class="cite xref">RFC3779</a>]</span> is also used in Forwarding Commitment and <span class="bcp14">MUST</span> be present in the EE certificate contained in the CMS certificates field.<a href="#section-4-2.2.1" class="pilcrow">¶</a></p>
+          <p id="section-4-2.2.1">The Autonomous System Identifier Delegation Extension described in <span>[<a href="#RFC3779" class="cite xref">RFC3779</a>]</span> is also used in RPA and <span class="bcp14">MUST</span> be present in the EE certificate contained in the CMS certificates field.<a href="#section-4-2.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-4-2.3">
-          <p id="section-4-2.3.1">The AS identifier present in the ForwardingCommitmentAttestation eContent 'asID' field <span class="bcp14">MUST</span> be contained in the AS Identifiers present in the certificate extension.<a href="#section-4-2.3.1" class="pilcrow">¶</a></p>
+          <p id="section-4-2.3.1">The AS identifier in the RoutePathAuthorization eContent 'asID' field <span class="bcp14">MUST</span> be contained in the AS Identifiers in the certificate extension.<a href="#section-4-2.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-4-2.4">
           <p id="section-4-2.4.1">The Autonomous System Identifier Delegation extension <span class="bcp14">MUST NOT</span> contain "inherit" elements.<a href="#section-4-2.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-4-2.5">
-          <p id="section-4-2.5.1">The IP Address Delegation Extension <span>[<a href="#RFC3779" class="cite xref">RFC3779</a>]</span> is not used in Forwarding Commitment, and <span class="bcp14">MUST NOT</span> be present in the EE certificate.<a href="#section-4-2.5.1" class="pilcrow">¶</a></p>
+          <p id="section-4-2.5.1">The IP Address Delegation Extension <span>[<a href="#RFC3779" class="cite xref">RFC3779</a>]</span> is not used in RPA, and <span class="bcp14">MUST NOT</span> be present in the EE certificate.<a href="#section-4-2.5.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
@@ -1413,8 +1430,8 @@ END
       <h2 id="name-operational-consideration">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-operational-consideration" class="section-name selfRef">Operational Consideration</a>
       </h2>
-<p id="section-5-1">Multiple valid Forwarding Commitment objects which contain the same asID could exist. In such a case, the union of these objects forms the complete routing intent set of this AS. For a given asID, it is <span class="bcp14">RECOMMENDED</span> that a CA maintains a single Forwarding Commitment. If an AS holder publishes a Forwarding Commitment, then relying parties <span class="bcp14">SHOULD</span> assume that this object is complete for that issuer AS.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">If one AS receives a BGP UPDATE message with the issuer AS in the AS_PATH attribute which cannot match any routing intents of this issuer AS, it implies that there is an AS-path forgery in this message.<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-1">Multiple valid RPA objects that contain the same asID could exist. In such a case, the union of these objects forms the complete route path set of this AS. For a given asID, it is <span class="bcp14">RECOMMENDED</span> that a CA maintains a single RPA object. If an AS holder publishes an RPA object, then relying parties <span class="bcp14">SHOULD</span> assume that this object is complete for that issuer AS.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">If one AS receives a BGP UPDATE message with the issuer AS in the AS_PATH attribute that cannot match any route paths of this issuer AS, it implies that there is an AS-path forgery in this message.<a href="#section-5-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-considerations">
@@ -1422,7 +1439,7 @@ END
       <h2 id="name-security-considerations">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-6-1">The security considerations of <span>[<a href="#RFC6480" class="cite xref">RFC6480</a>]</span>, <span>[<a href="#RFC6481" class="cite xref">RFC6481</a>]</span>, <span>[<a href="#RFC6485" class="cite xref">RFC6485</a>]</span>, <span>[<a href="#RFC6487" class="cite xref">RFC6487</a>]</span> and <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span> also apply to FCs.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-1">The security considerations of <span>[<a href="#RFC6480" class="cite xref">RFC6480</a>]</span>, <span>[<a href="#RFC6481" class="cite xref">RFC6481</a>]</span>, <span>[<a href="#RFC6485" class="cite xref">RFC6485</a>]</span>, <span>[<a href="#RFC6487" class="cite xref">RFC6487</a>]</span> and <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span> also apply to RPAs.<a href="#section-6-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
@@ -1435,12 +1452,12 @@ END
         <h3 id="name-smi-security-for-s-mime-mod">
 <a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-smi-security-for-s-mime-mod" class="section-name selfRef">SMI Security for S/MIME Module Identifier registry</a>
         </h3>
-<p id="section-7.1-1">Please add the id-mod-rpki-fc-2025 to the SMI Security for S/MIME Module Identifier (1.2.840.113549.1.9.16.0) registry (https://www.iana.org/assignments/smi-numbers/smi-numbers.xml#security-smime-0) as follows:<a href="#section-7.1-1" class="pilcrow">¶</a></p>
+<p id="section-7.1-1">Please add the id-mod-rpki-rpa-2025 to the SMI Security for S/MIME Module Identifier (1.2.840.113549.1.9.16.0) registry (https://www.iana.org/assignments/smi-numbers/smi-numbers.xml#security-smime-0) as follows:<a href="#section-7.1-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-7.1-2">
 <pre>
 Decimal  |  Description                 | Specification
 ----------------------------------------------------------------
-TBD      | id-mod-rpki-fc-2025          | [RFC-to-be]
+TBD      | id-mod-rpki-rpa-2025          | [RFC-to-be]
 </pre><a href="#section-7.1-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -1450,12 +1467,12 @@ TBD      | id-mod-rpki-fc-2025          | [RFC-to-be]
         <h3 id="name-smi-security-for-s-mime-cms">
 <a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-smi-security-for-s-mime-cms" class="section-name selfRef">SMI Security for S/MIME CMS Content Type registry</a>
         </h3>
-<p id="section-7.2-1">Please add the FC to the SMI Security for S/MIME CMS Content Type (1.2.840.113549.1.9.16.1) registry (https://www.iana.org/assignments/smi-numbers/smi-numbers.xml#security-smime-1) as follows:<a href="#section-7.2-1" class="pilcrow">¶</a></p>
+<p id="section-7.2-1">Please add the RPA to the SMI Security for S/MIME CMS Content Type (1.2.840.113549.1.9.16.1) registry (https://www.iana.org/assignments/smi-numbers/smi-numbers.xml#security-smime-1) as follows:<a href="#section-7.2-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-7.2-2">
 <pre>
 Decimal  |  Description                | Specification
 ----------------------------------------------------------------
-TBD      |  id-ct-FC                   | [RFC-to-be]
+TBD      |  id-ct-RPA                   | [RFC-to-be]
 </pre><a href="#section-7.2-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -1465,13 +1482,13 @@ TBD      |  id-ct-FC                   | [RFC-to-be]
         <h3 id="name-rpki-signed-object-registry">
 <a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-rpki-signed-object-registry" class="section-name selfRef">RPKI Signed Object registry</a>
         </h3>
-<p id="section-7.3-1">Please add Forwarding Commitment to the RPKI Signed Object registry (https://www.iana.org/assignments/rpki/rpki.xhtml#signed-objects) as follows:<a href="#section-7.3-1" class="pilcrow">¶</a></p>
+<p id="section-7.3-1">Please add RPA to the RPKI Signed Object registry (https://www.iana.org/assignments/rpki/rpki.xhtml#signed-objects) as follows:<a href="#section-7.3-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-7.3-2">
 <pre>
-Name       | OID                         | Specification
+Name          | OID                         | Specification
 ----------------------------------------------------------------
-Forwarding |                             |
-Commitment | 1.2.840.113549.1.9.16.1.TBD | [RFC-to-be]
+Route Path    |                             |
+Authorization | 1.2.840.113549.1.9.16.1.TBD | [RFC-to-be]
 </pre><a href="#section-7.3-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -1481,13 +1498,13 @@ Commitment | 1.2.840.113549.1.9.16.1.TBD | [RFC-to-be]
         <h3 id="name-rpki-repository-name-scheme">
 <a href="#section-7.4" class="section-number selfRef">7.4. </a><a href="#name-rpki-repository-name-scheme" class="section-name selfRef">RPKI Repository Name Scheme registry</a>
         </h3>
-<p id="section-7.4-1">Please add an item for the Forwarding Commitment file extension to the "RPKI Repository Name Scheme" registry created by <span>[<a href="#RFC6481" class="cite xref">RFC6481</a>]</span> as follows:<a href="#section-7.4-1" class="pilcrow">¶</a></p>
+<p id="section-7.4-1">Please add an item for the Route Path Authorization file extension to the "RPKI Repository Name Scheme" registry created by <span>[<a href="#RFC6481" class="cite xref">RFC6481</a>]</span> as follows:<a href="#section-7.4-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-7.4-2">
 <pre>
 Filename  |
 Extension | RPKI Object                   | Reference
 -----------------------------------------------------------------
-     .for | Forwarding Commitment         | [RFC-to-be]
+     .rpa | Route Path Authorization      | [RFC-to-be]
 </pre><a href="#section-7.4-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -1497,15 +1514,15 @@ Extension | RPKI Object                   | Reference
         <h3 id="name-media-type-registry">
 <a href="#section-7.5" class="section-number selfRef">7.5. </a><a href="#name-media-type-registry" class="section-name selfRef">Media Type registry</a>
         </h3>
-<p id="section-7.5-1">The IANA is requested to register the media type application/rpki-fc in the "Media Type" registry as follows:<a href="#section-7.5-1" class="pilcrow">¶</a></p>
+<p id="section-7.5-1">The IANA is requested to register the media type application/rpki-rpa in the "Media Type" registry as follows:<a href="#section-7.5-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-7.5-2">
 <pre>
   Type name: application
-  Subtype name: rpki-fc
+  Subtype name: rpki-rpa
   Required parameters: N/A
   Optional parameters: N/A
   Encoding considerations: binary
-  Security considerations: Carries an RPKI FC [RFC-to-be].
+  Security considerations: Carries an RPKI RPA [RFC-to-be].
       This media type contains no active content. See
       Section xxx of [RFC-to-be] for further information.
   Interoperability considerations: None
@@ -1516,7 +1533,7 @@ Extension | RPKI Object                   | Reference
         in [RFC6488], which contains a payload of a list of
         AS identifiers (ASIDs) as defined in [RFC-to-be].
     Magic number(s): None
-    File extension(s): .for
+    File extension(s): .rpa
     Macintosh file type code(s):
   Person &amp; email address to contact for further information:
     Yangfei Guo &lt;guoyangfei@zgclab.edu.cn&gt;
@@ -1576,6 +1593,10 @@ Extension | RPKI Object                   | Reference
         <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="SignedPrefixList">[SignedPrefixList]</dt>
+        <dd>
+<span class="refAuthor">Snijders, J.</span> and <span class="refAuthor">G. Huston</span>, <span class="refTitle">"A profile for Signed Prefix Lists for Use in the Resource Public Key Infrastructure (RPKI)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-sidrops-rpki-prefixlist-04</span>, <time datetime="2024-09-16" class="refDate">16 September 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-sidrops-rpki-prefixlist-04">https://datatracker.ietf.org/doc/html/draft-ietf-sidrops-rpki-prefixlist-04</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="X.680">[X.680]</dt>
         <dd>
 <span class="refAuthor">ITU-T</span>, <span class="refTitle">"Information technology -- Abstract Syntax Notation One (ASN.1): Specification of basic notation"</span>, <span class="seriesInfo">Recommendation ITU-T X.680 </span>, <time datetime="2021-02" class="refDate">February 2021</time>, <span>&lt;<a href="https://itu.int/rec/T-REC-X.680-202102-I/en">https://itu.int/rec/T-REC-X.680-202102-I/en</a>&gt;</span>. </dd>
@@ -1619,7 +1640,7 @@ Extension | RPKI Object                   | Reference
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="appendix-A-1">TODO acknowledge.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-A-1">The authors would like to thank Tobias Fiebig, Kotikalapudi Sriram, Jeffery Hass, and Alexander Azimov for their valuable comments and suggestions.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">

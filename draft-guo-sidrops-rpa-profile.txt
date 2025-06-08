@@ -5,11 +5,11 @@
 Network Working Group                                             Y. Guo
 Internet-Draft                                   Zhongguancun Laboratory
 Intended status: Standards Track                                 X. Wang
-Expires: 7 November 2025                                           K. Xu
+Expires: 10 December 2025                                          K. Xu
                                                                   Z. Liu
                                                                    Q. Li
                                                      Tsinghua University
-                                                              6 May 2025
+                                                             8 June 2025
 
 
              A Profile for Route Path Authorizations (RPAs)
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 November 2025.
+   This Internet-Draft will expire on 10 December 2025.
 
 Copyright Notice
 
