@@ -158,8 +158,8 @@ RoutePathAuthorization ::= SEQUENCE {
     routePathBlocks     SEQUENCE (SIZE(1..MAX)) OF RoutePathDescription }
 
 RoutePathDescription ::= SEQUENCE {
-    previousHops        SEQUENCE (SIZE(0..MAX)) OF ASID,
-    nextHops            SEQUENCE (SIZE(0..MAX)) OF ASID,
+    previousASes        SEQUENCE (SIZE(0..MAX)) OF ASID,
+    nextASes            SEQUENCE (SIZE(0..MAX)) OF ASID,
     origins             SEQUENCE (SIZE(0..MAX)) OF ASID OPTIONAL,
     prefixes            SEQUENCE (SIZE(0..MAX)) OF IPAddressFamily OPTIONAL }
 
@@ -180,23 +180,23 @@ The asID field contains the AS number of the issuer AS associated with this RPA.
 
 ## The routePathBlocks Element
 
-The routePathBlocks field comprises a list of feasible route paths associated with the issuing asID. Each feasible route path generally includes an upstream AS, a downstream AS, and a set of IP prefix blocks. This field may aggregate route paths that share the same IP prefix blocks to optimize space. Therefore, the routePathBlocks field indicates that for an IP prefix blocks represented by origins or prefixes, the issuing asID can receive routes from any AS in previousHops and subsequently forward them to any AS in nextHops. The origins and prefixes fields both indicate a set of IP prefix blocks. Both of them can be None; in that case, it means all IP prefix blocks can be forwarded according to the feasible route paths.
+The routePathBlocks field comprises a list of feasible route paths associated with the issuing asID. Each feasible route path generally includes an upstream AS, a downstream AS, and a set of IP prefix blocks. This field may aggregate route paths that share the same IP prefix blocks to optimize space. Therefore, the routePathBlocks field indicates that for an IP prefix blocks represented by origins or prefixes, the issuing asID can receive routes from any AS in previousASes and subsequently forward them to any AS in nextASes. The origins and prefixes fields both indicate a set of IP prefix blocks. Both of them can be None; in that case, it means all IP prefix blocks can be forwarded according to the feasible route paths.
 
-### The previousHops Element
+### The previousASes Element
 
-The previousHops field contains the upstream AS Number (ASN) of the issuer AS that can advertise the routes to the issuer AS.
+The previousASes field contains the upstream AS Number (ASN) of the issuer AS that can advertise the routes to the issuer AS.
 
-### The nextHops Element
+### The nextASes Element
 
-The nextHops field contains the downstream AS Number (ASN) of the issuer AS that can receive advertised routes from the issuer AS.
+The nextASes field contains the downstream AS Number (ASN) of the issuer AS that can receive advertised routes from the issuer AS.
 
 ### The origins Element
 
-The origins field contains a set of ASes and is associated with Route Origin Authorization (ROA) {{RFC9582}} or Signed Prefix List (SPL) {{SignedPrefixList}}. This is an optional field. If populated, it indicates that all routes belonging to the specified origin ASes can be received from the upstream ASes in the previousHops field and advertised to the downstream ASes in the nextHops field.
+The origins field contains a set of ASes and is associated with Route Origin Authorization (ROA) {{RFC9582}} or Signed Prefix List (SPL) {{SignedPrefixList}}. This is an optional field. If populated, it indicates that all routes belonging to the specified origin ASes can be received from the upstream ASes in the previousASes field and advertised to the downstream ASes in the nextASes field.
 
 ### The prefixes Element
 
-The prefixes field contains IP prefix blocks. It is an optional field. If populated, it indicates that all routes specified can be received from the upstream ASes listed in the previousHops field and advertised to the downstream ASes in the nextHops field.
+The prefixes field contains IP prefix blocks. It is an optional field. If populated, it indicates that all routes specified can be received from the upstream ASes listed in the previousASes field and advertised to the downstream ASes in the nextASes field.
 
 
 # RPA Validation
