@@ -5,11 +5,11 @@
 Network Working Group                                             Y. Guo
 Internet-Draft                                   Zhongguancun Laboratory
 Intended status: Standards Track                                 X. Wang
-Expires: 11 December 2025                                          K. Xu
+Expires: 10 June 2026                                              K. Xu
                                                                   Z. Liu
                                                                    Q. Li
                                                      Tsinghua University
-                                                             9 June 2025
+                                                         7 December 2025
 
 
              A Profile for Route Path Authorizations (RPAs)
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 December 2025.
+   This Internet-Draft will expire on 10 June 2026.
 
 Copyright Notice
 
@@ -79,8 +79,8 @@ Table of Contents
      3.1.  The version Element
      3.2.  The asID Element
      3.3.  The routePathBlocks Element
-       3.3.1.  The previousHops Element
-       3.3.2.  The nextHops Element
+       3.3.1.  The previousASes Element
+       3.3.2.  The nextASes Element
        3.3.3.  The origins Element
        3.3.4.  The prefixes Element
    4.  RPA Validation
@@ -212,8 +212,8 @@ RoutePathAuthorization ::= SEQUENCE {
     routePathBlocks     SEQUENCE (SIZE(1..MAX)) OF RoutePathDescription }
 
 RoutePathDescription ::= SEQUENCE {
-    previousHops        SEQUENCE (SIZE(0..MAX)) OF ASID,
-    nextHops            SEQUENCE (SIZE(0..MAX)) OF ASID,
+    previousASes        SEQUENCE (SIZE(0..MAX)) OF ASID,
+    nextASes            SEQUENCE (SIZE(0..MAX)) OF ASID,
     origins             SEQUENCE (SIZE(0..MAX)) OF ASID OPTIONAL,
     prefixes            SEQUENCE (SIZE(0..MAX)) OF IPAddressFamily OPTIONAL }
 
@@ -242,19 +242,19 @@ END
    prefix blocks to optimize space.  Therefore, the routePathBlocks
    field indicates that for an IP prefix blocks represented by origins
    or prefixes, the issuing asID can receive routes from any AS in
-   previousHops and subsequently forward them to any AS in nextHops.
+   previousASes and subsequently forward them to any AS in nextASes.
    The origins and prefixes fields both indicate a set of IP prefix
    blocks.  Both of them can be None; in that case, it means all IP
    prefix blocks can be forwarded according to the feasible route paths.
 
-3.3.1.  The previousHops Element
+3.3.1.  The previousASes Element
 
-   The previousHops field contains the upstream AS Number (ASN) of the
+   The previousASes field contains the upstream AS Number (ASN) of the
    issuer AS that can advertise the routes to the issuer AS.
 
-3.3.2.  The nextHops Element
+3.3.2.  The nextASes Element
 
-   The nextHops field contains the downstream AS Number (ASN) of the
+   The nextASes field contains the downstream AS Number (ASN) of the
    issuer AS that can receive advertised routes from the issuer AS.
 
 3.3.3.  The origins Element
@@ -263,15 +263,15 @@ END
    Origin Authorization (ROA) [RFC9582] or Signed Prefix List (SPL)
    [SignedPrefixList].  This is an optional field.  If populated, it
    indicates that all routes belonging to the specified origin ASes can
-   be received from the upstream ASes in the previousHops field and
-   advertised to the downstream ASes in the nextHops field.
+   be received from the upstream ASes in the previousASes field and
+   advertised to the downstream ASes in the nextASes field.
 
 3.3.4.  The prefixes Element
 
    The prefixes field contains IP prefix blocks.  It is an optional
    field.  If populated, it indicates that all routes specified can be
-   received from the upstream ASes listed in the previousHops field and
-   advertised to the downstream ASes in the nextHops field.
+   received from the upstream ASes listed in the previousASes field and
+   advertised to the downstream ASes in the nextASes field.
 
 4.  RPA Validation
 
