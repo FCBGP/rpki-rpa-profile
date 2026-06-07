@@ -64,6 +64,7 @@ normative:
     RFC6485:
     RFC6487:
     RFC6488:
+    RPA-Verification: I-D.xu-sidrops-rpa-verification
     SignedPrefixList: I-D.ietf-sidrops-rpki-prefixlist
     X.680:
       title: "Information technology -- Abstract Syntax Notation One (ASN.1): Specification of basic notation"
@@ -98,11 +99,11 @@ The Border Gateway Protocol (BGP) {{RFC4271}} was designed with no mechanisms to
 
 The primary purpose of the Resource Public Key Infrastructure (RPKI) is to improve route security.  (See {{RFC6480}} for more information.) As part of this system, a mechanism is needed to allow entities to verify that an IP address holder has permitted an AS to advertise a route along the propagation path. A Route Path Authorization (RPA) provides this function.
 
-An RPA is a digitally signed object through which the issuer (the holder of an Autonomous System identifier) can authorize one or more other Autonomous Systems (ASes) as its upstream ASes or one or more other ASes as its downstream ASes. The upstream ASes, or previous ASes, mean that the issuer AS can receive BGP route updates from these ASes. The downstream ASes, or next ASes, mean that the issuer AS would advertise the BGP route to these ASes.
+An RPA is a digitally signed object through which the issuer (the holder of an Autonomous System identifier) can authorize one or more other Autonomous Systems (ASes) as its upstream ASes or one or more other ASes as its downstream ASes. The upstream ASes, or previous ASes, mean that the issuer AS can receive BGP route updates from these ASes. The downstream ASes, or next ASes, mean that the issuer AS would advertise the BGP route to these ASes. Validation algorithms, conflict resolution procedures, and path verification logic are outside the scope of this document and are specified separately; one can get more information at {{RPA-Verification}}.
 
-This propagation model uses a Web of Trust, i.e., the issuer AS trusts its upstream ASes and authorizes its downstream ASes to propagate its received routes. Then, all downstream ASes would also accept the routes and proceed to send them to their next hops. The relationship among them is the signed RPA, which attests that a downstream AS has been selected by the directly linked upstream AS to announce the routes. This introduces an ingress policy.
+The issuer AS trusts its upstream ASes and authorizes its downstream ASes to propagate the routes it receives. Then, all downstream ASes would also accept the routes and proceed to send them to their next hops. The relationship among them is the signed RPA, which attests that a downstream AS has been selected by the directly linked upstream AS to announce the routes. This introduces an ingress policy.
 
-Initially, all ASes on the propagation path should sign one or more RPAs independently if they want to propagate the route to their downstream ASes, and then be able to detect and filter malicious routes (e.g., route leaks and route hijacks). In addition, the RPA can also attest that all ASes on a propagation path have received and selected this AS_PATH, which can be certified as a trusted path.
+Initially, all ASes on the propagation path should sign one or more RPAs independently if they want to propagate the route to their downstream ASes, and then be able to detect and filter malicious routes (e.g., route leaks and route hijacks). In addition, the RPA can also attest that all ASes on a propagation path have received and selected this AS_PATH.
 
 The RPA uses the template for RPKI digitally signed objects {{RFC6488}} for the definition of a Cryptographic Message Syntax (CMS) {{RFC5652}} wrapper for the RPA content as well as a generic validation procedure for RPKI signed objects.  As RPKI certificates issued by the current infrastructure are required to validate RPA, we assume the mandatory-to-implement algorithms in {{RFC6485}} or its successor.
 
@@ -111,6 +112,14 @@ To complete the specification of the RPA (see {{Section 4 of RFC6488}}), this do
 1.  The object identifier (OID) that identifies the RPA-signed object. This OID appears in the eContentType field of the encapContentInfo object as well as the content-type signed attribute within the signerInfo structure.
 2.  The ASN.1 syntax for the RPA content, which is the payload signed by the BGP speaker. The RPA content is encoded using the ASN.1 {{X.680}} Distinguished Encoding Rules (DER) {{X.690}}.
 3.  The steps required to validate an RPA beyond the validation steps specified in {{RFC6488}}.
+
+The sole purpose of this document is to define a signed RPKI object that can be used to express route path authorization information. This document does not attempt to:
+
+* define a complete AS_PATH validation procedure;
+* define routing policy evaluation procedures;
+* replace ASPA;
+* determine routing relationship types;
+* prove the operational existence of routing relationships.
 
 ## Requirements Language
 
@@ -209,11 +218,16 @@ To validate an RPA, the relying party MUST perform all the validation checks spe
 - The Autonomous System Identifier Delegation extension MUST NOT contain "inherit" elements.
 - The IP Address Delegation Extension {{RFC3779}} is not used in RPA, and MUST NOT be present in the EE certificate.
 
+
 # Operational Consideration
 
 Multiple valid RPA objects that contain the same asID could exist. In such a case, the union of these objects forms the complete route path set of this AS. For a given asID, it is RECOMMENDED that a CA maintains a single RPA object. If an AS holder publishes an RPA object, then relying parties SHOULD assume that this object is complete for that issuer AS.
 
 If one AS receives a BGP UPDATE message with the issuer AS in the AS_PATH attribute that cannot match any route paths of this issuer AS, it implies that there is an AS-path forgery in this message.
+
+RPA is designed to support incremental deployment within the existing RPKI ecosystem. The publication of an RPA object by one AS does not require simultaneous deployment by all ASes appearing in an AS path. An RPA issuer MAY publish RPA objects independently of whether other ASes have deployed RPA.
+
+Relying parties MAY encounter routing information for which corresponding RPA objects are partially available or entirely absent. The handling of such deployment states is intentionally outside the scope of this document. This document only defines the syntax and semantics of RPA objects. Procedures for processing incomplete deployment states, including path validation behavior and routing policy decisions, are specified by separate validation procedures at {{RPA-Verification}}.
 
 # Security Considerations
 
@@ -286,6 +300,35 @@ The IANA is requested to register the media type application/rpki-rpa in the "Me
       Change controller: IETF
 
 --- back
+
+# Comparison
+
+## ASPA
+
+This document does not modify, replace, or deprecate ASPA. RPA and ASPA serve different purposes.
+
+ASPA authorizes customer-provider relationships and provides information that can be used to validate the plausibility of an AS_PATH. RPA authorizes routing path segments associated with specific routing resources. ASPA expresses business relationship information. RPA expresses route propagation authorization information. Consequently:
+
+* ASPA validation is relationship-oriented;
+* RPA validation is authorization-oriented.
+
+ASPA and RPA are complementary mechanisms and can be deployed independently. An implementation MAY utilize ASPA, RPA, or both, depending on the validation objectives and deployment requirements.
+
+The validity of an RPA object only demonstrates that:
+
+* the object was issued by the legitimate holder of the associated RPKI resources;
+* and the issuer asserts the path authorization information contained in the object.
+
+An RPA object does not independently prove the existence, correctness, or operational status of any inter-domain routing relationship described in the object.
+
+Specifically, the presence of an RPA object does not prove that:
+
+* the referenced neighboring ASes currently maintain a routing relationship with the issuer;
+* the referenced routing relationship is mutually acknowledged;
+* the routing relationship is operationally active.
+
+The objective of RPA is therefore analogous to ROA and ASPA; it provides authenticated routing assertions that can be consumed by external validation procedures.
+
 
 # Acknowledgments
 {:numbered="false"}
