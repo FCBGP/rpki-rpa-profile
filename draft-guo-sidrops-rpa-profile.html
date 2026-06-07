@@ -13,22 +13,21 @@
 <meta content="
        This document defines a Cryptographic Message Syntax (CMS) protected content type for Route Path Authorizations (RPA) objects used in Resource Public Key Infrastructure (RPKI). An RPA is a digitally signed object that provides a means of verifying whether an IP address block is received from  AS a  to  AS b  and announced from  AS b  to  AS c . When validated, an RPA's eContent can be used for the detection and mitigation of route hijacking, especially providing protection for the AS_PATH attribute in BGP-UPDATE. This object is a variant of the aut-num object in the Internet Routing Registry (IRR). 
     " name="description">
-<meta content="xml2rfc 3.28.1" name="generator">
+<meta content="xml2rfc 3.33.0" name="generator">
 <meta content="draft-guo-sidrops-rpa-profile-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.28.1
-    Python 3.12.10
+  xml2rfc 3.33.0
+    Python 3.12.13
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
-    intervaltree 3.1.0
+    intervaltree 3.2.1
     Jinja2 3.1.6
-    lxml 5.3.1
-    platformdirs 4.3.8
+    lxml 6.0.2
+    platformdirs 4.9.6
     pycountry 24.6.1
-    PyYAML 6.0.2
-    requests 2.32.3
-    setuptools 80.9.0
-    wcwidth 0.2.13
+    PyYAML 6.0.3
+    requests 2.33.1
+    wcwidth 0.7.0
 -->
 <link href="draft-guo-sidrops-rpa-profile.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -169,7 +168,7 @@
   font-weight: 400;
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin-ext.woff2') format('woff2');
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 @font-face {
   font-family: 'Oxygen Mono';
@@ -177,7 +176,8 @@
   font-weight: 400;
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 }
 
 @font-face {
@@ -294,16 +294,19 @@ h1, h2, h3, h4, h5, h6 {
   font-size-adjust: 0.5;
   color: var(--title-color);
 }
-h1#title {
-  font-size: 32px;
-  line-height: 40px;
-  clear: both;
-}
-h1#title, h1#rfcnum {
-  margin: 1.5em 0 0.2em;
-}
-h1#rfcnum + h1#title {
-  margin: 0.2em 0;
+h1 {
+  &#title {
+    font-size: 32px;
+    line-height: 40px;
+    clear: both;
+    margin: 1.5em 0 0.2em;
+  }
+  &#rfcnum {
+    margin: 1.5em 0 0.2em;
+    & + h1#title {
+      margin: 0.2em 0;
+    }
+  }
 }
 
 h1, h2, h3 {
@@ -323,10 +326,10 @@ h4, h5, h6 {
 #abstract+p {
   font-size: 18px;
   line-height: 24px;
-}
-#abstract+p code, #abstract+p samp, #abstract+p tt {
-  font-size: 16px;
-  line-height: 0;
+  & code, & samp, & tt {
+    font-size: 16px;
+    line-height: 0;
+  }
 }
 
 p {
@@ -337,59 +340,59 @@ p {
 div {
   margin: 0;
 }
-.alignRight.art-text {
-  background-color: var(--highlight-color);
-  border: 1px solid var(--line-color);
-  border-radius: 3px;
-  padding: 0.5em 1em 0;
-  margin-bottom: 0.5em;
-}
-.alignRight.art-text pre {
-  padding: 0;
-  width: auto;
-}
 .alignRight {
   margin: 1em 0;
-}
-.alignRight > *:first-child {
-  border: none;
-  margin: 0;
-  float: right;
-  clear: both;
-}
-.alignRight > *:nth-child(2) {
-  clear: both;
-  display: block;
-  border: none;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    margin: 0;
+    float: right;
+    clear: both;
+  }
+  & > *:nth-child(2) {
+    clear: both;
+    display: block;
+    border: none;
+  }
 }
 svg {
   display: block;
-}
-/* font-family isn't space-separated, but =~ will have to do */
-svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
-  font-family: var(--font-mono);
-}
-.alignCenter.art-text {
-  background-color: var(--highlight-color);
-  border: 1px solid var(--line-color);
-  border-radius: 3px;
-  padding: 0.5em 1em 0;
-  margin-bottom: 0.5em;
-}
-.alignCenter.art-text pre {
-  padding: 0;
-  width: auto;
+  /* font-family isn't space-separated, but =~ will have to do */
+  &[font-family~="monospace" i], & [font-family~="monospace" i] {
+    font-family: var(--font-mono);
+  }
 }
 .alignCenter {
   margin: 1em 0;
-}
-.alignCenter > *:first-child {
-  border: none;
-  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
-     support flexbox yet.
-  */
-  display: table;
-  margin: 0 auto;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+       support flexbox yet.
+    */
+    display: table;
+    margin: 0 auto;
+  }
 }
 
 /* lists */
@@ -427,26 +430,25 @@ dl {
     --indent: 5ch;
     & > dt {
       min-width: calc(var(--indent) - 2ch);
+      float: none;
     }
-  }
-  &.olPercent > dt {
-    float: none;
   }
 
   dl > dd > & {
     margin-top: 0.5em;
     margin-bottom: 0;
   }
-}
-dl:not(.dlNewline) > dt {
-  float: left;
-  margin-right: 2ch;
-  min-width: 8ch;
-}
-dl > dd {
-  margin-bottom: .8em;
-  margin-left: var(--indent) !important; /* stupid element overrides */
-  min-height: 2ex;
+
+  &:not(.dlNewline) > dt {
+    float: left;
+    margin-right: 2ch;
+    min-width: 8ch;
+  }
+  & > dd {
+    margin-bottom: .8em;
+    margin-left: var(--indent) !important; /* stupid element overrides */
+    min-height: 2ex;
+  }
 }
 :is(dl.compact, .dlCompact) > dd {
   margin-bottom: 0;
@@ -462,20 +464,22 @@ dl > dd {
 }
 
 /* links */
-a, a[href].selfRef:hover {
+a {
   text-decoration: none;
+  &[href] {
+    color: var(--link-color);
+    &:hover { text-decoration: underline; }
+    &.selfRef {
+      color: var(--text-color);
+      &:hover {
+        text-decoration: none;
+        background-color: var(--highlight-color);
+      }
+    }
+  }
 }
-a[href] {
-  color: var(--link-color);
-}
-a[href].selfRef, .iref + a[href].internal {
+.iref + a[href].internal {
   color: var(--text-color);
-}
-a[href]:hover {
-  text-decoration: underline;
-}
-a[href].selfRef:hover {
-  background-color: var(--highlight-color);
 }
 a.xref:is(.cite, .auto), :is(#status-of-memo, #copyright) a {
   white-space: nowrap;
@@ -511,9 +515,9 @@ img {
 figure {
   margin: 0.5em 0;
   padding: 0;
-}
-figure blockquote {
-  margin: 0.8em 0.4em 0.4em;
+  & blockquote {
+    margin: 0.8em 0.4em 0.4em;
+  }
 }
 figcaption, caption {
   font-style: italic;
@@ -523,17 +527,19 @@ figcaption, caption {
 }
 @media screen {
   /* Auto-collapse boilerplate. */
-  :is(#status-of-memo, #copyright) p {
-    margin: -2px 0;
-    max-height: 0;
-    transition: max-height 2s ease, margin 0.5s ease 0.5s;
-    overflow: hidden;
-  }
-  :is(#status-of-memo, #copyright):hover p,
-  :is(#status-of-memo, #copyright) h2:target ~ p {
-    margin: 0.5em 0;
-    max-height: 500px;
-    overflow: auto;
+  :is(#status-of-memo, #copyright) {
+    & p {
+      margin: -2px 0;
+      max-height: 0;
+      transition: max-height 2s ease, margin 0.5s ease 0.5s;
+      overflow: hidden;
+    }
+    &:hover p,
+    & h2:target ~ p {
+      margin: 0.5em 0;
+      max-height: 500px;
+      overflow: auto;
+    }
   }
   pre, svg {
     display: inline-block;
@@ -569,6 +575,7 @@ aside, blockquote {
 }
 blockquote {
   margin: 1em 0;
+  border-left: 2px var(--pilcrow-strong) solid;
 }
 cite {
   display: block;
@@ -582,25 +589,17 @@ table {
   max-width: 100%;
   margin: 0 0 1em;
   border-collapse: collapse;
-}
-table.right {
-  margin-left: auto;
-}
-table.center {
-  margin-left: auto;
-  margin-right: auto;
-}
-table.left {
-  margin-right: auto;
-}
-table .text-left {
-  text-align: left;
-}
-table .text-center {
-  text-align: center;
-}
-table .text-right {
-  text-align: right;
+  &.right { margin-left: auto; }
+  &.center { margin-left: auto; margin-right: auto; }
+  &.left { margin-right: auto; }
+  & .text-left { text-align: left; }
+  & .text-center { text-align: center; }
+  & .text-right { text-align: right; }
+  & caption {
+    margin: 0;
+    padding: 3px 0 3px 1em;
+  }
+  & p { margin: 0; }
 }
 
 thead, tbody {
@@ -620,13 +619,6 @@ th {
 :is(tr:nth-child(2n+1), thead+tbody > tr:nth-child(2n)) > td {
   background-color: var(--highlight-color);
 }
-table caption {
-  margin: 0;
-  padding: 3px 0 3px 1em;
-}
-table p {
-  margin: 0;
-}
 
 /* pilcrow */
 a.pilcrow {
@@ -637,18 +629,16 @@ a.pilcrow {
     color: var(--pilcrow-weak);
     &:hover { text-decoration: none; }
   }
-}
-@media not print {
-  :hover > a.pilcrow {
-    opacity: 1;
+  @media not print {
+    :hover > &, &:focus {
+      opacity: 1;
+    }
+    &[href]:hover {
+      color: var(--pilcrow-strong);
+      background-color: transparent;
+    }
   }
-  a.pilcrow[href]:hover {
-    color: var(--pilcrow-strong);
-    background-color: transparent;
-  }
-}
-@media print {
-  a.pilcrow {
+  @media print {
     display: none;
   }
 }
@@ -707,9 +697,9 @@ sub, sup {
   font-size: 0.9em;
   font-style: italic;
   margin-top: 2em;
-}
-.docInfo .prepared {
-  float: right;
+  & .prepared {
+    float: right;
+  }
 }
 
 /* table of contents */
@@ -799,23 +789,27 @@ hr.addr {
   max-width: calc(100% - 16px);
 }
 @media (min-width: 500px) {
-  #authors-addresses > section {
-    column-count: 2;
-    column-gap: 20px;
-  }
-  #authors-addresses > section > h2 {
-    column-span: all;
-  }
-  /* hack for break-inside: avoid-column */
-  #authors-addresses address {
-    display: inline-block;
-    break-inside: avoid-column;
+  #authors-addresses {
+    & > section {
+      column-count: 2;
+      column-gap: 20px;
+    }
+    & > section > h2 {
+      column-span: all;
+    }
+    /* hack for break-inside: avoid-column */
+    & address {
+      display: inline-block;
+      break-inside: avoid-column;
+    }
   }
 }
 
 /* Comments */
-.rfcEditorRemove p:first-of-type {
-  font-style: italic;
+.rfcEditorRemove {
+  & p:first-of-type {
+    font-style: italic;
+  }
 }
 .cref {
   background-color: rgba(249, 232, 105, 0.3);
@@ -826,19 +820,21 @@ hr.addr {
 }
 
 @media screen {
-  #toc nav {
-    font-family: var(--font-title);
-    font-weight: 360;
-    & > ul { margin-bottom: 2em; }
-    & ul {
-      margin: 0 0 0 4px;
-      & :is(p, li) {
-        margin: 2px 0;
+  #toc {
+    & nav {
+      font-family: var(--font-title);
+      font-weight: 360;
+      & > ul { margin-bottom: 2em; }
+      & ul {
+        margin: 0 0 0 4px;
+        & :is(p, li) {
+          margin: 2px 0;
+        }
       }
     }
-  }
-  #toc a.toplink {
-    float: right;
+    & a.toplink {
+      float: right;
+    }
   }
 }
 @media not screen {
@@ -859,54 +855,54 @@ hr.addr {
     margin: 0;
     border-bottom: 1px solid #ccc;
     opacity: 0.6;
-  }
-  #toc h2 {
-    margin: 0;
-    padding: 2px 0 2px 6px;
-    padding-right: 1em;
-    font-size: 18px;
-    line-height: 24px;
-    min-width: 190px;
-    text-align: right;
-    background-color: #444;
-    color: white;
-    cursor: pointer;
-    &::before { /* css hamburger */
-      float: right;
-      position: relative;
-      width: 1em;
-      height: 1px;
-      left: -164px;
-      margin: 8px 0 0 0;
-      background: white none repeat scroll 0 0;
-      box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
-      content: "";
+    & h2 {
+      margin: 0;
+      padding: 2px 0 2px 6px;
+      padding-right: 1em;
+      font-size: 18px;
+      line-height: 24px;
+      min-width: 190px;
+      text-align: right;
+      background-color: #444;
+      color: white;
+      cursor: pointer;
+      &::before { /* css hamburger */
+        float: right;
+        position: relative;
+        width: 1em;
+        height: 1px;
+        left: -164px;
+        margin: 8px 0 0 0;
+        background: white none repeat scroll 0 0;
+        box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+        content: "";
+      }
     }
-  }
-  #toc nav {
-    display: none;
-    background-color: var(--background-color);
-    padding: 0.5em 1em 1em;
-    overflow: auto;
-    overscroll-behavior: contain;
-    height: calc(100vh - 48px);
-    border-left: 1px solid #ddd;
-  }
-  #toc.active {
-    opacity: 1;
-    & nav { display: block; }
-  }
-  /* Make the collapsed ToC header render white on gray also when it's a link */
-  #toc h2 a,
-  #toc h2 a:is(:link, :focus, :hover),
-  #toc a.toplink,
-  #toc a.toplink:hover {
-    color: white;
-    background-color: #444;
-    text-decoration: none;
-  }
-  #toc a.toplink {
-    margin: 2px 0.5em 0;
+    & nav {
+      display: none;
+      background-color: var(--background-color);
+      padding: 0.5em 1em 1em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      height: calc(100vh - 48px);
+      border-left: 1px solid #ddd;
+    }
+    &.active {
+      opacity: 1;
+      & nav { display: block; }
+    }
+    /* Make the collapsed ToC header render white on gray also when it's a link */
+    & h2 a,
+    & h2 a:is(:link, :focus, :hover),
+    & a.toplink,
+    & a.toplink:hover {
+      color: white;
+      background-color: #444;
+      text-decoration: none;
+    }
+    & a.toplink {
+      margin: 2px 0.5em 0;
+    }
   }
 }
 
@@ -925,26 +921,26 @@ hr.addr {
     margin: 0;
     padding: 0;
     z-index: 1;
-  }
-  #toc h2 {
-    margin: 0;
-    padding: 0.25em 1em 1em 0;
-  }
-  #toc nav {
-    display: block;
-    height: calc(90vh - 84px);
-    bottom: 0;
-    padding: 0.5em 0 2em;
-    overflow: auto;
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
+    & h2 {
+      margin: 0;
+      padding: 0.25em 1em 1em 0;
+    }
+    & nav {
+      display: block;
+      height: calc(90vh - 84px);
+      bottom: 0;
+      padding: 0.5em 0 2em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+    }
+    & a.toplink {
+      margin: 8px 0.5em 0;
+    }
   }
   img { /* future proofing */
     max-width: 100%;
     height: auto;
-  }
-  #toc a.toplink {
-    margin: 8px 0.5em 0;
   }
 }
 
@@ -960,12 +956,13 @@ hr.addr {
   #n-copyright-notice {
     border-bottom: none;
   }
-  #toc, #n-introduction {
-    page-break-before: always;
-  }
   #toc {
+    page-break-before: always;
     border-top: none;
     padding-top: 0;
+  }
+  #n-introduction {
+    page-break-before: always;
   }
   figure, pre, .vcard {
     page-break-inside: avoid;
@@ -1027,17 +1024,19 @@ hr.addr {
 }
 
 /* SVG Trick: a prefix match works because only black and white are allowed */
-svg :is([stroke="black"], [stroke^="#000"]) {
-  stroke: var(--text-color);
-}
-svg :is([stroke="white"], [stroke^="#fff"]) {
-  stroke: var(--background-color);
-}
-svg :is([fill="black"], [fill^="#000"], :not([fill])) {
-  fill: var(--text-color);
-}
-svg :is([fill="white"], [fill^="#fff"]) {
-  fill: var(--background-color);
+svg {
+  & :is([stroke="black"], [stroke^="#000"]) {
+    stroke: var(--text-color);
+  }
+  & :is([stroke="white"], [stroke^="#fff"]) {
+    stroke: var(--background-color);
+  }
+  & :is([fill="black"], [fill^="#000"], :not([fill])) {
+    fill: var(--text-color);
+  }
+  & :is([fill="white"], [fill^="#fff"]) {
+    fill: var(--background-color);
+  }
 }
 </style>
 
@@ -1047,11 +1046,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Route Path Authorizations</td>
-<td class="right">June 2025</td>
+<td class="right">June 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Guo, et al.</td>
-<td class="center">Expires 10 December 2025</td>
+<td class="center">Expires 9 December 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,12 +1063,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-guo-sidrops-rpa-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-06-08" class="published">8 June 2025</time>
+<time datetime="2026-06-07" class="published">7 June 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-12-10">10 December 2025</time></dd>
+<dd class="expires"><time datetime="2026-12-09">9 December 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1130,7 +1129,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 10 December 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 9 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1139,7 +1138,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
         </h2>
 <p id="section-boilerplate.2-1">
-            Copyright (c) 2025 IETF Trust and the persons identified as the
+            Copyright (c) 2026 IETF Trust and the persons identified as the
             document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.2-2">
             This document is subject to BCP 78 and the IETF Trust's Legal
@@ -1183,10 +1182,10 @@ svg :is([fill="white"], [fill^="#fff"]) {
                 <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-the-routepathblocks-element" class="internal xref">The routePathBlocks Element</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.1">
-                    <p id="section-toc.1-1.3.2.3.2.1.1"><a href="#section-3.3.1" class="auto internal xref">3.3.1</a>.  <a href="#name-the-previoushops-element" class="internal xref">The previousHops Element</a></p>
+                    <p id="section-toc.1-1.3.2.3.2.1.1"><a href="#section-3.3.1" class="auto internal xref">3.3.1</a>.  <a href="#name-the-previousases-element" class="internal xref">The previousASes Element</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.2">
-                    <p id="section-toc.1-1.3.2.3.2.2.1"><a href="#section-3.3.2" class="auto internal xref">3.3.2</a>.  <a href="#name-the-nexthops-element" class="internal xref">The nextHops Element</a></p>
+                    <p id="section-toc.1-1.3.2.3.2.2.1"><a href="#section-3.3.2" class="auto internal xref">3.3.2</a>.  <a href="#name-the-nextases-element" class="internal xref">The nextASes Element</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.3">
                     <p id="section-toc.1-1.3.2.3.2.3.1"><a href="#section-3.3.3" class="auto internal xref">3.3.3</a>.  <a href="#name-the-origins-element" class="internal xref">The origins Element</a></p>
@@ -1239,10 +1238,18 @@ svg :is([fill="white"], [fill^="#fff"]) {
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-comparison" class="internal xref">Comparison</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1">
+                <p id="section-toc.1-1.9.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-aspa" class="internal xref">ASPA</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1255,9 +1262,9 @@ svg :is([fill="white"], [fill^="#fff"]) {
       </h2>
 <p id="section-1-1">The Border Gateway Protocol (BGP) <span>[<a href="#RFC4271" class="cite xref">RFC4271</a>]</span> was designed with no mechanisms to validate the security of BGP attributes. There are two types of BGP security issues, BGP Hijacks and BGP Route Leaks <span>[<a href="#RFC7908" class="cite xref">RFC7908</a>]</span>, that plague Internet security.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">The primary purpose of the Resource Public Key Infrastructure (RPKI) is to improve route security.  (See <span>[<a href="#RFC6480" class="cite xref">RFC6480</a>]</span> for more information.) As part of this system, a mechanism is needed to allow entities to verify that an IP address holder has permitted an AS to advertise a route along the propagation path. A Route Path Authorization (RPA) provides this function.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">An RPA is a digitally signed object through which the issuer (the holder of an Autonomous System identifier) can authorize one or more other Autonomous Systems (ASes) as its upstream ASes or one or more other ASes as its downstream ASes. The upstream ASes, or previous ASes, mean that the issuer AS can receive BGP route updates from these ASes. The downstream ASes, or next ASes, mean that the issuer AS would advertise the BGP route to these ASes.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">This propagation model uses a Web of Trust, i.e., the issuer AS trusts its upstream ASes and authorizes its downstream ASes to propagate its received routes. Then, all downstream ASes would also accept the routes and proceed to send them to their next hops. The relationship among them is the signed RPA, which attests that a downstream AS has been selected by the directly linked upstream AS to announce the routes. This introduces an ingress policy.<a href="#section-1-4" class="pilcrow">¶</a></p>
-<p id="section-1-5">Initially, all ASes on the propagation path should sign one or more RPAs independently if they want to propagate the route to their downstream ASes, and then be able to detect and filter malicious routes (e.g., route leaks and route hijacks). In addition, the RPA can also attest that all ASes on a propagation path have received and selected this AS_PATH, which can be certified as a trusted path.<a href="#section-1-5" class="pilcrow">¶</a></p>
+<p id="section-1-3">An RPA is a digitally signed object through which the issuer (the holder of an Autonomous System identifier) can authorize one or more other Autonomous Systems (ASes) as its upstream ASes or one or more other ASes as its downstream ASes. The upstream ASes, or previous ASes, mean that the issuer AS can receive BGP route updates from these ASes. The downstream ASes, or next ASes, mean that the issuer AS would advertise the BGP route to these ASes. Validation algorithms, conflict resolution procedures, and path verification logic are outside the scope of this document and are specified separately; one can get more information at <span>[<a href="#RPA-Verification" class="cite xref">RPA-Verification</a>]</span>.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-4">The issuer AS trusts its upstream ASes and authorizes its downstream ASes to propagate the routes it receives. Then, all downstream ASes would also accept the routes and proceed to send them to their next hops. The relationship among them is the signed RPA, which attests that a downstream AS has been selected by the directly linked upstream AS to announce the routes. This introduces an ingress policy.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-5">Initially, all ASes on the propagation path should sign one or more RPAs independently if they want to propagate the route to their downstream ASes, and then be able to detect and filter malicious routes (e.g., route leaks and route hijacks). In addition, the RPA can also attest that all ASes on a propagation path have received and selected this AS_PATH.<a href="#section-1-5" class="pilcrow">¶</a></p>
 <p id="section-1-6">The RPA uses the template for RPKI digitally signed objects <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span> for the definition of a Cryptographic Message Syntax (CMS) <span>[<a href="#RFC5652" class="cite xref">RFC5652</a>]</span> wrapper for the RPA content as well as a generic validation procedure for RPKI signed objects.  As RPKI certificates issued by the current infrastructure are required to validate RPA, we assume the mandatory-to-implement algorithms in <span>[<a href="#RFC6485" class="cite xref">RFC6485</a>]</span> or its successor.<a href="#section-1-6" class="pilcrow">¶</a></p>
 <p id="section-1-7">To complete the specification of the RPA (see <span><a href="https://rfc-editor.org/rfc/rfc6488#section-4" class="relref">Section 4</a> of [<a href="#RFC6488" class="cite xref">RFC6488</a>]</span>), this document defines:<a href="#section-1-7" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-1-8">
@@ -1271,6 +1278,24 @@ svg :is([fill="white"], [fill^="#fff"]) {
           <p id="section-1-8.3.1">The steps required to validate an RPA beyond the validation steps specified in <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span>.<a href="#section-1-8.3.1" class="pilcrow">¶</a></p>
 </li>
       </ol>
+<p id="section-1-9">The sole purpose of this document is to define a signed RPKI object that can be used to express route path authorization information. This document does not attempt to:<a href="#section-1-9" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-1-10.1">
+          <p id="section-1-10.1.1">define a complete AS_PATH validation procedure;<a href="#section-1-10.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-1-10.2">
+          <p id="section-1-10.2.1">define routing policy evaluation procedures;<a href="#section-1-10.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-1-10.3">
+          <p id="section-1-10.3.1">replace ASPA;<a href="#section-1-10.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-1-10.4">
+          <p id="section-1-10.4.1">determine routing relationship types;<a href="#section-1-10.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-1-10.5">
+          <p id="section-1-10.5.1">prove the operational existence of routing relationships.<a href="#section-1-10.5.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
 <div id="requirements-language">
 <section id="section-1.1">
         <h3 id="name-requirements-language">
@@ -1331,8 +1356,8 @@ RoutePathAuthorization ::= SEQUENCE {
     routePathBlocks     SEQUENCE (SIZE(1..MAX)) OF RoutePathDescription }
 
 RoutePathDescription ::= SEQUENCE {
-    previousHops        SEQUENCE (SIZE(0..MAX)) OF ASID,
-    nextHops            SEQUENCE (SIZE(0..MAX)) OF ASID,
+    previousASes        SEQUENCE (SIZE(0..MAX)) OF ASID,
+    nextASes            SEQUENCE (SIZE(0..MAX)) OF ASID,
     origins             SEQUENCE (SIZE(0..MAX)) OF ASID OPTIONAL,
     prefixes            SEQUENCE (SIZE(0..MAX)) OF IPAddressFamily OPTIONAL }
 
@@ -1363,21 +1388,21 @@ END
         <h3 id="name-the-routepathblocks-element">
 <a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-the-routepathblocks-element" class="section-name selfRef">The routePathBlocks Element</a>
         </h3>
-<p id="section-3.3-1">The routePathBlocks field comprises a list of feasible route paths associated with the issuing asID. Each feasible route path generally includes an upstream AS, a downstream AS, and a set of IP prefix blocks. This field may aggregate route paths that share the same IP prefix blocks to optimize space. Therefore, the routePathBlocks field indicates that for an IP prefix blocks represented by origins or prefixes, the issuing asID can receive routes from any AS in previousHops and subsequently forward them to any AS in nextHops. The origins and prefixes fields both indicate a set of IP prefix blocks. Both of them can be None; in that case, it means all IP prefix blocks can be forwarded according to the feasible route paths.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
-<div id="the-previoushops-element">
+<p id="section-3.3-1">The routePathBlocks field comprises a list of feasible route paths associated with the issuing asID. Each feasible route path generally includes an upstream AS, a downstream AS, and a set of IP prefix blocks. This field may aggregate route paths that share the same IP prefix blocks to optimize space. Therefore, the routePathBlocks field indicates that for an IP prefix blocks represented by origins or prefixes, the issuing asID can receive routes from any AS in previousASes and subsequently forward them to any AS in nextASes. The origins and prefixes fields both indicate a set of IP prefix blocks. Both of them can be None; in that case, it means all IP prefix blocks can be forwarded according to the feasible route paths.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<div id="the-previousases-element">
 <section id="section-3.3.1">
-          <h4 id="name-the-previoushops-element">
-<a href="#section-3.3.1" class="section-number selfRef">3.3.1. </a><a href="#name-the-previoushops-element" class="section-name selfRef">The previousHops Element</a>
+          <h4 id="name-the-previousases-element">
+<a href="#section-3.3.1" class="section-number selfRef">3.3.1. </a><a href="#name-the-previousases-element" class="section-name selfRef">The previousASes Element</a>
           </h4>
-<p id="section-3.3.1-1">The previousHops field contains the upstream AS Number (ASN) of the issuer AS that can advertise the routes to the issuer AS.<a href="#section-3.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.1-1">The previousASes field contains the upstream AS Number (ASN) of the issuer AS that can advertise the routes to the issuer AS.<a href="#section-3.3.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="the-nexthops-element">
+<div id="the-nextases-element">
 <section id="section-3.3.2">
-          <h4 id="name-the-nexthops-element">
-<a href="#section-3.3.2" class="section-number selfRef">3.3.2. </a><a href="#name-the-nexthops-element" class="section-name selfRef">The nextHops Element</a>
+          <h4 id="name-the-nextases-element">
+<a href="#section-3.3.2" class="section-number selfRef">3.3.2. </a><a href="#name-the-nextases-element" class="section-name selfRef">The nextASes Element</a>
           </h4>
-<p id="section-3.3.2-1">The nextHops field contains the downstream AS Number (ASN) of the issuer AS that can receive advertised routes from the issuer AS.<a href="#section-3.3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-1">The nextASes field contains the downstream AS Number (ASN) of the issuer AS that can receive advertised routes from the issuer AS.<a href="#section-3.3.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="the-origins-element">
@@ -1385,7 +1410,7 @@ END
           <h4 id="name-the-origins-element">
 <a href="#section-3.3.3" class="section-number selfRef">3.3.3. </a><a href="#name-the-origins-element" class="section-name selfRef">The origins Element</a>
           </h4>
-<p id="section-3.3.3-1">The origins field contains a set of ASes and is associated with Route Origin Authorization (ROA) <span>[<a href="#RFC9582" class="cite xref">RFC9582</a>]</span> or Signed Prefix List (SPL) <span>[<a href="#SignedPrefixList" class="cite xref">SignedPrefixList</a>]</span>. This is an optional field. If populated, it indicates that all routes belonging to the specified origin ASes can be received from the upstream ASes in the previousHops field and advertised to the downstream ASes in the nextHops field.<a href="#section-3.3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.3-1">The origins field contains a set of ASes and is associated with Route Origin Authorization (ROA) <span>[<a href="#RFC9582" class="cite xref">RFC9582</a>]</span> or Signed Prefix List (SPL) <span>[<a href="#SignedPrefixList" class="cite xref">SignedPrefixList</a>]</span>. This is an optional field. If populated, it indicates that all routes belonging to the specified origin ASes can be received from the upstream ASes in the previousASes field and advertised to the downstream ASes in the nextASes field.<a href="#section-3.3.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="the-prefixes-element">
@@ -1393,7 +1418,7 @@ END
           <h4 id="name-the-prefixes-element">
 <a href="#section-3.3.4" class="section-number selfRef">3.3.4. </a><a href="#name-the-prefixes-element" class="section-name selfRef">The prefixes Element</a>
           </h4>
-<p id="section-3.3.4-1">The prefixes field contains IP prefix blocks. It is an optional field. If populated, it indicates that all routes specified can be received from the upstream ASes listed in the previousHops field and advertised to the downstream ASes in the nextHops field.<a href="#section-3.3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.4-1">The prefixes field contains IP prefix blocks. It is an optional field. If populated, it indicates that all routes specified can be received from the upstream ASes listed in the previousASes field and advertised to the downstream ASes in the nextASes field.<a href="#section-3.3.4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1432,6 +1457,8 @@ END
       </h2>
 <p id="section-5-1">Multiple valid RPA objects that contain the same asID could exist. In such a case, the union of these objects forms the complete route path set of this AS. For a given asID, it is <span class="bcp14">RECOMMENDED</span> that a CA maintains a single RPA object. If an AS holder publishes an RPA object, then relying parties <span class="bcp14">SHOULD</span> assume that this object is complete for that issuer AS.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">If one AS receives a BGP UPDATE message with the issuer AS in the AS_PATH attribute that cannot match any route paths of this issuer AS, it implies that there is an AS-path forgery in this message.<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-3">RPA is designed to support incremental deployment within the existing RPKI ecosystem. The publication of an RPA object by one AS does not require simultaneous deployment by all ASes appearing in an AS path. An RPA issuer <span class="bcp14">MAY</span> publish RPA objects independently of whether other ASes have deployed RPA.<a href="#section-5-3" class="pilcrow">¶</a></p>
+<p id="section-5-4">Relying parties <span class="bcp14">MAY</span> encounter routing information for which corresponding RPA objects are partially available or entirely absent. The handling of such deployment states is intentionally outside the scope of this document. This document only defines the syntax and semantics of RPA objects. Procedures for processing incomplete deployment states, including path validation behavior and routing policy decisions, are specified by separate validation procedures at <span>[<a href="#RPA-Verification" class="cite xref">RPA-Verification</a>]</span>.<a href="#section-5-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-considerations">
@@ -1593,9 +1620,13 @@ Extension | RPKI Object                   | Reference
         <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RPA-Verification">[RPA-Verification]</dt>
+        <dd>
+<span class="refAuthor">Xu, K.</span>, <span class="refAuthor">Jiang, S.</span>, <span class="refAuthor">Guo, Y. B.</span>, and <span class="refAuthor">X. Wang</span>, <span class="refTitle">"BGP AS_PATH Verification Based on Route Path Authorizations (RPA) Objects"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-xu-sidrops-rpa-verification-02</span>, <time datetime="2026-05-24" class="refDate">24 May 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-xu-sidrops-rpa-verification-02">https://datatracker.ietf.org/doc/html/draft-xu-sidrops-rpa-verification-02</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="SignedPrefixList">[SignedPrefixList]</dt>
         <dd>
-<span class="refAuthor">Snijders, J.</span> and <span class="refAuthor">G. Huston</span>, <span class="refTitle">"A profile for Signed Prefix Lists for Use in the Resource Public Key Infrastructure (RPKI)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-sidrops-rpki-prefixlist-04</span>, <time datetime="2024-09-16" class="refDate">16 September 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-sidrops-rpki-prefixlist-04">https://datatracker.ietf.org/doc/html/draft-ietf-sidrops-rpki-prefixlist-04</a>&gt;</span>. </dd>
+<span class="refAuthor">Snijders, J.</span> and <span class="refAuthor">G. Huston</span>, <span class="refTitle">"A profile for Signed Prefix Lists for Use in the Resource Public Key Infrastructure (RPKI)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-sidrops-rpki-prefixlist-05</span>, <time datetime="2025-12-10" class="refDate">10 December 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-sidrops-rpki-prefixlist-05">https://datatracker.ietf.org/doc/html/draft-ietf-sidrops-rpki-prefixlist-05</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="X.680">[X.680]</dt>
         <dd>
@@ -1635,16 +1666,64 @@ Extension | RPKI Object                   | Reference
 </div>
 </section>
 </div>
-<div id="acknowledgments">
+<div id="comparison">
 <section id="appendix-A">
+      <h2 id="name-comparison">
+<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-comparison" class="section-name selfRef">Comparison</a>
+      </h2>
+<div id="aspa">
+<section id="appendix-A.1">
+        <h3 id="name-aspa">
+<a href="#appendix-A.1" class="section-number selfRef">A.1. </a><a href="#name-aspa" class="section-name selfRef">ASPA</a>
+        </h3>
+<p id="appendix-A.1-1">This document does not modify, replace, or deprecate ASPA. RPA and ASPA serve different purposes.<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.1-2">ASPA authorizes customer-provider relationships and provides information that can be used to validate the plausibility of an AS_PATH. RPA authorizes routing path segments associated with specific routing resources. ASPA expresses business relationship information. RPA expresses route propagation authorization information. Consequently:<a href="#appendix-A.1-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-A.1-3.1">
+            <p id="appendix-A.1-3.1.1">ASPA validation is relationship-oriented;<a href="#appendix-A.1-3.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-A.1-3.2">
+            <p id="appendix-A.1-3.2.1">RPA validation is authorization-oriented.<a href="#appendix-A.1-3.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="appendix-A.1-4">ASPA and RPA are complementary mechanisms and can be deployed independently. An implementation <span class="bcp14">MAY</span> utilize ASPA, RPA, or both, depending on the validation objectives and deployment requirements.<a href="#appendix-A.1-4" class="pilcrow">¶</a></p>
+<p id="appendix-A.1-5">The validity of an RPA object only demonstrates that:<a href="#appendix-A.1-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-A.1-6.1">
+            <p id="appendix-A.1-6.1.1">the object was issued by the legitimate holder of the associated RPKI resources;<a href="#appendix-A.1-6.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-A.1-6.2">
+            <p id="appendix-A.1-6.2.1">and the issuer asserts the path authorization information contained in the object.<a href="#appendix-A.1-6.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="appendix-A.1-7">An RPA object does not independently prove the existence, correctness, or operational status of any inter-domain routing relationship described in the object.<a href="#appendix-A.1-7" class="pilcrow">¶</a></p>
+<p id="appendix-A.1-8">Specifically, the presence of an RPA object does not prove that:<a href="#appendix-A.1-8" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-A.1-9.1">
+            <p id="appendix-A.1-9.1.1">the referenced neighboring ASes currently maintain a routing relationship with the issuer;<a href="#appendix-A.1-9.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-A.1-9.2">
+            <p id="appendix-A.1-9.2.1">the referenced routing relationship is mutually acknowledged;<a href="#appendix-A.1-9.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-A.1-9.3">
+            <p id="appendix-A.1-9.3.1">the routing relationship is operationally active.<a href="#appendix-A.1-9.3.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="appendix-A.1-10">The objective of RPA is therefore analogous to ROA and ASPA; it provides authenticated routing assertions that can be consumed by external validation procedures.<a href="#appendix-A.1-10" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="acknowledgments">
+<section id="appendix-B">
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="appendix-A-1">The authors would like to thank Tobias Fiebig, Kotikalapudi Sriram, Jeffery Hass, and Alexander Azimov for their valuable comments and suggestions.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-B-1">The authors would like to thank Tobias Fiebig, Kotikalapudi Sriram, Jeffery Hass, and Alexander Azimov for their valuable comments and suggestions.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
-<section id="appendix-B">
+<section id="appendix-C">
       <h2 id="name-authors-addresses">
 <a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
